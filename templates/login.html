@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}view.css" media="all">
+<script src="/static/jquery.js" type="text/javascript"></script>
+<script src="/static/jquery.cookie.js" type="text/javascript"></script>
+<title>Experimento de completar palabras</title>
+</head>
+<body id="main_body" class="safari">
+
+    <div id="form_container" >
+        <form class="appnitro" method="get" action='trial/'>
+                <div class="form_description">
+                <h2>Experimento de completar palabras</h2>
+                <p>
+                ¡Bienvenido a nuestro experimento! Ingresa una dirección de e-mail y tu edad. Completando las sencillas consignas del experimento participarás en un sorteo por tres órdenes de compra (una de $200, y dos de $100) a elección en OhGiftCard.com.
+                </p>
+                </div>
+                <p><label class="description">Ingrese su email para jugar: <input type="email" name="email"  required></label><br>
+                <b><label class="description">Ingrese su edad: <input type="number"  min=8 max=1000  name="edad"  required></label><br></p>					
+                <input class="button_text" id="input_iniciar_trial" type="submit"  value="Empezar trial">
+        </form>	
+    </div>	
+
+
+<div id="log" align=left style="display:none; margin:auto"><br><hr>
+Log debuggin :</div>
+	
+</body></html>

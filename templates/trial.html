@@ -1,0 +1,324 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0079)http://www.phpform.org/formbuilder/view.php?id=52ca8c2df0bcfc44b49f068b17465303 -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Experimento de completar palabras</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}view.css" media="all">
+<script src="{{ STATIC_URL }}jquery.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}jquery.cookie.js" type="text/javascript"></script>
+
+<script>
+
+function trial_default(){
+	
+	
+	//Escondo el texto
+	
+	{% for indice in cant_textos %}
+		$("#texto{{indice}}").hide();
+	{% endfor %}
+	
+	
+	$("#texto").hide();
+	
+	//Oculto boton siguiente trial
+	$("#boton_siguiente_trial").hide();
+	
+	//Cargo log
+        $("#log").hide()
+
+	$("#log").html(  $("#log").html() + "<br> Se llamo: trial_default");
+
+	if ({{initial_trial}}) {
+            $("#formulario_inicio").show();
+            $("#input_iniciar_trial").focus();
+        }else {
+            trial_inicio();
+        }
+}
+
+//Inicio tiempo
+function trial_inicio(){
+	//Cargo tiempo inicial
+	var currentDate = new Date();	
+	tiempo_inicial = currentDate.getTime();	
+	
+	//Borro boton de inicio
+	$("#formulario_inicio").html("")
+	
+	
+
+	
+	$("#texto").show()
+	
+	//Muestro texto, llevandolo al texto_acumulado
+	$("#texto_acumulado").html(  $("#texto0").html() )
+
+	
+	//Pongo ahi el foco
+	$("#texto0_input").focus()
+	
+	//Cargo log
+        $("#log").hide()
+	$("#log").html(  $("#log").html() + "<br> Se llamo: trial_inicio")
+	$("#log").html(  $("#log").html() + "<br> Tiempo inicial:"+tiempo_inicial)
+}
+
+function arreglo_valor_inputs(texto_num){
+	//cargo las palabras posta, hasta donde llego a completar
+	
+	
+	{% for indice_palabra in secuencia_posta %}
+		if ({{indice_palabra.0}} <= texto_num) $("#texto{{indice_palabra.0}}_input").val( "{{indice_palabra.1}}" );
+	{% endfor %}
+	
+	
+	
+	
+}
+
+
+
+function texto_input_cambio(event,texto_num){
+	
+	//Cargo letra
+	if (document.all){
+		letra = event.keyCode
+	}
+	else{
+		letra = event.which
+	}
+	
+	//Apreto enter
+	if (letra==13){
+
+		palabra = $("#texto"+texto_num+"_input").val();
+		tam_palabra = palabra.length;
+		
+		//Cargo palabra nueva
+		palabras_valor[texto_num] = palabra;
+		
+		//Sigo adentro del texto
+		if ( parseInt(texto_num)<= {{cant_pal}}  && tam_palabra>0 ){
+			
+			
+			//Cargo nuevo tiempo para la palabra nueva
+			var currentDate = new Date();	
+			tiempos[texto_num]= currentDate.getTime();	
+
+			
+			//Cargo log
+			$("#log").html(  $("#log").html() + "<br> Enter en texto_num: " +texto_num + " con valor:"+palabra+" tiempo:"+tiempos[texto_num])
+
+			{% for indice_palabra in secuencia_posta %}
+                            if ({{indice_palabra.0}} <= texto_num) palabra_original = "{{indice_palabra.1}}";
+                       {% endfor %}
+
+			$("#log-publico").html(  $("#log-publico").html() + "Original: " + palabra_original + " - Completada: " + palabra + "<br/>");
+			
+			//Deshabilitamos lo que paso
+			$("#texto"+texto_num+"_input").hide();
+			//$("#texto"+texto_num+"_input").prop('disabled', true);
+			
+			
+			//Muestro texto, llevandolo al texto_acumulado y le doy foco al nuevo input
+			nuevo_indice = parseInt(texto_num)+1;
+			
+			//Cargo el contenido a agregar (todo eso lo hago para que los divs no pongan espacios)
+			contenido_a_agregar= $("#texto"+nuevo_indice).html();
+			
+			//Borro el texto que acabo de copiar para poner en otro lado
+			$("#texto"+texto_num).html("");
+			
+				
+			//Pongo el contenido que estaba en el cuerpo de texto_acumulado
+			$("#texto_acumulado").html(  	$("#texto_acumulado").html() +  contenido_a_agregar);
+
+			//Le recargo el valor del input
+			$("#texto"+texto_num+"_input").val(palabra);
+			
+			//Pongo foco en el nuevo input
+			$("#texto"+nuevo_indice+"_input").focus();
+			
+			
+			//Pongo los valores de  los inputs
+			arreglo_valor_inputs( parseInt(texto_num) );
+			
+			
+			
+			 
+		}	
+		
+		//Completo ultimo input
+		if (parseInt(texto_num)=={{cant_pal}}  && tam_palabra>0  ){
+			//Envio datos a la BD
+			$.get("/trial/subir/", 
+						{
+						   'palabras': palabras_valor,
+						   'tiempos': tiempos ,
+						   'email': '{{usuario}}',
+						   'initTime': tiempo_inicial,
+						   'trial': {{trial}},
+						}
+						//
+						//, function(){}
+			);
+			
+			//Envio datos a la BD
+			$("#log").html(  $("#log").html() + "<br>Envio datos BD")
+			
+			
+			
+			
+			//Habilito boton para siguiente trial
+			$("#log").html(  $("#log").html() + "<br>Habilito boton para siguiente trial")
+			
+			//Muestror boton siguiente trial
+			$("#boton_siguiente_trial").show()
+			$("#siguiente_trial").focus()
+			
+			
+		}
+		
+		
+		
+		
+	}
+	
+}
+
+
+
+
+//Inicio
+tiempo_inicial = -1;
+cant_palabras = {{cant_pal}}
+
+
+//palabras
+var palabras_valor = new Array();
+var tiempos = new Array();
+
+$().ready(trial_default)
+
+</script>
+</head>
+
+
+
+
+<body id="main_body" class="safari">
+	
+	
+		<div id="form_container" >
+	
+	
+	 
+	
+		<h1><a></a></h1>
+		<form  class="appnitro">
+			<div class="form_description">
+			
+			<h2>Experimento de completar palabras</h2>
+			<p>En este experimento deberás completar la palabra que pensás que viene a continuación en el texto. No hay respuestas correctas o incorrectas</p>
+			<p>Usuario logueado: <b>{{usuario}}</b> <br>
+			P&aacute;rrafos completados: <b>{{etiqueta_trial}}</b></p>
+ 
+		
+			</div>						
+			<ul>
+					
+			<li id="li_2">
+			
+		</form>	
+		
+		
+<span>		
+{%if finalizado%}
+	<div id="fin" align=center>
+	Completaste los 60 puntos. ¡Y ganaste los 40 puntos extra por terminar! Gracias por participar. El sorteo se realizará el día 20 de febrero a las 12hs (GMT-3). 
+	</div>
+{% else %}
+<div id="formulario_inicio" align=center  style ="display:none;">
+
+<p><strong>Objetivo</strong>: El objetivo de este experimento es estimar la predictibilidad de una palabra, dado el contexto de las palabras anteriores. Por lo tanto, no hay palabras correctas o incorrectas. Deberás completar con la palabra que te suene más factible dentro del contexto de la oración.
+</p>
+<p>
+<strong>Premio</strong>: El premio es una orden de compra por $200 y dos de $100 en OhGiftCard.com. El sorteo se realizará 
+el día 20 de febrero a las 12hs (GMT-3). 
+</p>
+<p></p>
+<p>
+¡Cada párrafo que hacés cuenta para el sorteo! Cada párrafo suma 1 punto, y podés completar hasta 60 párrafos. Si completás todos, ¡te damos 40 puntos extra! Estos puntos se pueden sumar en varias sesiones, utilizando siempre el mismo mail. Y tus chances de ganar en el sorteo son proporcionales a la cantidad de puntos que sumes.
+</p>
+<p>
+<strong>Instrucciones</strong>: Cada párrafo se muestra de a partes, deteniéndose en las palabras que debes completar. Luego de completada la palabra, aparece la palabra original y el texto sigue. En cada párrafo se deben responder 3 palabras.
+</p>
+<p></p>
+<p>
+Es posible volver a ingresar con tu mail y continuar respondiendo más párrafos hasta un total de 60 (¡tendrás más chances de ganar el premio! ¡y nosotros más datos!)
+</p>
+<p></p>
+<p>
+Este experimento es parte de la tesis de Licenciatura de Julia Carbajal (DF - FCEyN - UBA), te pedimos que lo hagas a conciencia, concentrándote por el tiempo que dura el experimento.
+</p>
+<p></p>
+<p>
+¡Gracias por tu participación!
+</p>
+<p>Consultas y comentarios: experimentolni@gmail.com
+</p>
+
+	<form action="javascript:trial_inicio()">
+	 <input id="input_iniciar_trial" type="submit"  value="Empezar trial">
+	</form>	
+</div>	
+
+ 
+ 
+<form name="texto_inputs" >
+	
+	<div id="texto"  style="margin-top:7%; line-height:200%;">
+	
+		
+			<div id="texto_acumulado" style ="position:relative; margin-top:5%; width:400px ; text-align:justify; text-justify:inter-word; margin:auto"></div>
+			
+			{% for texto in texto_con_input %}
+			<div id="texto{{texto.1}}" style ="display:none; text-align:justify; text-justify:inter-word;">
+				{{texto.0}}
+				<input id="texto{{texto.1}}_input" onkeyup="javascript:texto_input_cambio(event,'{{texto.1}}')" size=7> 
+			</div>	
+			{% endfor%}
+			
+			
+			<div id="texto{{texto_final.1}}" style ="display:none; text-align:justify; text-justify:inter-word;">
+				{{texto_final.0}}
+			</div>
+			
+	</div>
+</form>
+
+<div id="boton_siguiente_trial" align="center" style="margin-top:10%">
+	
+	<form method="get" action="">
+                <input name="initial_trial" value="false" type="hidden">
+		<input name="email" value="{{usuario}}" type="hidden">
+		<input id="siguiente_trial" type="submit" value="Siguiente trial">
+	
+	</form>
+</div>
+
+{%endif%}
+
+
+</div>
+
+<div id="log-publico" align=left style ="position:relative; margin-top:5%; width:400px ; text-align:justify; text-justify:inter-word; margin:auto"><br><hr>
+</div>
+
+
+<div id="log" align=left style="margin:auto"><br><hr>
+Log debuggin :</div>
+
+</body></html>
