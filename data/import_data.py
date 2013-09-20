@@ -12,7 +12,7 @@ conn = sqlite3.connect('cloze.sqlite3')
 #database='cloze_task'
 #host='calamaro.exp.dc.uba.ar'
 #user='dfslezak'
-#password='23571113'
+#password='????'
 #connectStr="dbname='"+database+"' user='"+user+"' host='"+host+"' password='"+password+"'"
 
 #conn = psycopg2.connect(connectStr)
