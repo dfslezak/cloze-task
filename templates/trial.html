@@ -100,7 +100,7 @@ function texto_input_cambio(event,texto_num){
 		palabras_valor[texto_num] = palabra;
 		
 		//Sigo adentro del texto
-		if ( parseInt(texto_num)<= {{cant_pal}}  && tam_palabra>0 ){
+		if ( parseInt(texto_num)<= {{cant_pal}}  && tam_palabra>0){
 			
 			
 			//Cargo nuevo tiempo para la palabra nueva
@@ -114,8 +114,8 @@ function texto_input_cambio(event,texto_num){
 			{% for indice_palabra in secuencia_posta %}
                             if ({{indice_palabra.0}} <= texto_num) palabra_original = "{{indice_palabra.1}}";
                        {% endfor %}
-
-			$("#log-publico").html(  $("#log-publico").html() + "Original: " + palabra_original + " - Completada: " + palabra + "<br/>");
+            porcentaje_avance = parseInt(100*(texto_num)/{{cant_pal}})
+			$("#log-publico").html( "Porcentaje: " +  porcentaje_avance + "%"  + "<br/>");
 			
 			//Deshabilitamos lo que paso
 			$("#texto"+texto_num+"_input").hide();
