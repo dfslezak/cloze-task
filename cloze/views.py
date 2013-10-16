@@ -9,8 +9,13 @@ import re
 import json
 
 def home(request):
+	form_subject = SubjectForm()
+	
 	t = loader.get_template('login.html')
-	return HttpResponse(t.render(RequestContext(request,{})))
+	c=RequestContext(request,{
+		'form': form_subject})
+	
+	return HttpResponse(t.render(c))
 
 def trial(request):
 	
@@ -19,8 +24,6 @@ def trial(request):
 	
 	if ( email_get==''):
 		return HttpResponse("Error por mail no valido")
-		
-				
 		
 		#Seteo cookie
 		#~ max_age = days_expire * 24 * 60 * 60 
@@ -33,18 +36,20 @@ def trial(request):
 	missing_words = ""
 	email = email_get
 	#print 'Email es', email
+	
 	try:
 		sub = Subject.objects.get(email= email)
 		#print "existe usuario"
 	except Subject.DoesNotExist:
-		#print "NO existe usuario"
+		print "NO existe usuario"
 		ed = request.GET.get('edad',-1)
+		gen = request.GET.get('gender','')
+		ip = request.META.get('REMOTE_ADDR','0.0.0.0')
 		(seq_num, gen_seq) = Subject.generate_sequence()
 		seq = json.dumps(gen_seq)
 		#print gen_seq
-		sub = Subject(email=email,age=ed,experiment_sequence=seq,sequence_number=seq_num)
+		sub = Subject(email=email,age=ed,gender=gen,original_ip=ip,experiment_sequence=seq,sequence_number=seq_num)
 		sub.save()
-		
 		
 	t = loader.get_template('trial.html')
 	finalizado = True
@@ -87,17 +92,14 @@ def trial(request):
 		if (secuencia_posta[0]==0): text_partition = [""] + text_partition
 		#print "cuenta loca",len(body)
 		if (secuencia_posta[-1]==len(body)): text_partition.append("")
-			
 	
 	except:
 		pass			
- 
-
-	
+ 	
 	if (len(text_partition)==0): text_partition = ['error','error','error','error','error']
 	initial_trial = request.GET.get('initial_trial', 'true')
 
-        #print zip(range(0,len(text_partition)), secuencia_posta)
+	print zip( text_partition[0:-1], range(0,len(text_partition) ))
 	
 	c=RequestContext(request,{
 	'finalizado':finalizado,

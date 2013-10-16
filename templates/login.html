@@ -8,17 +8,18 @@
 </head>
 <body id="main_body" class="safari">
 
-    <div id="form_container" >
+    <div id="form_container">
         <form class="appnitro" method="get" action='trial/'>
                 <div class="form_description">
                 <h2>Experimento de completar palabras</h2>
                 <p>
-                ¡Bienvenido a nuestro experimento! Ingresa una dirección de e-mail y tu edad. Completando las sencillas consignas del experimento participarás en un sorteo por tres órdenes de compra (una de $200, y dos de $100) a elección en OhGiftCard.com.
+                ¡Bienvenido a nuestro experimento! Ingresá una dirección de e-mail, tu edad y tu género. Completando las sencillas consignas del experimento participarás en sorteos por órdenes de compra a elección.
                 </p>
                 </div>
-                <p><label class="description">Ingrese su email para jugar: <input type="email" name="email"  required></label><br>
-                <b><label class="description">Ingrese su edad: <input type="number"  min=8 max=1000  name="edad"  required></label><br></p>					
-                <input class="button_text" id="input_iniciar_trial" type="submit"  value="Empezar trial">
+                <p><label align=center class="description">Ingrese su email para jugar: <input type="email" name="email"  required></label><br></p>
+                <b><label align=center class="description">Ingrese su edad: <input type="number"  min=8 max=1000  name="edad"  required></label><br> </p>					
+                <p><label align=center class="description">Ingrese su género: {{ form.gender }} </label><br></p>
+                <input class="button_text" id="input_iniciar_trial" type="submit" value="Empezar experimento">
         </form>	
     </div>	
 

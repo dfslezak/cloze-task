@@ -1,16 +1,25 @@
 from django.db import models
 from django.db.models import Max, Count
+from django.forms import ModelForm, CharField
 import random
 import json
+
+MASCULINE = "MAS"
+FEMENINE = "FEM"
+GENDER_CHOICES = (
+        (MASCULINE, 'Masculino'),
+        (FEMENINE, 'Femenino'),
+    )
 
 # Create your models here.
 class Subject(models.Model):
     email = models.EmailField()
     age = models.IntegerField(null=True)
+    gender = models.CharField(max_length=3, choices=GENDER_CHOICES, blank=False, null=False)
+    original_ip = models.GenericIPAddressField()
     sequence_number = models.IntegerField(null=True)
     experiment_sequence = models.CharField(max_length=2550)
-    
-    
+        
     def __unicode__(self):
 		return (self.email)
 		
@@ -24,13 +33,19 @@ class Subject(models.Model):
         ts_num = ( Subject.objects.count() % TrialSequence.objects.count() )
         ts = TrialSequence.objects.all().order_by('id')[ts_num]
         seq_base1 = json.loads(ts.seq)
-        seq_base0 = map(lambda x: x-1,seq_base1)
-        random.shuffle(seq_base0)
-        return (ts.id,seq_base0)       
+        #seq_base0 = map(lambda x: x-1,seq_base1)
+        # Disable randomize chosen sequence.
+        #random.shuffle(seq_base0)
+        return (ts.id,seq_base1)       
+
+class SubjectForm(ModelForm):
+    class Meta:
+        model = Subject
+        fields = ['email','age','gender']
+
 
 class TrialSequence(models.Model):
     seq = models.CommaSeparatedIntegerField(max_length=10000)
-
 
 class Text(models.Model):
     textNumber = models.IntegerField()
