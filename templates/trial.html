@@ -115,7 +115,7 @@ function texto_input_cambio(event,texto_num){
 			$("#texto"+texto_num).html("");
 			
 			//Pongo el contenido que estaba en el cuerpo de texto_acumulado
-			$("#texto_acumulado").html(  	$("#texto_acumulado").html() +  contenido_a_agregar);
+			$("#texto_acumulado").html($("#texto_acumulado").html()+contenido_a_agregar);
 
 			//Le recargo el valor del input
 			$("#texto"+texto_num+"_input").val(palabra);
@@ -245,12 +245,22 @@ Este experimento es parte de la tesis de Licenciatura de Julia Carbajal (DF - FC
 			<div id="texto_acumulado" style ="position:relative; margin-top:5%; width:400px ; text-align:justify; text-justify:inter-word; margin:auto"></div>
 			{% for texto in texto_con_input %}
 			<div id="texto{{texto.1}}" style ="display:none; text-align:justify; text-justify:inter-word;">
-				{{texto.0|safe}}
+				{% for subtexto in texto.0%}
+				
+				
+				{% if forloop.last %}
+				{{subtexto}}
+				{%else %}
+				
+				{{subtexto}}
+				<br>
+				{% endif %}
+				 {% endfor%}
 				<input id="texto{{texto.1}}_input" onkeyup="javascript:texto_input_cambio(event,'{{texto.1}}')" size=7> 
 			</div>	
 			{% endfor%}
 			<div id="texto{{texto_final.1}}" style ="display:none; text-align:justify; text-justify:inter-word;">
-				{{texto_final.0|safe}}
+				{{texto_final.0}}
 			</div>
 	</div>
 </form>

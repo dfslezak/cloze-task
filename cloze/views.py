@@ -69,6 +69,14 @@ def trial(request):
 			text_partition.append(' '.join(body[last_index:i]))
 			#print text_partition
 			last_index = i
+			
+		
+		#parto el texto en los <p> </p> para que el Djando me reconozca los párrafos sin hacer cagadas
+ 
+		partes= []
+		for textoAdentro in text_partition:
+			partes.append( textoAdentro.replace("<p>", " ").split("</p>") )
+		text_partition = partes
 		
 		text_partition.append(' '.join(body[missing_words[-1]:]))
 
@@ -99,7 +107,7 @@ def trial(request):
 	if (len(text_partition)==0): text_partition = ['error','error','error','error','error']
 	initial_trial = request.GET.get('initial_trial', 'true')
 
-	print zip( text_partition[0:-1], range(0,len(text_partition) ))
+	#~ print zip( text_partition[0:-1], range(0,len(text_partition) ))
 	
 	c=RequestContext(request,{
 	'finalizado':finalizado,
