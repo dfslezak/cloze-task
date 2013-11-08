@@ -11,7 +11,7 @@
 <script>
 
 function trial_default(){
-	
+
 	//Escondo el texto
 	{% for indice in cant_textos %}
 		$("#texto{{indice}}").hide();
@@ -27,9 +27,19 @@ function trial_default(){
 
 	$("#log").html(  $("#log").html() + "<br> Se llamo: trial_default");
 
+
 	if ({{initial_trial}}) {
-            $("#formulario_inicio").show();
+            
+			$("#formulario_inicio").show();            
+            
+            if ({{primer_trial}}) {
+				$("#formulario_preguntas").show()
+			}else {
+				$("#formulario_preguntas").hide()
+            }
             $("#input_iniciar_trial").focus();
+
+
         }else {
             trial_inicio();
         }
@@ -43,6 +53,7 @@ function trial_inicio(){
 	
 	//Borro boton de inicio
 	$("#formulario_inicio").html("")
+	$("#formulario_preguntas").html("")
 	
 	$("#texto").show()
 	
@@ -204,21 +215,27 @@ $().ready(trial_default)
 	<div id="fin" align=center>
 	Gracias por completar los 10 textos. De esta forma sumaste más chances para los sorteos por las órdenes de compra. 
 	</div>
+
 {% else %}
+
+
 
 <div id="formulario_inicio" align=center  style ="display:none;">
 
-<p><strong>Objetivo</strong>: El objetivo de este experimento es estimar la predictibilidad de una palabra, dado el contexto de las palabras anteriores. Por lo tanto, no hay palabras correctas o incorrectas. Deberás completar con la palabra que te suene más factible dentro del contexto de la oración.
+<p><strong>Objetivo</strong>: </p>
+<p>El objetivo de este experimento es estimar la predictibilidad de una palabra, dado el contexto de las palabras anteriores. Por lo tanto, no hay palabras correctas o incorrectas. Deberás completar con la palabra que te suene más factible dentro del contexto de la oración.
 </p>
 <p>
-<strong>Premio</strong>: El premio son dos órdenes de compras mensuales por AR$200 en DealExtream (o similar) o AR$200 en efectivo a retirar en el Laboratorio de Neurociencias Integrativas. 
+<strong>Premio</strong>: </p>
+<p>El premio son dos órdenes de compras mensuales por AR$200 en DealExtream (o similar) o AR$200 en efectivo a retirar en el Laboratorio de Neurociencias Integrativas. 
 </p>
 <p></p>
 <p>
 ¡Cada texto que hacés cuenta para el sorteo! Podés completar hasta 10 textos. Si completás todos, ¡te damos puntos extra! Estos puntos se pueden sumar en varias sesiones, utilizando siempre el mismo mail. Y tus chances de ganar en el sorteo son proporcionales a la cantidad de puntos que sumes.
 </p>
 <p>
-<strong>Instrucciones</strong>: Cada párrafo se muestra de a partes, deteniéndose en las palabras que debes completar. Luego de completada la palabra, aparece la palabra original y el texto sigue. En cada párrafo se deben responder 3 palabras.
+<strong>Instrucciones</strong>:</p>
+<p> Cada párrafo se muestra de a partes, deteniéndose en las palabras que debes completar. Luego de completada la palabra, aparece la palabra original y el texto sigue. En cada párrafo se deben responder 3 palabras.
 </p>
 <p></p>
 <p>
@@ -229,6 +246,28 @@ Es posible volver a ingresar con tu mail y continuar respondiendo más párrafos
 Este experimento es parte de la tesis de Licenciatura de Julia Carbajal (DF - FCEyN - UBA), te pedimos que lo hagas a conciencia, concentrándote por el tiempo que dura el experimento.
 </p>
 <p></p>
+
+<div id="formulario_preguntas" align=center  style ="margin-top:5%; ">
+
+
+	<p><b>Cuestionario obligaotorio:</b></p>
+	<p>Antes de empezar te vamos a pedir que completes unas preguntas por única vez que nos servirán a la hora de analizar los datos. Una vez finalizada la encuesta podrás cerrar la página o seguir con otros textos. Recordá que si querés, podes seguir otro día</p>
+	
+	<p><label align=left class="description">Ingrese su lengua nativa: {{ form.native_lenguaje }} </label><br></p>
+	<p><label align=left class="description">Ingrese su pais de Nacimiento {{ form.country }} </label><br></p>
+	<p><label align=left class="description">Nivel educativo maximo alcanzado/en curso {{ form.schooling }} </label><br></p>
+	<p><label align=left class="description">¿En qué idioma lee regularmente? {{form.reading_lenguaje }} </label><br></p>
+	<p><label align=left class="description">¿Cuántos libros de Literatura General lee por año? {{ form.books }} </label><br> </p> 
+	<p><label align=left class="description">¿Lee por trabajo? {{ form.work_reading }} </label><br> </p> 
+	<p><label align=left class="description">¿Lee habitualmente en la computadora? {{ form.computer_reading }} </label><br> </p> 
+	<p><label align=left class="description">Para escribir, usted es: {{ form.dexterity }} </label><br> </p> 
+	<p><label align=left class="description">¿Cómo llegó al experimento? {{ form.source }} </label><br> </p> 
+	<p><label align=left class="description">¿Queres participar de otros experimentos parecidos? {{ form.other_experiments }} </label><br> </p> 
+
+</div>
+
+
+
 <p>
 ¡Gracias por tu participación!
 </p>
@@ -239,6 +278,8 @@ Este experimento es parte de la tesis de Licenciatura de Julia Carbajal (DF - FC
 	 <input id="input_iniciar_trial" type="submit"  value="Empezar Experimento">
 	</form>	
 </div>	
+
+
  
 <form name="texto_inputs" >
 	<div id="texto"  style="margin-top:7%; line-height:200%;">

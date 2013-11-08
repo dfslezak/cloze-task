@@ -1,48 +1,357 @@
+# -*- coding: UTF-8 -*-
+
 from django.db import models
 from django.db.models import Max, Count
 from django.forms import ModelForm, CharField
+from django.template import RequestContext,Context, loader
 import random
 import json
 
-MASCULINE = "MAS"
-FEMENINE = "FEM"
+
 GENDER_CHOICES = (
-        (MASCULINE, 'Masculino'),
-        (FEMENINE, 'Femenino'),
+        ("MAS", 'Masculino'),
+        ("FEM", 'Femenino'),
     )
+		
+LANGUAGE = (
+		("Esp", 'Español'),
+		("Ing", 'Inglés'),
+		("Fra", 'Francés'),
+		('Ale', 'Aleman'),
+		('Port', 'Portugués'),
+		("Otro", 'Otro')
+		
+	)
+	
+COUNTRIES = (
+    ('AD', ('Andorra')),
+    ('AE', ('United Arab Emirates')),
+    ('AF', ('Afghanistan')),
+    ('AG', ('Antigua & Barbuda')),
+    ('AI', ('Anguilla')),
+    ('AL', ('Albania')),
+    ('AM', ('Armenia')),
+    ('AN', ('Netherlands Antilles')),
+    ('AO', ('Angola')),
+    ('AQ', ('Antarctica')),
+    ('AR', ('Argentina')),
+    ('AS', ('American Samoa')),
+    ('AT', ('Austria')),
+    ('AU', ('Australia')),
+    ('AW', ('Aruba')),
+    ('AZ', ('Azerbaijan')),
+    ('BA', ('Bosnia and Herzegovina')),
+    ('BB', ('Barbados')),
+    ('BD', ('Bangladesh')),
+    ('BE', ('Belgium')),
+    ('BF', ('Burkina Faso')),
+    ('BG', ('Bulgaria')),
+    ('BH', ('Bahrain')),
+    ('BI', ('Burundi')),
+    ('BJ', ('Benin')),
+    ('BM', ('Bermuda')),
+    ('BN', ('Brunei Darussalam')),
+    ('BO', ('Bolivia')),
+    ('BR', ('Brazil')),
+    ('BS', ('Bahama')),
+    ('BT', ('Bhutan')),
+    ('BV', ('Bouvet Island')),
+    ('BW', ('Botswana')),
+    ('BY', ('Belarus')),
+    ('BZ', ('Belize')),
+    ('CA', ('Canada')),
+    ('CC', ('Cocos (Keeling) Islands')),
+    ('CF', ('Central African Republic')),
+    ('CG', ('Congo')),
+    ('CH', ('Switzerland')),
+    ('CI', ('Ivory Coast')),
+    ('CK', ('Cook Iislands')),
+    ('CL', ('Chile')),
+    ('CM', ('Cameroon')),
+    ('CN', ('China')),
+    ('CO', ('Colombia')),
+    ('CR', ('Costa Rica')),
+    ('CU', ('Cuba')),
+    ('CV', ('Cape Verde')),
+    ('CX', ('Christmas Island')),
+    ('CY', ('Cyprus')),
+    ('CZ', ('Czech Republic')),
+    ('DE', ('Germany')),
+    ('DJ', ('Djibouti')),
+    ('DK', ('Denmark')),
+    ('DM', ('Dominica')),
+    ('DO', ('Dominican Republic')),
+    ('DZ', ('Algeria')),
+    ('EC', ('Ecuador')),
+    ('EE', ('Estonia')),
+    ('EG', ('Egypt')),
+    ('EH', ('Western Sahara')),
+    ('ER', ('Eritrea')),
+    ('ES', ('Spain')),
+    ('ET', ('Ethiopia')),
+    ('FI', ('Finland')),
+    ('FJ', ('Fiji')),
+    ('FK', ('Falkland Islands (Malvinas)')),
+    ('FM', ('Micronesia')),
+    ('FO', ('Faroe Islands')),
+    ('FR', ('France')),
+    ('FX', ('France, Metropolitan')),
+    ('GA', ('Gabon')),
+    ('GB', ('United Kingdom (Great Britain)')),
+    ('GD', ('Grenada')),
+    ('GE', ('Georgia')),
+    ('GF', ('French Guiana')),
+    ('GH', ('Ghana')),
+    ('GI', ('Gibraltar')),
+    ('GL', ('Greenland')),
+    ('GM', ('Gambia')),
+    ('GN', ('Guinea')),
+    ('GP', ('Guadeloupe')),
+    ('GQ', ('Equatorial Guinea')),
+    ('GR', ('Greece')),
+    ('GS', ('South Georgia and the South Sandwich Islands')),
+    ('GT', ('Guatemala')),
+    ('GU', ('Guam')),
+    ('GW', ('Guinea-Bissau')),
+    ('GY', ('Guyana')),
+    ('HK', ('Hong Kong')),
+    ('HM', ('Heard & McDonald Islands')),
+    ('HN', ('Honduras')),
+    ('HR', ('Croatia')),
+    ('HT', ('Haiti')),
+    ('HU', ('Hungary')),
+    ('ID', ('Indonesia')),
+    ('IE', ('Ireland')),
+    ('IL', ('Israel')),
+    ('IN', ('India')),
+    ('IO', ('British Indian Ocean Territory')),
+    ('IQ', ('Iraq')),
+    ('IR', ('Islamic Republic of Iran')),
+    ('IS', ('Iceland')),
+    ('IT', ('Italy')),
+    ('JM', ('Jamaica')),
+    ('JO', ('Jordan')),
+    ('JP', ('Japan')),
+    ('KE', ('Kenya')),
+    ('KG', ('Kyrgyzstan')),
+    ('KH', ('Cambodia')),
+    ('KI', ('Kiribati')),
+    ('KM', ('Comoros')),
+    ('KN', ('St. Kitts and Nevis')),
+    ('KP', ('Korea, Democratic People\'s Republic of')),
+    ('KR', ('Korea, Republic of')),
+    ('KW', ('Kuwait')),
+    ('KY', ('Cayman Islands')),
+    ('KZ', ('Kazakhstan')),
+    ('LA', ('Lao People\'s Democratic Republic')),
+    ('LB', ('Lebanon')),
+    ('LC', ('Saint Lucia')),
+    ('LI', ('Liechtenstein')),
+    ('LK', ('Sri Lanka')),
+    ('LR', ('Liberia')),
+    ('LS', ('Lesotho')),
+    ('LT', ('Lithuania')),
+    ('LU', ('Luxembourg')),
+    ('LV', ('Latvia')),
+    ('LY', ('Libyan Arab Jamahiriya')),
+    ('MA', ('Morocco')),
+    ('MC', ('Monaco')),
+    ('MD', ('Moldova, Republic of')),
+    ('MG', ('Madagascar')),
+    ('MH', ('Marshall Islands')),
+    ('ML', ('Mali')),
+    ('MN', ('Mongolia')),
+    ('MM', ('Myanmar')),
+    ('MO', ('Macau')),
+    ('MP', ('Northern Mariana Islands')),
+    ('MQ', ('Martinique')),
+    ('MR', ('Mauritania')),
+    ('MS', ('Monserrat')),
+    ('MT', ('Malta')),
+    ('MU', ('Mauritius')),
+    ('MV', ('Maldives')),
+    ('MW', ('Malawi')),
+    ('MX', ('Mexico')),
+    ('MY', ('Malaysia')),
+    ('MZ', ('Mozambique')),
+    ('NA', ('Namibia')),
+    ('NC', ('New Caledonia')),
+    ('NE', ('Niger')),
+    ('NF', ('Norfolk Island')),
+    ('NG', ('Nigeria')),
+    ('NI', ('Nicaragua')),
+    ('NL', ('Netherlands')),
+    ('NO', ('Norway')),
+    ('NP', ('Nepal')),
+    ('NR', ('Nauru')),
+    ('NU', ('Niue')),
+    ('NZ', ('New Zealand')),
+    ('OM', ('Oman')),
+    ('PA', ('Panama')),
+    ('PE', ('Peru')),
+    ('PF', ('French Polynesia')),
+    ('PG', ('Papua New Guinea')),
+    ('PH', ('Philippines')),
+    ('PK', ('Pakistan')),
+    ('PL', ('Poland')),
+    ('PM', ('St. Pierre & Miquelon')),
+    ('PN', ('Pitcairn')),
+    ('PR', ('Puerto Rico')),
+    ('PT', ('Portugal')),
+    ('PW', ('Palau')),
+    ('PY', ('Paraguay')),
+    ('QA', ('Qatar')),
+    ('RE', ('Reunion')),
+    ('RO', ('Romania')),
+    ('RU', ('Russian Federation')),
+    ('RW', ('Rwanda')),
+    ('SA', ('Saudi Arabia')),
+    ('SB', ('Solomon Islands')),
+    ('SC', ('Seychelles')),
+    ('SD', ('Sudan')),
+    ('SE', ('Sweden')),
+    ('SG', ('Singapore')),
+    ('SH', ('St. Helena')),
+    ('SI', ('Slovenia')),
+    ('SJ', ('Svalbard & Jan Mayen Islands')),
+    ('SK', ('Slovakia')),
+    ('SL', ('Sierra Leone')),
+    ('SM', ('San Marino')),
+    ('SN', ('Senegal')),
+    ('SO', ('Somalia')),
+    ('SR', ('Suriname')),
+    ('ST', ('Sao Tome & Principe')),
+    ('SV', ('El Salvador')),
+    ('SY', ('Syrian Arab Republic')),
+    ('SZ', ('Swaziland')),
+    ('TC', ('Turks & Caicos Islands')),
+    ('TD', ('Chad')),
+    ('TF', ('French Southern Territories')),
+    ('TG', ('Togo')),
+    ('TH', ('Thailand')),
+    ('TJ', ('Tajikistan')),
+    ('TK', ('Tokelau')),
+    ('TM', ('Turkmenistan')),
+    ('TN', ('Tunisia')),
+    ('TO', ('Tonga')),
+    ('TP', ('East Timor')),
+    ('TR', ('Turkey')),
+    ('TT', ('Trinidad & Tobago')),
+    ('TV', ('Tuvalu')),
+    ('TW', ('Taiwan, Province of China')),
+    ('TZ', ('Tanzania, United Republic of')),
+    ('UA', ('Ukraine')),
+    ('UG', ('Uganda')),
+    ('UM', ('United States Minor Outlying Islands')),
+    ('US', ('United States of America')),
+    ('UY', ('Uruguay')),
+    ('UZ', ('Uzbekistan')),
+    ('VA', ('Vatican City State (Holy See)')),
+    ('VC', ('St. Vincent & the Grenadines')),
+    ('VE', ('Venezuela')),
+    ('VG', ('British Virgin Islands')),
+    ('VI', ('United States Virgin Islands')),
+    ('VN', ('Viet Nam')),
+    ('VU', ('Vanuatu')),
+    ('WF', ('Wallis & Futuna Islands')),
+    ('WS', ('Samoa')),
+    ('YE', ('Yemen')),
+    ('YT', ('Mayotte')),
+    ('YU', ('Yugoslavia')),
+    ('ZA', ('South Africa')),
+    ('ZM', ('Zambia')),
+    ('ZR', ('Zaire')),
+    ('ZW', ('Zimbabwe')),
+    ('ZZ', ('Unknown or unspecified country')))
+
+SCHOOLING = (
+		('Pri Inc', 'Primario Incompleto'),
+		('Pri Com', 'Primario Completo'),
+		('Sec Inc', 'Secundario Incompleto'),
+		('Sec Com', 'Secundario Completo'),
+		('Ter Inc', 'Terciario Incompleto'),
+		('Ter Com', 'Terciario Completo'),
+		('Uni Inc', 'Universitario Incompleto'),
+		('Uni Com', 'Universitario Completo')
+	)
+
+QUANTITY = (
+		('-5', 'Menos de 5'),
+		('5-10', 'Entre 5 y 10'),
+		('+10', 'Más de 10')
+		
+	)
+
+YES_NO = (
+		('Yes', 'Sí'),
+		('No','No')
+	)
+
+DEXTERITY = (
+		('Right','Diestro/a'),
+		('Left','Zurdo/a')
+	)
+
+SOURCE = (
+		('FB Labo','Por la página de Facebook del Laboratorio'),
+		('FB amigo','Por otro Facebook'),
+		('Twitter','Por Twitter'),
+		('mail','Por e-mail')
+	)
 
 # Create your models here.
 class Subject(models.Model):
-    email = models.EmailField()
-    age = models.IntegerField(null=True)
-    gender = models.CharField(max_length=3, choices=GENDER_CHOICES, blank=False, null=False)
-    original_ip = models.GenericIPAddressField()
-    sequence_number = models.IntegerField(null=True)
-    experiment_sequence = models.CharField(max_length=2550)
-        
-    def __unicode__(self):
+	email = models.EmailField()
+	age = models.IntegerField(null=True)
+	gender = models.CharField(max_length=3, choices=GENDER_CHOICES, blank=False, null=False)
+	original_ip = models.GenericIPAddressField()
+	sequence_number = models.IntegerField(null=True)
+	experiment_sequence = models.CharField(max_length=2550)
+
+
+	def __unicode__(self):
 		return (self.email)
 		
-    @staticmethod
-    def generate_sequence():
-        #d = Text.objects.values('textNumber').annotate(Count('textNumber'))
-        #max_text_number = int(Text.objects.all().aggregate(Max('textNumber'))['textNumber__max']) + 1
-        #max_text_class = int(Text.objects.all().aggregate(Max('textClass'))['textClass__max'])
-        #seq = [ random.choice(TrialOption.objects.filter(text__textNumber=x).filter(text__textClass=random.randint(0, max_text_class))).id for x in range(0,max_text_number)]
-        
-        ts_num = ( Subject.objects.count() % TrialSequence.objects.count() )
-        ts = TrialSequence.objects.all().order_by('id')[ts_num]
-        seq_base1 = json.loads(ts.seq)
-        #seq_base0 = map(lambda x: x-1,seq_base1)
-        # Disable randomize chosen sequence.
-        #random.shuffle(seq_base0)
-        return (ts.id,seq_base1)       
+	@staticmethod
+	def generate_sequence():
+		#d = Text.objects.values('textNumber').annotate(Count('textNumber'))
+		#max_text_number = int(Text.objects.all().aggregate(Max('textNumber'))['textNumber__max']) + 1
+		#max_text_class = int(Text.objects.all().aggregate(Max('textClass'))['textClass__max'])
+		#seq = [ random.choice(TrialOption.objects.filter(text__textNumber=x).filter(text__textClass=random.randint(0, max_text_class))).id for x in range(0,max_text_number)]
+		
+		ts_num = ( Subject.objects.count() % TrialSequence.objects.count() )
+		ts = TrialSequence.objects.all().order_by('id')[ts_num]
+		seq_base1 = json.loads(ts.seq)
+		#seq_base0 = map(lambda x: x-1,seq_base1)
+		# Disable randomize chosen sequence.
+		#random.shuffle(seq_base0)
+		
+		return (ts.id,seq_base1)       
 
 class SubjectForm(ModelForm):
     class Meta:
         model = Subject
         fields = ['email','age','gender']
+	
+class Information(models.Model):
+	email = models.EmailField()
+	native_lenguaje = models.CharField(max_length=200, choices=LANGUAGE, blank=False, null=False)
+	reading_lenguaje = models.CharField(max_length=200, choices=LANGUAGE, blank=False, null=False)
+	country = models.CharField(max_length=200, choices=COUNTRIES, blank=False, null=False)
+	schooling = models.CharField(max_length=200, choices=SCHOOLING, blank=False, null=False)
+	books = models.CharField(max_length=200, choices=QUANTITY, blank=False, null=False)
+	work_reading=models.CharField(max_length=200, choices=YES_NO, blank=False, null=False)
+	computer_reading=models.CharField(max_length=200, choices=YES_NO, blank=False, null=False)
+	dexterity=models.CharField(max_length=200, choices=DEXTERITY, blank=False, null=False)
+	source=models.CharField(max_length=200, choices=SOURCE, blank=False, null=False)
+	other_experiments=models.CharField(max_length=200, choices=YES_NO, blank=False, null=False)
 
+
+
+class InfoForm(ModelForm):
+    class Meta:
+        model = Information
+        fields = ['email','native_lenguaje','country', 'schooling','reading_lenguaje','books','work_reading','computer_reading','dexterity','source', 'other_experiments']
 
 class TrialSequence(models.Model):
     seq = models.CommaSeparatedIntegerField(max_length=10000)

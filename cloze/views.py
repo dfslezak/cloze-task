@@ -56,6 +56,7 @@ def trial(request):
 	text_partition = ''
 	trial = 0
 	etiqueta_trial = "Finalizado"
+	primer_trial=False 
 	try:
 		next_trial_ind = Trial.objects.filter(subject=sub).count() 
 		seq = json.loads(sub.experiment_sequence)
@@ -69,8 +70,7 @@ def trial(request):
 			text_partition.append(' '.join(body[last_index:i]))
 			#print text_partition
 			last_index = i
-			
-		
+				
 		#parto el texto en los <p> </p> para que el Djando me reconozca los párrafos sin hacer cagadas
  
 		partes= []
@@ -88,7 +88,7 @@ def trial(request):
 		trial = seq[next_trial_ind]
 		etiqueta_trial = str(indice) +' de '+str(len(seq))
 		finalizado=False
-	
+		
 		
 		secuencia_posta = map(lambda x: body[int(x)], missing_words)
 		
@@ -100,15 +100,31 @@ def trial(request):
 		if (secuencia_posta[0]==0): text_partition = [""] + text_partition
 		#print "cuenta loca",len(body)
 		if (secuencia_posta[-1]==len(body)): text_partition.append("")
+		
+		# Formulario  de preguntas luego del primer texto
+	
+		if (next_trial_ind == 0):
+			primer_trial=True
+			#~ t = loader.get_template('Information.html')		
+			#~ form_Information=InfoForm()
+			#~ d=RequestContext(request,{
+				#~ 'form': form_Information,
+				#~ 'usuario':sub.email,
+				#~ 'etiqueta_trial':etiqueta_trial,
+				#~ })
+			#~ return HttpResponse(t.render(d))
+	
 	
 	except:
 		pass			
+	
  	
 	if (len(text_partition)==0): text_partition = ['error','error','error','error','error']
 	initial_trial = request.GET.get('initial_trial', 'true')
 
 	#~ print zip( text_partition[0:-1], range(0,len(text_partition) ))
-	
+
+	form_Information=InfoForm() 
 	c=RequestContext(request,{
 	'finalizado':finalizado,
 	'texto_con_input': zip( text_partition[0:-1], range(0,len(text_partition) )),
@@ -119,7 +135,9 @@ def trial(request):
 	'cant_textos': range(len(text_partition)),
 	'etiqueta_trial':etiqueta_trial,
 	'secuencia_posta':  zip(range(0,len(text_partition)), secuencia_posta),
-	'initial_trial': initial_trial
+	'initial_trial': initial_trial,
+	'primer_trial': primer_trial,
+	'form': form_Information
 	})
 	#print zip( text_partition[0:], range(0,len(text_partition) ))
 	return HttpResponse(t.render(c))
