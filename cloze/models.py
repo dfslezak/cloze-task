@@ -24,6 +24,7 @@ LANGUAGE = (
 	)
 	
 COUNTRIES = (
+    ('AR', ('Argentina')),
     ('AD', ('Andorra')),
     ('AE', ('United Arab Emirates')),
     ('AF', ('Afghanistan')),
@@ -34,7 +35,6 @@ COUNTRIES = (
     ('AN', ('Netherlands Antilles')),
     ('AO', ('Angola')),
     ('AQ', ('Antarctica')),
-    ('AR', ('Argentina')),
     ('AS', ('American Samoa')),
     ('AT', ('Austria')),
     ('AU', ('Australia')),

@@ -51,12 +51,15 @@ def trial(request):
 		sub = Subject(email=email,age=ed,gender=gen,original_ip=ip,experiment_sequence=seq,sequence_number=seq_num)
 		sub.save()
 		
+		
 	t = loader.get_template('trial.html')
 	finalizado = True
 	text_partition = ''
 	trial = 0
 	etiqueta_trial = "Finalizado"
 	primer_trial=False 
+	#~ info = Information(native_lenguaje='native_lenguaje',country='country', schooling='schooling',reading_lenguaje='reading_lenguaje',books='books',work_reading='work_reading',computer_reading='computer_reading',dexterity='dexterity',source='source', other_experiments='other_experiments')
+	#~ info.save()
 	try:
 		next_trial_ind = Trial.objects.filter(subject=sub).count() 
 		seq = json.loads(sub.experiment_sequence)
@@ -66,20 +69,23 @@ def trial(request):
 		missing_words = json.loads(trialOption.missing_words)
 		text_partition=[]
 		last_index = 0;
+		
+		# Agrega todas las partes a text_partition
 		for i in missing_words:
 			text_partition.append(' '.join(body[last_index:i]))
-			#print text_partition
 			last_index = i
-				
-		#parto el texto en los <p> </p> para que el Djando me reconozca los párrafos sin hacer cagadas
- 
+
+		# Agrega la última parte partes a text_partition	
+		text_partition.append(' '.join(body[missing_words[-1]:]))
+		
+		#parto el texto en los <p> </p> para que el Djando me reconozca los párrafos sin hacer cagadas		
 		partes= []
 		for textoAdentro in text_partition:
 			partes.append( textoAdentro.replace("<p>", " ").split("</p>") )
 		text_partition = partes
 		
-		text_partition.append(' '.join(body[missing_words[-1]:]))
-
+		
+				
 		valor = seq[next_trial_ind]
 
 		indice =  ([i for i,x in enumerate(seq) if x == valor][0])+1
@@ -96,30 +102,22 @@ def trial(request):
 		#si estoy en el caso donde el primer input o el ultimo, son la primer o ultima palabra
 		#tengo que meter un texto vacio antes y dsp
 
-		#print "body", body
+		#~ print "body", body
 		if (secuencia_posta[0]==0): text_partition = [""] + text_partition
 		#print "cuenta loca",len(body)
 		if (secuencia_posta[-1]==len(body)): text_partition.append("")
 		
 		# Formulario  de preguntas luego del primer texto
-	
 		if (next_trial_ind == 0):
 			primer_trial=True
-			#~ t = loader.get_template('Information.html')		
-			#~ form_Information=InfoForm()
-			#~ d=RequestContext(request,{
-				#~ 'form': form_Information,
-				#~ 'usuario':sub.email,
-				#~ 'etiqueta_trial':etiqueta_trial,
-				#~ })
-			#~ return HttpResponse(t.render(d))
-	
-	
+		else:
+			primer_trial=False
+			
+		
 	except:
 		pass			
 	
- 	
-	if (len(text_partition)==0): text_partition = ['error','error','error','error','error']
+ 	if (len(text_partition)==0): text_partition = ['error','error','error','error','error']
 	initial_trial = request.GET.get('initial_trial', 'true')
 
 	#~ print zip( text_partition[0:-1], range(0,len(text_partition) ))
@@ -137,9 +135,9 @@ def trial(request):
 	'secuencia_posta':  zip(range(0,len(text_partition)), secuencia_posta),
 	'initial_trial': initial_trial,
 	'primer_trial': primer_trial,
-	'form': form_Information
+	'form': form_Information,
+	#~ 'native_lenguaje': {{native_lenguaje}}
 	})
-	#print zip( text_partition[0:], range(0,len(text_partition) ))
 	return HttpResponse(t.render(c))
 
 def subir(request):
