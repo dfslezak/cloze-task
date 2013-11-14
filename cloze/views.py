@@ -92,7 +92,8 @@ def trial(request):
 
 		
 		trial = seq[next_trial_ind]
-		etiqueta_trial = str(indice) +' de '+str(len(seq))
+		etiqueta_trial = str(indice-1) +' de '+str(len(seq))
+		numero_trial = str(indice)+'º texto'
 		finalizado=False
 		
 		
@@ -132,6 +133,7 @@ def trial(request):
 	'cant_pal': len(secuencia_posta)-1,
 	'cant_textos': range(len(text_partition)),
 	'etiqueta_trial':etiqueta_trial,
+	'numero_trial':numero_trial,
 	'secuencia_posta':  zip(range(0,len(text_partition)), secuencia_posta),
 	'initial_trial': initial_trial,
 	'primer_trial': primer_trial,
