@@ -89,7 +89,8 @@ function arreglo_valor_inputs(texto_num){
 	//cargo las palabras posta, hasta donde llego a completar
 	
 	{% for indice_palabra in secuencia_posta %}
-		if ({{indice_palabra.0}} <= texto_num) $("#texto{{indice_palabra.0}}_input").val( "{{indice_palabra.1}}" );
+		if ({{indice_palabra.0}} <= texto_num) 
+			$("#texto{{indice_palabra.0}}_input").val("{{indice_palabra.1}}");
 	{% endfor %}
 }
 
@@ -123,35 +124,40 @@ function texto_input_cambio(event,texto_num){
 			$("#log").html(  $("#log").html() + "<br> Enter en texto_num: " +texto_num + " con valor:"+palabra+" tiempo:"+tiempos[texto_num])
 
 			{% for indice_palabra in secuencia_posta %}
-                            if ({{indice_palabra.0}} <= texto_num) palabra_original = "{{indice_palabra.1}}";
-                       {% endfor %}
+                            if ({{indice_palabra.0}} <= texto_num) 
+								palabra_original = "{{indice_palabra.1}}";
+            {% endfor %}
+                       
             porcentaje_avance = parseInt(100*(texto_num)/{{cant_pal}})
 			$("#log-publico").html( "<b> Porcentaje Avanzado: </b>" +  porcentaje_avance + "%"  + "<br/>");
 			
 			//Deshabilitamos lo que paso
 			$("#texto"+texto_num+"_input").hide();
-			//$("#texto"+texto_num+"_input").prop('disabled', true);
+			//~ $("#texto"+texto_num+"_input").prop('disabled', true);
 			
 			//Muestro texto, llevandolo al texto_acumulado y le doy foco al nuevo input
 			nuevo_indice = parseInt(texto_num)+1;
 						
 			//Cargo el contenido a agregar (todo eso lo hago para que los divs no pongan espacios)
 			contenido_a_agregar= $("#texto"+nuevo_indice).html();
-			
+	
 			//Borro el texto que acabo de copiar para poner en otro lado
 			$("#texto"+texto_num).html("");
-			
+				
 			//Pongo el contenido que estaba en el cuerpo de texto_acumulado
-			$("#texto_acumulado").html($("#texto_acumulado").html()+ contenido_a_agregar);
-
+			$('#texto_acumulado').html(function(index,html){
+				return html.replace("<strong>",'');
+			});
+			$("#texto_acumulado").html($("#texto_acumulado").html() +  '<strong>' +  contenido_a_agregar + "</strong>"  );
+			
 			//Le recargo el valor del input
 			$("#texto"+texto_num+"_input").val(palabra);
-			
+						
 			//Pongo foco en el nuevo input
 			$("#texto"+nuevo_indice+"_input").focus();
 			
 			//Pongo los valores de  los inputs
-			arreglo_valor_inputs( parseInt(texto_num));
+			arreglo_valor_inputs( parseInt(texto_num) );
 		}	
 
 		// Cada 10, mando a guardar.
@@ -220,7 +226,6 @@ $().ready(trial_default)
 			<p>En este experimento deberás completar la palabra que pensás que viene a continuación en el texto. No hay respuestas correctas o incorrectas</p>
 			<p>Usuario logueado: <b>{{usuario}}</b> <br>
 			Textos completados: <b>{{etiqueta_trial}}</b><br>
-			Completando: <b>{{numero_trial}}</b></p>
 			</div>						
 			<ul>
 			<li id="li_2">
@@ -230,7 +235,7 @@ $().ready(trial_default)
 
 {%if finalizado%} 
 	<div id="fin" align=center>
-	Gracias por completar los 10 textos. De esta forma sumaste más chances para los sorteos por las órdenes de compra. 
+	Gracias por completar todos los textos. De esta forma sumaste más chances para los sorteos por las órdenes de compra. 
 	</div>
 
 {% else %}
@@ -249,12 +254,12 @@ Una vez terminado un texto (aproximadamete 20 minutos) podrás cerrar la ventana
 <p>El objetivo de este experimento es estimar la predictibilidad de una palabra dado el contexto en el que se encuadra. Recordá que <b>simpre</b> se completa con <b>una sola</b> palabra y que esa palabra debe ser aquella que te suene más factible. 
 </p>
 <p>
-<strong>Soteos</strong>: </p>
-<p>Se sortearán dos órdenes de compras mensuales por AR$200 en DealExtream (o similar) o AR$200 en efectivo a retirar en el Laboratorio de Neurociencias Integrativas, Pabellón I, Facultad de Ciencias Exactas y Naturales, Universidad de Buenos Aires, Argentina. 
+<strong>Premios</strong>: </p>
+<p>Se sortearán dos órdenes de compras mensuales por AR$200 en DealExtreme (o paǵina similar con envío gratis) o AR$200 en efectivo a retirar en el Laboratorio de Neurociencias Integrativas, Pabellón I, Facultad de Ciencias Exactas y Naturales, Universidad de Buenos Aires, Argentina. 
 </p>
 <p></p>
 <p>
-¡Cada texto que hacés suma puntos para el sorteo! Podés completar hasta 10 textos. Si completás todos, ¡te damos puntos extra! Los textos se pueden completar en varias sesiones, utilizando siempre el mismo mail.
+¡Cada texto que hacés suma 10 puntos para el sorteo! Podés completar hasta 10 textos. Si completás todos, ¡te damos 50 puntos extra! Cada texto se debe completar en una única sesión. Podés cerrar la sesión y volver a entrar con el mismo mail y seguir completando otros textos.
 </p>
 <p>
 
@@ -275,9 +280,10 @@ Este experimento es parte de la tesis de Licenciatura de Bruno Bianchi (Biologí
 	<p><label align=left class="description">Ingrese su lengua nativa: {{ form.native_lenguaje }} </label><br></p>
 	<p><label align=left class="description">Ingrese su pais de Nacimiento {{ form.country }} </label><br></p>
 	<p><label align=left class="description">Nivel educativo maximo alcanzado/en curso {{ form.schooling }} </label><br></p>
-	<p><label align=left class="description">¿En qué idioma lee regularmente? {{form.reading_lenguaje }} </label><br></p>
 	<p><label align=left class="description">¿Cuántos libros de Literatura General lee por año? {{ form.books }} </label><br> </p> 
+	<p><label align=left class="description">¿En qué idioma lee regularmente Literatura General? {{form.reading_lenguaje }} </label><br></p>
 	<p><label align=left class="description">¿Lee por trabajo? {{ form.work_reading }} </label><br> </p> 
+	<p><label align=left class="description">¿En qué idioma lee regularmente por trabajo? (No obligatoria	) {{form.work_reading_lenguaje }} </label><br></p>
 	<p><label align=left class="description">¿Lee habitualmente en la computadora? {{ form.computer_reading }} </label><br> </p> 
 	<p><label align=left class="description">Para escribir, usted es: {{ form.dexterity }} </label><br> </p> 
 	<p><label align=left class="description">¿Cómo llegó al experimento? {{ form.source }} </label><br> </p> 
@@ -301,42 +307,39 @@ Este experimento es parte de la tesis de Licenciatura de Bruno Bianchi (Biologí
 
 
 
- 
+<FONT FACE="Courier New" SIZE=2 >
 <form name="texto_inputs" >
 	<div id="texto"  style="margin-top:7%; line-height:200%;">
-			<div id="texto_acumulado" style ="position:relative; margin-top:5%; width:400px ; text-align:justify; text-justify:inter-word; margin:auto"></div>
+
+			<div id="texto_acumulado" style ="position:relative; font:Times New Roman ;margin-top:5%; width:520px ; margin:auto"></div>
 			{% for texto in texto_con_input %}
 			<div id="texto{{texto.1}}" style ="display:none; text-align:justify; text-justify:inter-word;">
 				{% for subtexto in texto.0%}
-				
-				
-				{% if forloop.last %}
-				{{subtexto}}
-				{%else %}
-				
-				{{subtexto}}
-				<br>
-				{% endif %}
-				 {% endfor%}
+					{% if forloop.last %}
+						{{subtexto}}
+					{%else %}
+						{{subtexto}}
+						<br>
+					{% endif %}
+				{% endfor%}
 				<input id="texto{{texto.1}}_input" onkeyup="javascript:texto_input_cambio(event,'{{texto.1}}')" size=7> 
 			</div>	
 			{% endfor%}
-			<div id="texto{{texto_final.1}}" style ="display:none; text-align:justify; text-justify:inter-word;">
-				{% for subtexto in texto_final.0%}
-				
-				
+
+.			<div id="texto{{texto_final.1}}" style ="display:none; text-align:justify; text-justify:inter-word;">
+			{% for subtexto in texto_final.0%}
 				{% if forloop.last %}
-				{{subtexto}}
+					{{subtexto}}
 				{%else %}
-				
-				{{subtexto}}
-				<br>
+					{{subtexto}}
+					<br>
 				{% endif %}
-				 {% endfor%}
+			{% endfor%}
 				
 			</div>
 	</div>
 </form>
+</font>
 
 <div id="boton_siguiente_trial" align="center" style="margin-top:10%">
 	<form method="get" action="">
@@ -349,8 +352,8 @@ Este experimento es parte de la tesis de Licenciatura de Bruno Bianchi (Biologí
 {%endif%}
 
 
-
 </div>
+<br>
 
 <div id="log-publico" align=left style ="position:relative; margin-top:5%; width:400px ; text-align:justify; text-justify:inter-word; margin:auto"><br><hr>
 </div>
@@ -358,5 +361,11 @@ Este experimento es parte de la tesis de Licenciatura de Bruno Bianchi (Biologí
 
 <div id="log" align=left style="margin:auto"><br><hr>
 Log debuggin :</div>
-
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 </body></html>

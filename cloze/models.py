@@ -337,6 +337,7 @@ class Information(models.Model):
 	email = models.EmailField()
 	native_lenguaje = models.CharField(max_length=200, choices=LANGUAGE, blank=False, null=False)
 	reading_lenguaje = models.CharField(max_length=200, choices=LANGUAGE, blank=False, null=False)
+	work_reading_lenguaje = models.CharField(max_length=200, choices=LANGUAGE, blank=False, null=True)
 	country = models.CharField(max_length=200, choices=COUNTRIES, blank=False, null=False)
 	schooling = models.CharField(max_length=200, choices=SCHOOLING, blank=False, null=False)
 	books = models.CharField(max_length=200, choices=QUANTITY, blank=False, null=False)
@@ -351,7 +352,7 @@ class Information(models.Model):
 class InfoForm(ModelForm):
     class Meta:
         model = Information
-        fields = ['email','native_lenguaje','country', 'schooling','reading_lenguaje','books','work_reading','computer_reading','dexterity','source', 'other_experiments']
+        fields = ['email','native_lenguaje','country', 'schooling','books','reading_lenguaje','work_reading','work_reading_lenguaje','computer_reading','dexterity','source', 'other_experiments']
 
 class TrialSequence(models.Model):
     seq = models.CommaSeparatedIntegerField(max_length=10000)

@@ -83,8 +83,7 @@ def trial(request):
 		for textoAdentro in text_partition:
 			partes.append( textoAdentro.replace("<p>", " ").split("</p>") )
 		text_partition = partes
-		
-		
+
 				
 		valor = seq[next_trial_ind]
 
@@ -93,12 +92,11 @@ def trial(request):
 		
 		trial = seq[next_trial_ind]
 		etiqueta_trial = str(indice-1) +' de '+str(len(seq))
-		numero_trial = str(indice)+'º texto'
 		finalizado=False
 		
 		
 		secuencia_posta = map(lambda x: body[int(x)], missing_words)
-		
+	
 		
 		#si estoy en el caso donde el primer input o el ultimo, son la primer o ultima palabra
 		#tengo que meter un texto vacio antes y dsp
@@ -108,12 +106,12 @@ def trial(request):
 		#print "cuenta loca",len(body)
 		if (secuencia_posta[-1]==len(body)): text_partition.append("")
 		
+		
 		# Formulario  de preguntas luego del primer texto
 		if (next_trial_ind == 0):
 			primer_trial=True
 		else:
 			primer_trial=False
-			
 		
 	except:
 		pass			
@@ -126,18 +124,18 @@ def trial(request):
 	form_Information=InfoForm() 
 	c=RequestContext(request,{
 	'finalizado':finalizado,
-	'texto_con_input': zip( text_partition[0:-1], range(0,len(text_partition) )),
+	'texto_con_input': zip( text_partition[0:-1], range(0,len(text_partition))),
 	'texto_final':  (text_partition[-1],len(text_partition)-1),
 	'usuario':sub.email,
 	'trial':trial,
 	'cant_pal': len(secuencia_posta)-1,
 	'cant_textos': range(len(text_partition)),
 	'etiqueta_trial':etiqueta_trial,
-	'numero_trial':numero_trial,
 	'secuencia_posta':  zip(range(0,len(text_partition)), secuencia_posta),
 	'initial_trial': initial_trial,
 	'primer_trial': primer_trial,
 	'form': form_Information,
+	'missing_words': missing_words,
 	#~ 'native_lenguaje': {{native_lenguaje}}
 	})
 	return HttpResponse(t.render(c))
