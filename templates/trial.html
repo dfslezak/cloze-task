@@ -30,29 +30,14 @@ function trial_default(){
 
 	if ({{initial_trial}}) {
             
-			$("#formulario_inicio").show();            
-            $("#formulario_preguntas").hide(); 
+		$("#formulario_inicio").show();            
+                $("#formulario_preguntas").hide(); 
+                $("#boton_sin_preguntas").show(); 
             
-		{% if primer_trial%} 
-			$("#formulario_preguntas").show();
-			$.get("/trial/subir/", 
-			{
-			   'native_lenguaje': '{{ Information.native_lenguaje }}',
-			   'country': '{{Information.country}}',
-			   'schooling':'{{Information.schooling}}',	
-			   'reading_lenguaje': '{{Information.reading_lenguaje}}',
-			   'books': '{{Information.books}}',
-			   'work_reading': '{{Information.work_reading}}',
-			   'computer_reading':'{{Information.computer_reading}}',
-			   'dexterity': '{{Information.dexterity}}',
-			   'source': '{{Information.source}}',
-			   'other_experiments': '{{Information.other_experiments}}',
-			}
-			//
-			//, function(){}
-			);
-		{% endif%}
-            
+                {% if primer_trial %} 
+                    $("#boton_sin_preguntas").hide(); 
+                    $("#formulario_preguntas").show();
+                {% endif %}
             //~ $("#input_iniciar_trial").focus();
 
 		
@@ -70,6 +55,7 @@ function trial_inicio(){
 	//Borro boton de inicio
 	$("#formulario_inicio").html("")
 	$("#formulario_preguntas").html("")
+        $("#formulario_preguntas").hide(); 
 	
 	$("#texto").show()
 	
@@ -83,8 +69,28 @@ function trial_inicio(){
         $("#log").hide()
 	$("#log").html(  $("#log").html() + "<br> Se llamo: trial_inicio")
 	$("#log").html(  $("#log").html() + "<br> Tiempo inicial:"+tiempo_inicial)
-}
 
+	}
+
+	
+function trial_inicio_preguntas(){
+    console.log("diego")
+    $.get("/trial/subirInformation/", {
+        'email': '{{usuario}}',
+        'native_language': document.forms[1].native_language.value,
+        'country': document.forms[1].country.value,
+        'schooling':document.forms[1].schooling.value,
+        'reading_language': document.forms[1].reading_language.value,
+        'books': document.forms[1].books.value,
+        'work_reading_language': document.forms[1].work_reading_language.value,
+        'computer_reading': document.forms[1].computer_reading.value,
+        'dexterity': document.forms[1].dexterity.value,
+        'source': document.forms[1].source.value,
+        'other_experiments': document.forms[1].other_experiments.value,
+        });
+    trial_inicio();
+
+}
 function arreglo_valor_inputs(texto_num){
 	//cargo las palabras posta, hasta donde llego a completar
 	
@@ -218,154 +224,136 @@ $().ready(trial_default)
 </head>
 
 <body id="main_body" class="safari">
-		<div id="form_container" >
-		<h1><a></a></h1>
-		<form  class="appnitro">
-			<div class="form_description">
-			<h2>Experimento de completar palabras</h2>
-			<p>En este experimento deberás completar la palabra que pensás que viene a continuación en el texto. No hay respuestas correctas o incorrectas</p>
-			<p>Usuario logueado: <b>{{usuario}}</b> <br>
-			Textos completados: <b>{{etiqueta_trial}}</b><br>
-			</div>						
-			<ul>
-			<li id="li_2">
-		</form>	
+    <div id="form_container" >
+        <form  class="appnitro">
+                <div class="form_description">
+                <h2>Experimento de completar palabras</h2>
+                <p>En este experimento deberás completar la palabra que pensás que viene a continuación en el texto. No hay respuestas correctas o incorrectas</p>
+                <p>Usuario logueado: <b>{{usuario}}</b> <br>
+                Textos completados: <b>{{etiqueta_trial}}</b></p>
+                </div>						
+        </form>	
 	
-<span>		
+        {%if finalizado%} 
+            <div id="fin" align=center>
+                Gracias por completar todos los textos. De esta forma sumaste más chances para los sorteos por las órdenes de compra. 
+            </div>
 
-{%if finalizado%} 
-	<div id="fin" align=center>
-	Gracias por completar todos los textos. De esta forma sumaste más chances para los sorteos por las órdenes de compra. 
-	</div>
+        {% else %}
+            <div id="formulario_inicio" align=center  style ="display:none;">
+                <strong> Instrucciones</strong>:
+                <p> Durante el experimento deberás leer textos literarios. Cada texto se muestra de a partes, deteniéndose regularmente para que completes con una sola palabra. Luego de completar la palabra deberás apretar enter para que el texto continúe hasta la próxima palabra faltante. En cada texto se deben completar alrededor de 100 palabras. Esto <b>no es una competencia </b> con palabras correctas o incorrectas, deberás completar con la palabra que te parezca que va a continuación. 
+                </p>
+                <p></p>
+                <p>
+                Una vez terminado un texto (aproximadamete 20 minutos) podrás cerrar la ventana o seguir con otro texto. En caso de cerrar la ventana podrás volver en otro momento (utilizando el mismo mail) y seguir desde donde estabas (si cerrás antes de terminar un texto no podrás completarlo luego). En total son 10 textos, completá todos los que puedas (¡tendrás más chances de ganar el premio! ¡y nosotros más datos!)
+                </p>
+                <p><strong>Objetivo del experimento</strong>: </p>
+                <p>El objetivo de este experimento es estimar la predictibilidad de una palabra dado el contexto en el que se encuadra. Recordá que <b>simpre</b> se completa con <b>una sola</b> palabra y que esa palabra debe ser aquella que te suene más factible. 
+                </p>
+                <p>
+                <strong>Premios</strong>: </p>
+                <p>Se sortearán dos órdenes de compras mensuales por AR$200 en DealExtreme (o paǵina similar con envío gratis) o AR$200 en efectivo a retirar en el Laboratorio de Neurociencias Integrativas, Pabellón I, Facultad de Ciencias Exactas y Naturales, Universidad de Buenos Aires, Argentina. 
+                </p>
+                <p></p>
+                <p>
+                ¡Cada texto que hacés suma 10 puntos para el sorteo! Podés completar hasta 10 textos. Si completás todos, ¡te damos 50 puntos extra! Cada texto se debe completar en una única sesión. Podés cerrar la sesión y volver a entrar con el mismo mail y seguir completando otros textos.
+                </p>
+                <p>
 
-{% else %}
+                <p></p>
+                <p>
+                Este experimento es parte de la tesis de Licenciatura de Bruno Bianchi (Biología - FCEyN - UBA), te pedimos que lo hagas a conciencia, concentrándote por el tiempo que dura el experimento. Intentá leer todo el texto de corrido y no interrumpas la lectura por tiempos prolongados
+                </p>
+                <p></p>
 
+                <div id="formulario_preguntas" align=center  style ="margin-top:5%; ">
+                    <form id="frmPreguntas" action="javascript:trial_inicio_preguntas()" align=center>
+                    <p><b>Cuestionario obligaotorio:</b></p>
+                    <p>Antes de empezar te vamos a pedir que completes unas preguntas por única vez que nos servirán a la hora de analizar los datos. Una vez finalizada la encuesta podrás empezar con el experimento</p>
+                    
+                    <p><label align=left class="description">Ingrese su lengua nativa: {{ form.native_language }}</label><br></p>
+                    <p><label align=left class="description">Ingrese su pais de Nacimiento {{ form.country }} </label><br></p>
+                    <p><label align=left class="description">Nivel educativo maximo alcanzado/en curso {{ form.schooling }} </label><br></p>
+                    <p><label align=left class="description">¿Cuántos libros de Literatura General lee por año? {{ form.books }} </label><br> </p> 
+                    <p><label align=left class="description">¿En qué idioma lee regularmente Literatura General? {{form.reading_language }} </label><br></p>
+                    <p><label align=left class="description">¿Lee por trabajo? {{ form.work_reading }} </label><br> </p> 
+                    <p><label align=left class="description">¿En qué idioma lee regularmente por trabajo? (No obligatoria	) {{form.work_reading_language }} </label><br></p>
+                    <p><label align=left class="description">¿Lee habitualmente en la computadora? {{ form.computer_reading }} </label><br> </p> 
+                    <p><label align=left class="description">Para escribir, usted es: {{ form.dexterity }} </label><br> </p> 
+                    <p><label align=left class="description">¿Cómo llegó al experimento? {{ form.source }} </label><br> </p> 
+                    <p><label align=left class="description">¿Queres participar de otros experimentos parecidos? {{ form.other_experiments }} </label><br> </p> 
 
+                    <input id="input_iniciar_trial_preguntas" type="submit"  value="Empezar Experimento">
+                    </form> 
+                </div>	
 
-<div id="formulario_inicio" align=center  style ="display:none;">
-<strong> Instrucciones</strong>:</p>
-<p> Durante el experimento deberás leer textos literarios. Cada texto se muestra de a partes, deteniéndose regularmente para que completes con una sola palabra. Luego de completar la palabra deberás apretar enter para que el texto continúe hasta la próxima palabra faltante. En cada texto se deben completar alrededor de 100 palabras. Esto <b>no es una competencia </b> con palabras correctas o incorrectas, deberás completar con la palabra que te parezca que va a continuación. 
-</p>
-<p></p>
-<p>
-Una vez terminado un texto (aproximadamete 20 minutos) podrás cerrar la ventana o seguir con otro texto. En caso de cerrar la ventana podrás volver en otro momento (utilizando el mismo mail) y seguir desde donde estabas (si cerrás antes de terminar un texto no podrás completarlo luego). En total son 10 textos, completá todos los que puedas (¡tendrás más chances de ganar el premio! ¡y nosotros más datos!)
-</p>
-<p><strong>Objetivo del experimento</strong>: </p>
-<p>El objetivo de este experimento es estimar la predictibilidad de una palabra dado el contexto en el que se encuadra. Recordá que <b>simpre</b> se completa con <b>una sola</b> palabra y que esa palabra debe ser aquella que te suene más factible. 
-</p>
-<p>
-<strong>Premios</strong>: </p>
-<p>Se sortearán dos órdenes de compras mensuales por AR$200 en DealExtreme (o paǵina similar con envío gratis) o AR$200 en efectivo a retirar en el Laboratorio de Neurociencias Integrativas, Pabellón I, Facultad de Ciencias Exactas y Naturales, Universidad de Buenos Aires, Argentina. 
-</p>
-<p></p>
-<p>
-¡Cada texto que hacés suma 10 puntos para el sorteo! Podés completar hasta 10 textos. Si completás todos, ¡te damos 50 puntos extra! Cada texto se debe completar en una única sesión. Podés cerrar la sesión y volver a entrar con el mismo mail y seguir completando otros textos.
-</p>
-<p>
-
-<p></p>
-<p>
-Este experimento es parte de la tesis de Licenciatura de Bruno Bianchi (Biología - FCEyN - UBA), te pedimos que lo hagas a conciencia, concentrándote por el tiempo que dura el experimento. Intentá leer todo el texto de corrido y no interrumpas la lectura por tiempos prolongados
-</p>
-<p></p>
-
-
-
-<div id="formulario_preguntas" align=center  style ="margin-top:5%; ">
-
-
-	<p><b>Cuestionario obligaotorio:</b></p>
-	<p>Antes de empezar te vamos a pedir que completes unas preguntas por única vez que nos servirán a la hora de analizar los datos. Una vez finalizada la encuesta podrás empezar con el experimento</p>
-	
-	<p><label align=left class="description">Ingrese su lengua nativa: {{ form.native_lenguaje }} </label><br></p>
-	<p><label align=left class="description">Ingrese su pais de Nacimiento {{ form.country }} </label><br></p>
-	<p><label align=left class="description">Nivel educativo maximo alcanzado/en curso {{ form.schooling }} </label><br></p>
-	<p><label align=left class="description">¿Cuántos libros de Literatura General lee por año? {{ form.books }} </label><br> </p> 
-	<p><label align=left class="description">¿En qué idioma lee regularmente Literatura General? {{form.reading_lenguaje }} </label><br></p>
-	<p><label align=left class="description">¿Lee por trabajo? {{ form.work_reading }} </label><br> </p> 
-	<p><label align=left class="description">¿En qué idioma lee regularmente por trabajo? (No obligatoria	) {{form.work_reading_lenguaje }} </label><br></p>
-	<p><label align=left class="description">¿Lee habitualmente en la computadora? {{ form.computer_reading }} </label><br> </p> 
-	<p><label align=left class="description">Para escribir, usted es: {{ form.dexterity }} </label><br> </p> 
-	<p><label align=left class="description">¿Cómo llegó al experimento? {{ form.source }} </label><br> </p> 
-	<p><label align=left class="description">¿Queres participar de otros experimentos parecidos? {{ form.other_experiments }} </label><br> </p> 
-
-
-</div>	
+                <p>
+                ¡Gracias por tu participación!
+                </p>
+                <p>Consultas y comentarios: experimentolni@gmail.com</p>
 
 
-¡Gracias por tu participación!
-</p>
-<p>Consultas y comentarios: experimentolni@gmail.com
-</p>
-
-
-	<form action="javascript:trial_inicio()" align=center>
-	 <input id="input_iniciar_trial" type="submit"  value="Empezar Experimento">
-	</form>	
-</div>
+                <div id="boton_sin_preguntas" align=center  style ="margin-top:5%; ">
+                    <form action="javascript:trial_inicio()" align=center>
+                        <input id="input_iniciar_trial" type="submit"  value="Empezar Experimento">
+                    </form>	
+                </div>
+            </div>
 
 
 
 
-<FONT FACE="Courier New" SIZE=2 >
-<form name="texto_inputs" >
-	<div id="texto"  style="margin-top:7%; line-height:200%;">
+            <FONT FACE="Courier New" SIZE=2 >
+            <form name="texto_inputs" >
+                <div id="texto"  style="margin-top:7%; line-height:200%;">
+                    <div id="texto_acumulado" style ="position:relative; font:Times New Roman ;margin-top:5%; width:520px ; margin:auto"></div>
+                    {% for texto in texto_con_input %}
+                    <div id="texto{{texto.1}}" style ="display:none; text-align:justify; text-justify:inter-word;">
+                        {% for subtexto in texto.0%}
+                            {% if forloop.last %}
+                                {{subtexto}}
+                            {%else %}
+                                {{subtexto}}
+                                <br>
+                            {% endif %}
+                        {% endfor%}
+                        <input id="texto{{texto.1}}_input" onkeyup="javascript:texto_input_cambio(event,'{{texto.1}}')" size=7> 
+                    </div>	
+                    {% endfor%}
+                    <div id="texto{{texto_final.1}}" style ="display:none; text-align:justify; text-justify:inter-word;">
+                        {% for subtexto in texto_final.0%}
+                            {% if forloop.last %}
+                                {{subtexto}}
+                            {%else %}
+                                {{subtexto}}
+                                <br>
+                            {% endif %}
+                        {% endfor%}    
+                    </div>
+                </div>
+            </form>
+            </font>
 
-			<div id="texto_acumulado" style ="position:relative; font:Times New Roman ;margin-top:5%; width:520px ; margin:auto"></div>
-			{% for texto in texto_con_input %}
-			<div id="texto{{texto.1}}" style ="display:none; text-align:justify; text-justify:inter-word;">
-				{% for subtexto in texto.0%}
-					{% if forloop.last %}
-						{{subtexto}}
-					{%else %}
-						{{subtexto}}
-						<br>
-					{% endif %}
-				{% endfor%}
-				<input id="texto{{texto.1}}_input" onkeyup="javascript:texto_input_cambio(event,'{{texto.1}}')" size=7> 
-			</div>	
-			{% endfor%}
+            <div id="boton_siguiente_trial" align="center" style="margin-top:10%">
+                <form method="get" action="">
+                    <input name="initial_trial" value="false" type="hidden">
+                    <input name="email" value="{{usuario}}" type="hidden">
+                    <input id="siguiente_trial" type="submit" value="Siguiente Texto">
+                </form>
+            </div>
+        {%endif%}
+    </div>
+    <br>
 
-.			<div id="texto{{texto_final.1}}" style ="display:none; text-align:justify; text-justify:inter-word;">
-			{% for subtexto in texto_final.0%}
-				{% if forloop.last %}
-					{{subtexto}}
-				{%else %}
-					{{subtexto}}
-					<br>
-				{% endif %}
-			{% endfor%}
-				
-			</div>
-	</div>
-</form>
-</font>
-
-<div id="boton_siguiente_trial" align="center" style="margin-top:10%">
-	<form method="get" action="">
-        <input name="initial_trial" value="false" type="hidden">
-		<input name="email" value="{{usuario}}" type="hidden">
-		<input id="siguiente_trial" type="submit" value="Siguiente Texto">
-	</form>
-</div>
-
-{%endif%}
-
-
-</div>
-<br>
-
-<div id="log-publico" align=left style ="position:relative; margin-top:5%; width:400px ; text-align:justify; text-justify:inter-word; margin:auto"><br><hr>
-</div>
+    <div id="log-publico" align=left style ="position:relative; margin-top:5%; width:400px ; text-align:justify; text-justify:inter-word; margin:auto"><br><hr>
+    </div>
 
 
-<div id="log" align=left style="margin:auto"><br><hr>
-Log debuggin :</div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-</body></html>
+    <div id="log" align=left style="margin:auto"><br><hr>
+    Log debuggin :</div>
+    <br>
+    <br>
+    <br>
+</body>
+</html>

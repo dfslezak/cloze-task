@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^trial/$', 'cloze.views.trial'),
     url(r'^trial/subir/$', 'cloze.views.subir'),
+    url(r'^trial/subirInformation/$', 'cloze.views.subirInformation'),
     url(r'^bajar_todo/$', 'cloze.views.bajar_todo'),
     url(r'^$', 'cloze.views.home', name='home'),
     # url(r'^prueba/', include('prueba.foo.urls')),

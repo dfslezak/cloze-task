@@ -61,7 +61,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+#    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -128,6 +128,8 @@ LOGGING = {
     }
 }
 
+#INTERNAL_IPS = ('127.0.0.1',)
+INTERNAL_IPS = ()
 
 try:
     from settings_local import *

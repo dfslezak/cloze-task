@@ -161,6 +161,22 @@ def subir(request):
 
     return HttpResponse('')
 
+def subirInformation(request):
+    q = request.GET
+    sub = Subject.objects.get(email=q['email'])
+    print sub
+
+    infos = Information.objects.filter(subject=sub)
+    print infos
+    if len(infos)==0:
+
+        nat_lang = q['native_language']
+        print nat_lang
+        info = Information(subject=sub,native_lenguaje=nat_lang)
+        info.save()
+
+    return HttpResponse('')
+
 def bajar_todo(request):
     
     csv = ''

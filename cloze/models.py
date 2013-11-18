@@ -334,25 +334,25 @@ class SubjectForm(ModelForm):
         fields = ['email','age','gender']
 	
 class Information(models.Model):
-	email = models.EmailField()
-	native_lenguaje = models.CharField(max_length=200, choices=LANGUAGE, blank=False, null=False)
-	reading_lenguaje = models.CharField(max_length=200, choices=LANGUAGE, blank=False, null=False)
-	work_reading_lenguaje = models.CharField(max_length=200, choices=LANGUAGE, blank=False, null=True)
-	country = models.CharField(max_length=200, choices=COUNTRIES, blank=False, null=False)
-	schooling = models.CharField(max_length=200, choices=SCHOOLING, blank=False, null=False)
-	books = models.CharField(max_length=200, choices=QUANTITY, blank=False, null=False)
-	work_reading=models.CharField(max_length=200, choices=YES_NO, blank=False, null=False)
-	computer_reading=models.CharField(max_length=200, choices=YES_NO, blank=False, null=False)
-	dexterity=models.CharField(max_length=200, choices=DEXTERITY, blank=False, null=False)
-	source=models.CharField(max_length=200, choices=SOURCE, blank=False, null=False)
-	other_experiments=models.CharField(max_length=200, choices=YES_NO, blank=False, null=False)
+    subject = models.OneToOneField(Subject, primary_key=True)
+    native_language = models.CharField(max_length=200, choices=LANGUAGE, blank=False, null=False)
+    reading_language = models.CharField(max_length=200, choices=LANGUAGE, blank=False, null=False)
+    work_reading_language = models.CharField(max_length=200, choices=LANGUAGE, blank=False, null=True)
+    country = models.CharField(max_length=200, choices=COUNTRIES, blank=False, null=False)
+    schooling = models.CharField(max_length=200, choices=SCHOOLING, blank=False, null=False)
+    books = models.CharField(max_length=200, choices=QUANTITY, blank=False, null=False)
+    work_reading=models.CharField(max_length=200, choices=YES_NO, blank=False, null=False)
+    computer_reading=models.CharField(max_length=200, choices=YES_NO, blank=False, null=False)
+    dexterity=models.CharField(max_length=200, choices=DEXTERITY, blank=False, null=False)
+    source=models.CharField(max_length=200, choices=SOURCE, blank=False, null=False)
+    other_experiments=models.CharField(max_length=200, choices=YES_NO, blank=False, null=False)
 
 
 
 class InfoForm(ModelForm):
     class Meta:
         model = Information
-        fields = ['email','native_lenguaje','country', 'schooling','books','reading_lenguaje','work_reading','work_reading_lenguaje','computer_reading','dexterity','source', 'other_experiments']
+        fields = ['native_language','country', 'schooling','books','reading_language','work_reading','work_reading_language','computer_reading','dexterity','source', 'other_experiments']
 
 class TrialSequence(models.Model):
     seq = models.CommaSeparatedIntegerField(max_length=10000)
