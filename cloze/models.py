@@ -265,14 +265,14 @@ COUNTRIES = (
     ('ZZ', ('Unknown or unspecified country')))
 
 SCHOOLING = (
-		('Pri Inc', 'Primario Incompleto'),
-		('Pri Com', 'Primario Completo'),
-		('Sec Inc', 'Secundario Incompleto'),
-		('Sec Com', 'Secundario Completo'),
-		('Ter Inc', 'Terciario Incompleto'),
-		('Ter Com', 'Terciario Completo'),
-		('Uni Inc', 'Universitario Incompleto'),
-		('Uni Com', 'Universitario Completo')
+		('Pri_Inc', 'Primario Incompleto'),
+		('Pri_Com', 'Primario Completo'),
+		('Sec_Inc', 'Secundario Incompleto'),
+		('Sec_Com', 'Secundario Completo'),
+		('Ter_Inc', 'Terciario Incompleto'),
+		('Ter_Com', 'Terciario Completo'),
+		('Uni_Inc', 'Universitario Incompleto'),
+		('Uni_Com', 'Universitario Completo')
 	)
 
 QUANTITY = (
@@ -293,8 +293,8 @@ DEXTERITY = (
 	)
 
 SOURCE = (
-		('FB Labo','Por la página de Facebook del Laboratorio'),
-		('FB amigo','Por otro Facebook'),
+		('FB_Labo','Por la página de Facebook del Laboratorio'),
+		('FB_amigo','Por otro Facebook'),
 		('Twitter','Por Twitter'),
 		('mail','Por e-mail')
 	)
@@ -331,7 +331,7 @@ class Subject(models.Model):
 class SubjectForm(ModelForm):
     class Meta:
         model = Subject
-        fields = ['email','age','gender']
+        fields = ['email','age','gender','original_ip']
 	
 class Information(models.Model):
     subject = models.OneToOneField(Subject, primary_key=True)
@@ -341,7 +341,7 @@ class Information(models.Model):
     country = models.CharField(max_length=200, choices=COUNTRIES, blank=False, null=False)
     schooling = models.CharField(max_length=200, choices=SCHOOLING, blank=False, null=False)
     books = models.CharField(max_length=200, choices=QUANTITY, blank=False, null=False)
-    work_reading=models.CharField(max_length=200, choices=YES_NO, blank=False, null=False)
+    work_reading = models.CharField(max_length=200, choices=YES_NO, blank=False, null=False)
     computer_reading=models.CharField(max_length=200, choices=YES_NO, blank=False, null=False)
     dexterity=models.CharField(max_length=200, choices=DEXTERITY, blank=False, null=False)
     source=models.CharField(max_length=200, choices=SOURCE, blank=False, null=False)
@@ -352,7 +352,7 @@ class Information(models.Model):
 class InfoForm(ModelForm):
     class Meta:
         model = Information
-        fields = ['native_language','country', 'schooling','books','reading_language','work_reading','work_reading_language','computer_reading','dexterity','source', 'other_experiments']
+        fields = ['subject','native_language','country', 'schooling','books','reading_language','work_reading','work_reading_language','computer_reading','dexterity','source', 'other_experiments']
 
 class TrialSequence(models.Model):
     seq = models.CommaSeparatedIntegerField(max_length=10000)

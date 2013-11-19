@@ -83,6 +83,7 @@ function trial_inicio_preguntas(){
         'reading_language': document.forms[1].reading_language.value,
         'books': document.forms[1].books.value,
         'work_reading_language': document.forms[1].work_reading_language.value,
+        'work_reading': document.forms[1].work_reading.value,
         'computer_reading': document.forms[1].computer_reading.value,
         'dexterity': document.forms[1].dexterity.value,
         'source': document.forms[1].source.value,
@@ -306,8 +307,8 @@ $().ready(trial_default)
 
             <FONT FACE="Courier New" SIZE=2 >
             <form name="texto_inputs" >
-                <div id="texto"  style="margin-top:7%; line-height:200%;">
-                    <div id="texto_acumulado" style ="position:relative; font:Times New Roman ;margin-top:5%; width:520px ; margin:auto"></div>
+                <div id="texto"  style="margin-top:1%; line-height:200%;">
+                    <div id="texto_acumulado" style ="position:relative; font:Times New Roman ;margin-top:2%; width:520px ; margin:auto; text-align:justify; text-justify:inter-word;"></div>
                     {% for texto in texto_con_input %}
                     <div id="texto{{texto.1}}" style ="display:none; text-align:justify; text-justify:inter-word;">
                         {% for subtexto in texto.0%}

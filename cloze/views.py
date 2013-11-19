@@ -164,15 +164,26 @@ def subir(request):
 def subirInformation(request):
     q = request.GET
     sub = Subject.objects.get(email=q['email'])
-    print sub
+    print 'sujero', sub
 
     infos = Information.objects.filter(subject=sub)
-    print infos
+    print 'infos', infos
+
     if len(infos)==0:
 
         nat_lang = q['native_language']
-        print nat_lang
-        info = Information(subject=sub,native_lenguaje=nat_lang)
+        country=q['country']
+        schooling=q['schooling']
+        books=q['books']
+        read_lan=q['reading_language']
+        work_reading=q['work_reading']
+        work_read_lan=q['work_reading_language']
+        comp_read=q['computer_reading']
+        dex=q['dexterity']
+        source=q['source']
+        other_exp=q['other_experiments']
+        
+        info = Information(subject=sub, native_language=nat_lang, country=country,schooling=schooling,books=books,work_reading=work_reading,reading_language=read_lan,work_reading_language=work_read_lan,computer_reading=comp_read,dexterity=dex,source=source,other_experiments=other_exp)
         info.save()
 
     return HttpResponse('')
