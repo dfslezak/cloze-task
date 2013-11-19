@@ -168,21 +168,21 @@ function texto_input_cambio(event,texto_num){
 		}	
 
 		// Cada 10, mando a guardar.
-		if (parseInt(texto_num) % 10 == 0 && tam_palabra>0  ){
-			//Envio datos a la BD
-			$.get("/trial/subir/", 
-						{
-						   'palabras': palabras_valor,
-						   'tiempos': tiempos ,
-						   'email': '{{usuario}}',
-						   'initTime': tiempo_inicial,
-						   'trial': {{trial}},
-						}
-						//
-						//, function(){}
-			);
-		}
-		
+		//~ if (parseInt(texto_num) % 10 == 0 && tam_palabra>0  ){
+			//~ //Envio datos a la BD
+			//~ $.get("/trial/subir/", 
+						//~ {
+						   //~ 'palabras': palabras_valor,
+						   //~ 'tiempos': tiempos ,
+						   //~ 'email': '{{usuario}}',
+						   //~ 'initTime': tiempo_inicial,
+						   //~ 'trial': {{trial}},
+						//~ }
+						//~ //
+						//~ //, function(){}
+			//~ );
+		//~ }
+		//~ 
 		//Completo ultimo input
 		if (parseInt(texto_num)=={{cant_pal}}  && tam_palabra>0  ){
 			//Envio datos a la BD
@@ -241,16 +241,16 @@ $().ready(trial_default)
             </div>
 
         {% else %}
-            <div id="formulario_inicio" align=center  style ="display:none;">
+            <div id="formulario_inicio" align=center  style ="display:none; ">
                 <strong> Instrucciones</strong>:
-                <p> Durante el experimento deberás leer textos literarios. Cada texto se muestra de a partes, deteniéndose regularmente para que completes con una sola palabra. Luego de completar la palabra deberás apretar enter para que el texto continúe hasta la próxima palabra faltante. En cada texto se deben completar alrededor de 100 palabras. Esto <b>no es una competencia </b> con palabras correctas o incorrectas, deberás completar con la palabra que te parezca que va a continuación. 
+                <p> Durante el experimento deberás leer textos literarios. Cada texto se muestra de a partes, deteniéndose regularmente para que completes con una sola palabra. Luego de completar la palabra deberás apretar enter para que el texto continúe hasta la próxima palabra faltante. En cada texto se deben completar alrededor de 100 palabras. Esto <i><b>no es una competencia </b></i> con palabras correctas o incorrectas, deberás completar con la palabra que te parezca que va a continuación según el contexto en el que estás leyendo. 
                 </p>
                 <p></p>
                 <p>
-                Una vez terminado un texto (aproximadamete 20 minutos) podrás cerrar la ventana o seguir con otro texto. En caso de cerrar la ventana podrás volver en otro momento (utilizando el mismo mail) y seguir desde donde estabas (si cerrás antes de terminar un texto no podrás completarlo luego). En total son 10 textos, completá todos los que puedas (¡tendrás más chances de ganar el premio! ¡y nosotros más datos!)
+                Una vez terminado un texto (aproximadamete 20 minutos) podrás cerrar la ventana o seguir con otro texto. En caso de cerrar la ventana podrás volver en otro momento (utilizando el mismo mail) y seguir desde donde estabas (si cerrás antes de terminar un texto no podrás completarlo luego). En total son 8 textos, completá todos los que puedas (¡tendrás más chances de ganar el premio! ¡y nosotros más datos!)
                 </p>
                 <p><strong>Objetivo del experimento</strong>: </p>
-                <p>El objetivo de este experimento es estimar la predictibilidad de una palabra dado el contexto en el que se encuadra. Recordá que <b>simpre</b> se completa con <b>una sola</b> palabra y que esa palabra debe ser aquella que te suene más factible. 
+                <p>El objetivo de este experimento es estimar la predictibilidad de una palabra dado el contexto en el que se encuadra. Recordá que <b>simpre</b> se completa con <b>una sola</b> palabra y que esa palabra debe ser aquella que te suene más factible según el contexto. 
                 </p>
                 <p>
                 <strong>Premios</strong>: </p>
@@ -258,7 +258,7 @@ $().ready(trial_default)
                 </p>
                 <p></p>
                 <p>
-                ¡Cada texto que hacés suma 10 puntos para el sorteo! Podés completar hasta 10 textos. Si completás todos, ¡te damos 50 puntos extra! Cada texto se debe completar en una única sesión. Podés cerrar la sesión y volver a entrar con el mismo mail y seguir completando otros textos.
+                ¡Cada texto que hacés suma 10 puntos para el sorteo! Podés completar hasta 8 textos. Si completás todos, ¡te damos 50 puntos extra! Cada texto se debe completar en una única sesión. Podés cerrar la sesión y volver a entrar con el mismo mail y seguir completando otros textos.
                 </p>
                 <p>
 
@@ -268,7 +268,7 @@ $().ready(trial_default)
                 </p>
                 <p></p>
 
-                <div id="formulario_preguntas" align=center  style ="margin-top:5%; ">
+                <div id="formulario_preguntas" align=center  style ="margin-top:2%; width:580px">
                     <form id="frmPreguntas" action="javascript:trial_inicio_preguntas()" align=center>
                     <p><b>Cuestionario obligaotorio:</b></p>
                     <p>Antes de empezar te vamos a pedir que completes unas preguntas por única vez que nos servirán a la hora de analizar los datos. Una vez finalizada la encuesta podrás empezar con el experimento</p>
@@ -293,12 +293,13 @@ $().ready(trial_default)
                 ¡Gracias por tu participación!
                 </p>
                 <p>Consultas y comentarios: experimentolni@gmail.com</p>
-
+				
 
                 <div id="boton_sin_preguntas" align=center  style ="margin-top:5%; ">
                     <form action="javascript:trial_inicio()" align=center>
                         <input id="input_iniciar_trial" type="submit"  value="Empezar Experimento">
                     </form>	
+				<br>
                 </div>
             </div>
 
@@ -314,6 +315,7 @@ $().ready(trial_default)
                         {% for subtexto in texto.0%}
                             {% if forloop.last %}
                                 {{subtexto}}
+                                
                             {%else %}
                                 {{subtexto}}
                                 <br>
@@ -326,9 +328,10 @@ $().ready(trial_default)
                         {% for subtexto in texto_final.0%}
                             {% if forloop.last %}
                                 {{subtexto}}
+                                
                             {%else %}
                                 {{subtexto}}
-                                <br>
+                                
                             {% endif %}
                         {% endfor%}    
                     </div>
@@ -341,9 +344,11 @@ $().ready(trial_default)
                     <input name="initial_trial" value="false" type="hidden">
                     <input name="email" value="{{usuario}}" type="hidden">
                     <input id="siguiente_trial" type="submit" value="Siguiente Texto">
-                </form>
+                 </form>
             </div>
         {%endif%}
+<br>
+<br>
     </div>
     <br>
 

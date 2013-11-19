@@ -326,7 +326,12 @@ class Subject(models.Model):
 		# Disable randomize chosen sequence.
 		#random.shuffle(seq_base0)
 		
-		return (ts.id,seq_base1)       
+		# Si se quiere cambiar el orden de los textos o eliminar un texto, se cambia desde acá. 
+		# Cada elemento de seq_base1 es un experimento variable pero siempre del mismo texto. 
+		seq_base0 = seq_base1[0:]
+		#~ print seq_base0
+		
+		return (ts.id,seq_base0)       
 
 class SubjectForm(ModelForm):
     class Meta:

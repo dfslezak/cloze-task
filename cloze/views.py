@@ -47,7 +47,7 @@ def trial(request):
 		ip = request.META.get('REMOTE_ADDR','0.0.0.0')
 		(seq_num, gen_seq) = Subject.generate_sequence()
 		seq = json.dumps(gen_seq)
-		#print gen_seq
+		#~ print gen_seq
 		sub = Subject(email=email,age=ed,gender=gen,original_ip=ip,experiment_sequence=seq,sequence_number=seq_num)
 		sub.save()
 		
@@ -164,10 +164,10 @@ def subir(request):
 def subirInformation(request):
     q = request.GET
     sub = Subject.objects.get(email=q['email'])
-    print 'sujero', sub
+    #~ print 'sujeto', sub
 
     infos = Information.objects.filter(subject=sub)
-    print 'infos', infos
+    #~ print 'infos', infos
 
     if len(infos)==0:
 
