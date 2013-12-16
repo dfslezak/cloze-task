@@ -4,6 +4,7 @@ from cloze.models import *
 from django.template import RequestContext,Context, loader
 from django.utils import simplejson
 import calendar,datetime
+from django.utils import timezone
 
 import re
 import json
@@ -205,7 +206,9 @@ def bajar_todo(request):
         te = to.text
         mw = json.loads(to.missing_words)
                
-        epoch = datetime.datetime.utcfromtimestamp(0)
+        epoch = timezone.make_aware(datetime.datetime.utcfromtimestamp(0), timezone.get_default_timezone())
+        print t.initial_time
+        print epoch
         delta = t.initial_time - epoch 
         ep = long(delta.total_seconds()*1000) + 3600 * 1000 * 3 # GMT-3 correction
         

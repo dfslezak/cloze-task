@@ -6,6 +6,8 @@ from django.forms import ModelForm, CharField
 from django.template import RequestContext,Context, loader
 import random
 import json
+#from crispy_forms.helper import FormHelper
+#from crispy_forms.layout import Submit
 
 
 GENDER_CHOICES = (
@@ -302,16 +304,16 @@ SOURCE = (
 # Create your models here.
 class Subject(models.Model):
 	email = models.EmailField()
-	age = models.IntegerField(null=True)
-	gender = models.CharField(max_length=3, choices=GENDER_CHOICES, blank=False, null=False)
+	age = models.IntegerField(blank=False, null=False)
+	gender = models.CharField(max_length=3, blank=False, null=False)
 	original_ip = models.GenericIPAddressField()
 	sequence_number = models.IntegerField(null=True)
 	experiment_sequence = models.CharField(max_length=2550)
-
+	
 
 	def __unicode__(self):
 		return (self.email)
-		
+			
 	@staticmethod
 	def generate_sequence():
 		#d = Text.objects.values('textNumber').annotate(Count('textNumber'))
@@ -329,7 +331,7 @@ class Subject(models.Model):
 		# Si se quiere cambiar el orden de los textos o eliminar un texto, se cambia desde acá. 
 		# Cada elemento de seq_base1 es un experimento variable pero siempre del mismo texto. 
 		seq_base0 = seq_base1[0:]
-		#~ print seq_base0
+		#~ print seq_base0	
 		
 		return (ts.id,seq_base0)       
 
