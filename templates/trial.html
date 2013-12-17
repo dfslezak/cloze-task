@@ -102,7 +102,7 @@ function trial_inicio_preguntas(){
     {alert ( "Por favor, respondé las preguntas faltantes" );}
     else {
 
-    $.get("trial/subirInformation/", {
+    $.get("subirInformation/", {
         'email': '{{usuario}}',
         'native_language': document.forms[0].native_language.value,
         'country': document.forms[0].country.value,
@@ -194,26 +194,11 @@ function texto_input_cambio(event,texto_num){
 			arreglo_valor_inputs( parseInt(texto_num) );
 		}	
 
-		// Cada 10, mando a guardar.
-		//~ if (parseInt(texto_num) % 10 == 0 && tam_palabra>0  ){
-			//~ //Envio datos a la BD
-			//~ $.get("/trial/subir/", 
-						//~ {
-						   //~ 'palabras': palabras_valor,
-						   //~ 'tiempos': tiempos ,
-						   //~ 'email': '{{usuario}}',
-						   //~ 'initTime': tiempo_inicial,
-						   //~ 'trial': {{trial}},
-						//~ }
-						//~ //
-						//~ //, function(){}
-			//~ );
-		//~ }
-		//~ 
+
 		//Completo ultimo input
 		if (parseInt(texto_num)=={{cant_pal}}  && tam_palabra>0  ){
 			//Envio datos a la BD
-			$.get("trial/subir/", 
+			$.get("subir/", 
 						{
 						   'palabras': palabras_valor,
 						   'tiempos': tiempos ,
@@ -221,8 +206,6 @@ function texto_input_cambio(event,texto_num){
 						   'initTime': tiempo_inicial,
 						   'trial': {{trial}},
 						}
-						//
-						//, function(){}
 			);
 
 			//Envio datos a la BD
