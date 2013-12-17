@@ -40,6 +40,7 @@ function trial_default(){
     $("#log").hide()
 
 	$("#log").html(  $("#log").html() + "<br> Se llamo: trial_default");
+	$("#cerrar").hide(); 
 
 
 	if ({{initial_trial}}) {
@@ -126,6 +127,15 @@ function arreglo_valor_inputs(texto_num){
 		if ({{indice_palabra.0}} <= texto_num) 
 			$("#texto{{indice_palabra.0}}_input").val("{{indice_palabra.1}}");
 	{% endfor %}
+}
+
+function cerrar(){
+	$("#texto").hide();
+	$("#boton_siguiente_trial").hide();
+	$("#boton_cerrar").hide();
+	$("#log-publico").hide();
+	$("#cerrar").show();
+	
 }
 
 function texto_input_cambio(event,texto_num){
@@ -318,6 +328,8 @@ $().ready(trial_default)
 						</form>	
 					<br>
 					</div>
+				
+					
 				</div>
 
             
@@ -356,13 +368,20 @@ $().ready(trial_default)
 	</font>
 
 
-	<div id="boton_siguiente_trial" align="center" style="margin-top:10%">
-		<form method="get" action="">
+	<div id="boton_siguiente_trial"  style="margin-top:10%">
+		<form method="get" action="" align="left" style="width 120 px">
 			<input id="siguiente_trial" type="submit" class="btn btn-lg btn-primary btn-block" value="Siguiente Texto">
 			<input name="initial_trial" value="false" type="hidden">
 			<input name="email" value="{{usuario}}" type="hidden">
 		 </form>
+		 
+		 <form action="javascript:cerrar()" align="right" style="width 120 px">
+			<input id="input_cerrar" class="btn btn-lg btn-primary btn-block" type="submit"  value="Terminar">
+		</form>	<br>
+		
 	</div>
+	
+
 {%endif%}
 
 
@@ -371,7 +390,12 @@ $().ready(trial_default)
 </div>
     
     
-    
+<div id="cerrar" class="container" >
+	<h3>Gracias por participar de nuestro experimento</h3>
+	<p>Ya podés cerrar la ventana.</p>
+	<p>Recordá que podés seguir completando los textos que te quedan.</p>
+	<p>De esta forma sumarás más chances para los sorteos por las órdenes de compra. </p>
+</div>
   
     <br>
 
