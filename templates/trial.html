@@ -103,7 +103,7 @@ function trial_inicio_preguntas(){
     {alert ( "Por favor, respondé las preguntas faltantes" );}
     else {
 
-    $.get("trial/subirInformation/", {
+    $.get("subirInformation/", {
         'email': '{{usuario}}',
         'native_language': document.forms[0].native_language.value,
         'country': document.forms[0].country.value,
@@ -207,7 +207,7 @@ function texto_input_cambio(event,texto_num){
 		//Completo ultimo input
 		if (parseInt(texto_num)=={{cant_pal}}  && tam_palabra>0  ){
 			//Envio datos a la BD
-			$.get("trial/subir/", 
+			$.get("subir/", 
 						{
 						   'palabras': palabras_valor,
 						   'tiempos': tiempos ,
