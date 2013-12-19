@@ -223,11 +223,18 @@ function texto_input_cambio(event,texto_num){
 			//Habilito boton para siguiente trial
 			$("#log").html(  $("#log").html() + "<br>Habilito boton para siguiente trial")
 			
-			//Muestror boton siguiente trial
-			$("#boton_siguiente_trial").show()
-			$("#siguiente_trial").focus()
+			// Espero 1,5 segundos y muestro los botones
+			setTimeout(function(){
+					$("#boton_siguiente_trial").show()
+					$("#siguiente_trial").focus()},
+					1500)
 		}
 	}
+}
+
+function botones(){
+	//Muestror boton siguiente trial y terminar
+
 }
 
 //Inicio
