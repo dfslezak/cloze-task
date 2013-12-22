@@ -204,6 +204,23 @@ function texto_input_cambio(event,texto_num){
 		}	
 
 
+		// Mando a guardar cada 10
+		if (parseInt(texto_num) % 10 == 0  && tam_palabra>0 && parseInt(texto_num)!={{cant_pal}} ){
+			//Envio datos a la BD
+			$.get("subir/", 
+						{
+						   'palabras': palabras_valor,
+						   'tiempos': tiempos ,
+						   'email': '{{usuario}}',
+						   'initTime': tiempo_inicial,
+						   'trial': {{trial}},
+						}
+			);
+
+			//Envio datos a la BD
+			$("#log").html(  $("#log").html() + "<br>Envio datos BD")
+		}
+		
 		//Completo ultimo input
 		if (parseInt(texto_num)=={{cant_pal}}  && tam_palabra>0  ){
 			//Envio datos a la BD

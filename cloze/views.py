@@ -61,9 +61,28 @@ def trial(request):
 	primer_trial=False 
 	#~ info = Information(native_lenguaje='native_lenguaje',country='country', schooling='schooling',reading_lenguaje='reading_lenguaje',books='books',work_reading='work_reading',computer_reading='computer_reading',dexterity='dexterity',source='source', other_experiments='other_experiments')
 	#~ info.save()
+	
 	try:
-		next_trial_ind = Trial.objects.filter(subject=sub).count() 
 		seq = json.loads(sub.experiment_sequence)
+		todos_los_trials= list(Trial.objects.all())
+		trialOpt_sub = []
+		for j in todos_los_trials:
+			if j.subject == sub:
+				trialOpt_sub.append(j.trialOpt_id)
+
+		indices = []
+		if not trialOpt_sub:
+			next_trial_ind = 0
+		else:
+			trialOpt_sub_unique = set(trialOpt_sub)		
+			for i in trialOpt_sub_unique:
+				ind = seq.index(i)
+				indices.append(ind)
+			max_ind = max(indices)
+			next_trial_ind = max_ind + 1
+				
+		
+		
 		next_trial = TrialOption.objects.get(id=seq[next_trial_ind])
 		trialOption = TrialOption.objects.filter(id=seq[next_trial_ind]).get()
 		body = trialOption.text.body.split()
@@ -142,25 +161,25 @@ def trial(request):
 	return HttpResponse(t.render(c))
 
 def subir(request):
-    q = request.GET
-    sub = Subject.objects.get(email=q['email'])
-    trialOption = TrialOption.objects.get(id=q['trial'])
+	q = request.GET
+	sub = Subject.objects.get(email=q['email'])
+	trialOption = TrialOption.objects.get(id=q['trial'])
 
-    trials_llenados = Trial.objects.filter(subject=sub,trialOpt=trialOption)
-    if len(trials_llenados)==0:
-
-        #dt = datetime.datetime(q.get('initTime'))
-        dt = datetime.datetime.fromtimestamp(float(q.get('initTime'))/1000.0)
-        #initTime = json.loads(q.get('initTime'))
-        t = q.getlist('tiempos[]')
-        p = q.getlist('palabras[]')
+	trials_llenados = Trial.objects.filter(subject=sub,trialOpt=trialOption)
 
 
-        wt = [(p[i].encode('utf-8'),t[i]) for i in range(len(t))] 
-        trial = Trial(subject=sub,trialOpt=trialOption,initial_time=dt,words=json.dumps(wt))
-        trial.save()
+	#dt = datetime.datetime(q.get('initTime'))
+	dt = datetime.datetime.fromtimestamp(float(q.get('initTime'))/1000.0)
+	#initTime = json.loads(q.get('initTime'))
+	t = q.getlist('tiempos[]')
+	p = q.getlist('palabras[]')
 
-    return HttpResponse('')
+
+	wt = [(p[i].encode('utf-8'),t[i]) for i in range(len(t))] 
+	trial = Trial(subject=sub,trialOpt=trialOption,initial_time=dt,words=json.dumps(wt))
+	trial.save()
+
+	return HttpResponse('')
 
 def subirInformation(request):
     q = request.GET
