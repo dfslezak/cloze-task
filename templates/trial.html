@@ -45,13 +45,17 @@ function trial_default(){
 
 	if ({{initial_trial}}) {
             
-		$("#formulario_inicio").show();            
-                $("#formulario_preguntas").hide(); 
-                $("#boton_sin_preguntas").show(); 
+			$("#formulario_segundo_inicio").show();            
+
+			$("#formulario_inicio").show();            
+			$("#formulario_preguntas").hide(); 
+			$("#boton_sin_preguntas").show(); 
             
                 {% if primer_trial %} 
+					$("#formulario_inicio").show();            
                     $("#boton_sin_preguntas").hide(); 
                     $("#formulario_preguntas").show();
+                    $("#formulario_segundo_inicio").hide();  
                 {% endif %}
             //~ $("#input_iniciar_trial").focus();
 
@@ -70,6 +74,7 @@ function trial_inicio(){
 	//Borro boton de inicio
 	$("#formulario_inicio").html("")
 	$("#formulario_preguntas").html("")
+	$("#formulario_segundo_inicio").html("")
         $("#formulario_preguntas").hide(); 
 	
 	$("#texto").show()
@@ -222,6 +227,22 @@ function texto_input_cambio(event,texto_num){
 		}
 		
 		//Completo ultimo input
+		if (parseInt(texto_num) % 10 == 0  && tam_palabra>0  && parseInt(texto_num)!={{cant_pal}}){
+			//Envio datos a la BD
+			$.get("subir/", 
+						{
+						   'palabras': palabras_valor,
+						   'tiempos': tiempos ,
+						   'email': '{{usuario}}',
+						   'initTime': tiempo_inicial,
+						   'trial': {{trial}},
+						}
+			);	
+					//Envio datos a la BD
+			$("#log").html(  $("#log").html() + "<br>Envio datos BD")
+			
+		}
+			
 		if (parseInt(texto_num)=={{cant_pal}}  && tam_palabra>0  ){
 			//Envio datos a la BD
 			$.get("subir/", 
@@ -284,21 +305,32 @@ $().ready(trial_default)
             <div id="fin" class="container" >
 				<h3>¡¡Ya no quedan más textos!!</h3>
                 <p>Gracias por completar el experimento. </p>
-                <p>De esta forma sumaste más chances para los sorteos por las órdenes de compra. </p>
+                <p>De esta forma sumaste más chances para los sorteos por las órdenes de compra.</p>
             </div>
+         
 
+			
         {% else %}
+			<br><br><br><br><br><br><br><br>
+
+			<div class="container" align=left>
+            <div id="formulario_segundo_inicio">
+				<h3>¡¡Gracias por volver!!</h3>
+				<p>Te estabamos esperando para que sigas completando textos y sumando chances para ganar alguna de las órdenes de compra.</p>
+				
+			</div>
+			</div>
+			
 		    <div class="container" align=left>
             <div id="formulario_inicio">
-				<br><br><br><br><br><br><br><br>
 				<h3>Instrucciones</h3>
-                <p>Durante el experimento deberás leer textos literarios. Cada texto se muestra de a partes, deteniéndose regularmente para que completes con una sola palabra. Luego de completar la palabra deberás apretar enter para que el texto continúe hasta la próxima palabra faltante. En cada texto se deben completar alrededor de 100 palabras. Esto <i><b>no es una competencia </b></i> con palabras correctas o incorrectas, deberás completar con la palabra que te parezca que va a continuación según el contexto en el que estás leyendo. </p>
+                <p>Durante este experimento deberás leer textos literarios. Cada texto se muestra de a partes, deteniéndose regularmente para que completes con una sola palabra. Luego de completar la palabra deberás apretar <i>ENTER</i> para que el texto continúe hasta la próxima palabra faltante. En cada texto se deben completar alrededor de 100 palabras. Esto <i><b>no es una competencia </b></i> con palabras correctas o incorrectas, deberás completar con la palabra que te parezca que va a continuación según el contexto en el que estás leyendo. </p>
                 <p></p>
                 <p>
-                Una vez terminado un texto (aproximadamete 20 minutos) podrás cerrar la ventana o seguir con otro texto. En caso de cerrar la ventana podrás volver en otro momento (utilizando el mismo mail) y seguir desde donde estabas (si cerrás antes de terminar un texto no podrás completarlo luego). En total son 8 textos, completá todos los que puedas (¡tendrás más chances de ganar el premio! ¡y nosotros más datos!)
+                Una vez terminado un texto (aproximadamete 20 minutos) podrás cerrar la ventana o seguir con otro texto. En caso de cerrar la ventana podrás volver en otro momento utilizando el mismo mail y seguir desde donde estabas (si cerrás antes de terminar un texto no podrás completarlo luego). En total son 8 textos, completá todos los que puedas (¡tendrás más chances de ganar el premio! ¡y nosotros más datos!)
                 </p>
                 <h3>Objetivo del experimento</h3>
-                <p>El objetivo de este experimento es estimar la predictibilidad de una palabra dado el contexto en el que se encuadra. Recordá que <b>simpre</b> se completa con <b>una sola</b> palabra y que esa palabra debe ser aquella que te suene más factible según el contexto. 
+                <p>El objetivo de este experimento es estimar la predictibilidad de una palabra dado el contexto en el que se encuadra. Recordá que <b>simpre</b> se completa con <b>una sola</b> palabra y que esa palabra debe ser aquella que te suene más factible según el contexto. Recordá que esto no es una competencia, es un experimento.
                 </p>
                 <p></p>
                 <h3>Premios</h3>
@@ -306,13 +338,13 @@ $().ready(trial_default)
                 </p>
                 <p></p>
                 <p>
-                ¡Cada texto que hacés suma 10 puntos para el sorteo! Podés completar hasta 8 textos. Si completás todos, ¡te damos 50 puntos extra! Cada texto se debe completar en una única sesión. Podés cerrar la sesión y volver a entrar con el mismo mail y seguir completando otros textos.
+                ¡Cada texto que hacés suma 100 puntos para el sorteo! Podés completar hasta 8 textos. Si completás todos, ¡te damos 500 puntos extra! Mientras más puntos tengas, más chances de ganar alguna de las órdenes de compra. Recordá que cada texto se debe completar en <b>una única sesión</b>. Podés cerrar la sesión, volver a entrar con el mismo mail cuando quieras y seguir completando otros textos, pero si no dejaste un texto incompleto no podrás hacerlo luego.
                 </p>
                 <p></p>
 
                 <p></p>
                 <p>
-                Este experimento es parte de la tesis de Licenciatura de Bruno Bianchi (Biología - FCEyN - UBA), te pedimos que lo hagas a conciencia, concentrándote por el tiempo que dura el experimento. Intentá leer todo el texto de corrido y no interrumpas la lectura por tiempos prolongados
+                Este experimento es parte de la tesis de Licenciatura de Bruno Bianchi (Licenciatura en Ciencias Biológicas - FCEyN - UBA), te pedimos que lo hagas a conciencia, concentrándote en el texto que leés. Intentá leer todo el texto de corrido y no interrumpir la lectura por tiempos prolongados, son solo 20 minutos por texto.
                 </p>
                 <p></p>
 
@@ -322,7 +354,7 @@ $().ready(trial_default)
 
                     <p>Antes de empezar te vamos a pedir que completes unas preguntas por única vez que nos servirán a la hora de analizar los datos. Una vez finalizada la encuesta podrás empezar con el experimento</p>
                     
-                    <p><label class="description" >Ingrese su lengua nativa: {{ form.native_language }}</label><br></p>
+                    <p><label class="description" >Ingrese su lengua nativa: {{ form.native_language }}</label><br></p>	
                     <p><label class="description">Ingrese su pais de Nacimiento {{ form.country }} </label><br></p>
                     <p><label class="description">Nivel educativo maximo alcanzado/en curso {{ form.schooling }} </label><br></p>
                     <p><label class="description">¿Cuántos libros de Literatura General lee por año? {{ form.books }} </label><br> </p> 
@@ -359,7 +391,7 @@ $().ready(trial_default)
             
             </div>
 
-	<br><br><br><br><br><br><br><br><br>
+
 	<FONT FACE="Courier New"  >
 	<form name="texto_inputs" >
 		<div id="texto" style ="position:relative; font:Times New Roman ;margin-top:2%; width:720px ; margin:auto; text-align:justify; text-justify:inter-word;">
@@ -397,7 +429,7 @@ $().ready(trial_default)
 <th>
 			 <div>
 			 <form method="get" action="" >
-				<input id="siguiente_trial" type="submit" class="btn btn-lg btn-primary btn-block" value="Siguiente Texto">
+				<input id="siguiente_trial" style="width:150" type="submit" class="btn btn-lg btn-primary btn-block" value="Siguiente Texto">
 				<input name="initial_trial" value="false" type="hidden">
 				<input name="email" value="{{usuario}}" type="hidden">
 			 </form>
@@ -405,9 +437,9 @@ $().ready(trial_default)
 </th>
 <th>
 
-			 <div style="width:350">
+			 <div>
 			 <form action="javascript:cerrar()" >
-				<input id="input_cerrar" class="btn btn-lg btn-primary btn-block" type="submit"  value="Terminar">
+				<input id="input_cerrar" style="width:150" class="btn btn-lg btn-primary btn-block" type="submit"  value="Terminar">
 			 </form>
 			 </div>	
 </th>
