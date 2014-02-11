@@ -5,6 +5,7 @@ from django.template import RequestContext,Context, loader
 from django.utils import simplejson
 import calendar,datetime
 from django.utils import timezone
+from django.core.exceptions import ObjectDoesNotExist
 
 import re
 import json
@@ -250,9 +251,11 @@ def bajar_sujetos(request):
     csv = ''
     for s in Subject.objects.all():
         
-        
-        line = "'" + str(s.email) + "','" + str(s.age) + "','" + str(s.gender) + "','" + str(s.information.native_language) + "','" +    str(s.information.reading_language) + "','" + str(s.information.work_reading_language) + "','" + str(s.information.country) + "','" +            str(s.information.schooling) + "','" + str(s.information.books) + "','" + str(s.information.work_reading) + "','" +            str(s.information.computer_reading) + "','" + str(s.information.dexterity) + "','" + str(s.information.source) + "','" + str(s.information.other_experiments) + "'" 
-        csv = csv + (line.encode('iso-8859-1')+'\n')
+        try:
+            line = "'" + str(s.email) + "','" + str(s.age) + "','" + str(s.gender) + "','" + str(s.information.native_language) + "','" +    str(s.information.reading_language) + "','" + str(s.information.work_reading_language) + "','" + str(s.information.country) + "','" +            str(s.information.schooling) + "','" + str(s.information.books) + "','" + str(s.information.work_reading) + "','" +            str(s.information.computer_reading) + "','" + str(s.information.dexterity) + "','" + str(s.information.source) + "','" + str(s.information.other_experiments) + "'" 
+            csv = csv + (line.encode('iso-8859-1')+'\n')
+        except ObjectDoesNotExist:
+            print 'User incomplete: ' + str(s.email)
         #c = c + 1
     
 
