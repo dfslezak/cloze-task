@@ -4,13 +4,19 @@ from cloze.models import *
 from django.template import RequestContext,Context, loader
 from django.utils import simplejson
 import calendar,datetime
+from django.utils import timezone
 
 import re
 import json
 
 def home(request):
+	form_subject = SubjectForm()
+	
 	t = loader.get_template('login.html')
-	return HttpResponse(t.render(RequestContext(request,{})))
+	c=RequestContext(request,{
+		'form': form_subject})
+	
+	return HttpResponse(t.render(c))
 
 def trial(request):
 	
@@ -19,8 +25,6 @@ def trial(request):
 	
 	if ( email_get==''):
 		return HttpResponse("Error por mail no valido")
-		
-				
 		
 		#Seteo cookie
 		#~ max_age = days_expire * 24 * 60 * 60 
@@ -33,16 +37,19 @@ def trial(request):
 	missing_words = ""
 	email = email_get
 	#print 'Email es', email
+	
 	try:
 		sub = Subject.objects.get(email= email)
 		#print "existe usuario"
 	except Subject.DoesNotExist:
-		#print "NO existe usuario"
+		print "NO existe usuario"
 		ed = request.GET.get('edad',-1)
+		gen = request.GET.get('gender','')
+		ip = request.META.get('REMOTE_ADDR','0.0.0.0')
 		(seq_num, gen_seq) = Subject.generate_sequence()
 		seq = json.dumps(gen_seq)
-		#print gen_seq
-		sub = Subject(email=email,age=ed,experiment_sequence=seq,sequence_number=seq_num)
+		#~ print gen_seq
+		sub = Subject(email=email,age=ed,gender=gen,original_ip=ip,experiment_sequence=seq,sequence_number=seq_num)
 		sub.save()
 		
 		
@@ -51,57 +58,93 @@ def trial(request):
 	text_partition = ''
 	trial = 0
 	etiqueta_trial = "Finalizado"
+	primer_trial=False 
+	#~ info = Information(native_lenguaje='native_lenguaje',country='country', schooling='schooling',reading_lenguaje='reading_lenguaje',books='books',work_reading='work_reading',computer_reading='computer_reading',dexterity='dexterity',source='source', other_experiments='other_experiments')
+	#~ info.save()
+	
 	try:
-		next_trial_ind = Trial.objects.filter(subject=sub).count() 
 		seq = json.loads(sub.experiment_sequence)
+		todos_los_trials= list(Trial.objects.all())
+		trialOpt_sub = []
+		for j in todos_los_trials:
+			if j.subject == sub:
+				trialOpt_sub.append(j.trialOpt_id)
+
+		indices = []
+		if not trialOpt_sub:
+			next_trial_ind = 0
+		else:
+			trialOpt_sub_unique = set(trialOpt_sub)		
+			for i in trialOpt_sub_unique:
+				ind = seq.index(i)
+				indices.append(ind)
+			max_ind = max(indices)
+			next_trial_ind = max_ind + 1
+				
+		
+		
 		next_trial = TrialOption.objects.get(id=seq[next_trial_ind])
 		trialOption = TrialOption.objects.filter(id=seq[next_trial_ind]).get()
 		body = trialOption.text.body.split()
 		missing_words = json.loads(trialOption.missing_words)
 		text_partition=[]
 		last_index = 0;
+		
+		# Agrega todas las partes a text_partition
 		for i in missing_words:
 			text_partition.append(' '.join(body[last_index:i]))
-			#print text_partition
 			last_index = i
-		
-		text_partition.append(' '.join(body[missing_words[-1]:]))
 
+		# Agrega la última parte partes a text_partition	
+		text_partition.append(' '.join(body[missing_words[-1]:]))
+		
+		#parto el texto en los <p> </p> para que el Djando me reconozca los párrafos sin hacer cagadas		
+		partes= []
+		for textoAdentro in text_partition:
+			partes.append( textoAdentro.replace("<p>", " ").split("</p>") )
+		text_partition = partes
+
+				
 		valor = seq[next_trial_ind]
 
 		indice =  ([i for i,x in enumerate(seq) if x == valor][0])+1
 
 		
 		trial = seq[next_trial_ind]
-		etiqueta_trial = str(indice) +' de '+str(len(seq))
+		etiqueta_trial = str(indice-1) +' de '+str(len(seq))
 		finalizado=False
-	
+		
 		
 		secuencia_posta = map(lambda x: body[int(x)], missing_words)
-		
+	
 		
 		#si estoy en el caso donde el primer input o el ultimo, son la primer o ultima palabra
 		#tengo que meter un texto vacio antes y dsp
 
-		#print "body", body
+		#~ print "body", body
 		if (secuencia_posta[0]==0): text_partition = [""] + text_partition
 		#print "cuenta loca",len(body)
 		if (secuencia_posta[-1]==len(body)): text_partition.append("")
-			
-	
+		
+		
+		# Formulario  de preguntas luego del primer texto
+		if (next_trial_ind == 0):
+			primer_trial=True
+		else:
+			primer_trial=False
+		
 	except:
 		pass			
- 
-
 	
-	if (len(text_partition)==0): text_partition = ['error','error','error','error','error']
+ 	if (len(text_partition)==0): text_partition = ['error','error','error','error','error']
 	initial_trial = request.GET.get('initial_trial', 'true')
 
-        #print zip(range(0,len(text_partition)), secuencia_posta)
-	
+	#~ print zip( text_partition[0:-1], range(0,len(text_partition) ))
+
+	form_Information=InfoForm() 
 	c=RequestContext(request,{
 	'finalizado':finalizado,
-	'texto_con_input': zip( text_partition[0:-1], range(0,len(text_partition) )),
+	'texto_con_input': zip( text_partition[0:-1], range(0,len(text_partition))),
 	'texto_final':  (text_partition[-1],len(text_partition)-1),
 	'usuario':sub.email,
 	'trial':trial,
@@ -109,29 +152,59 @@ def trial(request):
 	'cant_textos': range(len(text_partition)),
 	'etiqueta_trial':etiqueta_trial,
 	'secuencia_posta':  zip(range(0,len(text_partition)), secuencia_posta),
-	'initial_trial': initial_trial
+	'initial_trial': initial_trial,
+	'primer_trial': primer_trial,
+	'form': form_Information,
+	'missing_words': missing_words,
+	#~ 'native_lenguaje': {{native_lenguaje}}
 	})
-	#print zip( text_partition[0:], range(0,len(text_partition) ))
 	return HttpResponse(t.render(c))
 
 def subir(request):
+	q = request.GET
+	sub = Subject.objects.get(email=q['email'])
+	trialOption = TrialOption.objects.get(id=q['trial'])
+
+	trials_llenados = Trial.objects.filter(subject=sub,trialOpt=trialOption)
+
+
+	#dt = datetime.datetime(q.get('initTime'))
+	dt = datetime.datetime.fromtimestamp(float(q.get('initTime'))/1000.0)
+	#initTime = json.loads(q.get('initTime'))
+	t = q.getlist('tiempos[]')
+	p = q.getlist('palabras[]')
+
+
+	wt = [(p[i].encode('utf-8'),t[i]) for i in range(len(t))] 
+	trial = Trial(subject=sub,trialOpt=trialOption,initial_time=dt,words=json.dumps(wt))
+	trial.save()
+
+	return HttpResponse('')
+
+def subirInformation(request):
     q = request.GET
     sub = Subject.objects.get(email=q['email'])
-    trialOption = TrialOption.objects.get(id=q['trial'])
+    #~ print 'sujeto', sub
 
-    trials_llenados = Trial.objects.filter(subject=sub,trialOpt=trialOption)
-    if len(trials_llenados)==0:
+    infos = Information.objects.filter(subject=sub)
+    #~ print 'infos', infos
 
-        #dt = datetime.datetime(q.get('initTime'))
-        dt = datetime.datetime.fromtimestamp(float(q.get('initTime'))/1000.0)
-        #initTime = json.loads(q.get('initTime'))
-        t = q.getlist('tiempos[]')
-        p = q.getlist('palabras[]')
+    if len(infos)==0:
 
-
-        wt = [(p[i].encode('utf-8'),t[i]) for i in range(len(t))] 
-        trial = Trial(subject=sub,trialOpt=trialOption,initial_time=dt,words=json.dumps(wt))
-        trial.save()
+        nat_lang = q['native_language']
+        country=q['country']
+        schooling=q['schooling']
+        books=q['books']
+        read_lan=q['reading_language']
+        work_reading=q['work_reading']
+        work_read_lan=q['work_reading_language']
+        comp_read=q['computer_reading']
+        dex=q['dexterity']
+        source=q['source']
+        other_exp=q['other_experiments']
+        
+        info = Information(subject=sub, native_language=nat_lang, country=country,schooling=schooling,books=books,work_reading=work_reading,reading_language=read_lan,work_reading_language=work_read_lan,computer_reading=comp_read,dexterity=dex,source=source,other_experiments=other_exp)
+        info.save()
 
     return HttpResponse('')
 
@@ -152,7 +225,9 @@ def bajar_todo(request):
         te = to.text
         mw = json.loads(to.missing_words)
                
-        epoch = datetime.datetime.utcfromtimestamp(0)
+        epoch = timezone.make_aware(datetime.datetime.utcfromtimestamp(0), timezone.get_default_timezone())
+        print t.initial_time
+        print epoch
         delta = t.initial_time - epoch 
         ep = long(delta.total_seconds()*1000) + 3600 * 1000 * 3 # GMT-3 correction
         
