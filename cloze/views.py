@@ -244,3 +244,19 @@ def bajar_todo(request):
     response = HttpResponse(csv, content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=log.csv'
     return response
+
+def bajar_sujetos(request):
+    
+    csv = ''
+    for s in Subject.objects.all():
+        
+        
+        line = "'" + str(s.email) + "','" + str(s.age) + "','" + str(s.gender) + "','" + str(s.information.native_language) + "','" +    str(s.information.reading_language) + "','" + str(s.information.work_reading_language) + "','" + str(s.information.country) + "','" +            str(s.information.schooling) + "','" + str(s.information.books) + "','" + str(s.information.work_reading) + "','" +            str(s.information.computer_reading) + "','" + str(s.information.dexterity) + "','" + str(s.information.source) + "','" + str(s.information.other_experiments) + "'" 
+        csv = csv + (line.encode('iso-8859-1')+'\n')
+        #c = c + 1
+    
+
+    # generate the file
+    response = HttpResponse(csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=subject_log.csv'
+    return response
