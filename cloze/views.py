@@ -249,10 +249,13 @@ def bajar_todo(request):
 def bajar_sujetos(request):
     
     csv = ''
+    
+    line = "'email';'age';'gender';'original_ip';'sequence_number';'experiment_sequence';'native_language';'reading_language';'work_reading_language';'country';'schooling';'books';'work_reading';'computer_reading';'dexterity';'source';'other_experiments'" 
+    csv = csv + (line.encode('iso-8859-1')+'\n')
     for s in Subject.objects.all():
         
         try:
-            line = "'" + str(s.email) + "','" + str(s.age) + "','" + str(s.gender) + "','" + str(s.information.native_language) + "','" +    str(s.information.reading_language) + "','" + str(s.information.work_reading_language) + "','" + str(s.information.country) + "','" +            str(s.information.schooling) + "','" + str(s.information.books) + "','" + str(s.information.work_reading) + "','" +            str(s.information.computer_reading) + "','" + str(s.information.dexterity) + "','" + str(s.information.source) + "','" + str(s.information.other_experiments) + "'" 
+            line = "'" + str(s.email) + "';'" + str(s.age) + "';'" + str(s.gender) + "';'" + str(s.original_ip) + "';'" + str(s.sequence_number) + "';'" + str(s.experiment_sequence) + "';'" + str(s.information.native_language) + "';'" +    str(s.information.reading_language) + "';'" + str(s.information.work_reading_language) + "';'" + str(s.information.country) + "';'" +            str(s.information.schooling) + "';'" + str(s.information.books) + "';'" + str(s.information.work_reading) + "';'" +            str(s.information.computer_reading) + "';'" + str(s.information.dexterity) + "';'" + str(s.information.source) + "';'" + str(s.information.other_experiments) + "'" 
             csv = csv + (line.encode('iso-8859-1')+'\n')
         except ObjectDoesNotExist:
             print 'User incomplete: ' + str(s.email)
