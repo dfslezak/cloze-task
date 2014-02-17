@@ -162,12 +162,8 @@ def trial(request):
 	return HttpResponse(t.render(c))
 
 def ganadores(request):
-	form_subject = SubjectForm()
-	
 	t = loader.get_template('ganadores.html')
-	c=RequestContext(request,{
-		'form': form_subject})
-	
+	c=RequestContext(request)
 	return HttpResponse(t.render(c))	
 
 def subir(request):
