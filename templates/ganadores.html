@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <!-- Bootstrap core CSS -->
+<link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/signin.css" rel="stylesheet">
+
+<title>Experimento de completar palabras</title>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-48128532-1']);
+  _gaq.push(['_setDomainName', 'exp.dc.uba.ar']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+
+
+<body id="main_body" class="container">
+
+
+    <div id="form_container">
+        <form class="form-signin" method="get" action='/'>
+
+				<h2 class="form-signin-heading">Experimento de completar palabras</h2>
+                <p>Estos son los ganadores de los sorteos que llevamos realizados hasta el momento </p>
+
+                <input class="btn btn-lg btn-primary btn-block" id="input_iniciar_trial" type="submit" value="Ir al experimento" >
+        </form>	
+    </div>	
+
+
+<div id="log" align=center style="display:none; margin:auto"><br><hr>
+Log debuggin :</div>
+	
+</body></html>
