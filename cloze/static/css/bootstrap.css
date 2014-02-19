@@ -2334,18 +2334,19 @@ fieldset[disabled] .btn-default.active {
 }
 
 .btn-ganadores {
-  max-width: 330px;
   color: #ffffff;
   background-color: #428bca;
   border-color: #357ebd;
+  max-width: 330px;
 }
 
 .btn-trial {
-  max-width: 330px;
   color: #ffffff;
   background-color: #428bca;
   border-color: #357ebd;
   display: inline-block; 
+  max-width: 330px;
+
 }
 
 .btn-primary:hover,
