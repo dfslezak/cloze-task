@@ -4,7 +4,7 @@
 
     <!-- Bootstrap core CSS -->
 <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
-<link href="{{ STATIC_URL }}css/signin.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/ganadores.css" rel="stylesheet">
 
 <title>Experimento de completar palabras</title>
 
@@ -26,26 +26,25 @@
 </head>
 
 
-<body id="main_body" class="container" style ="margin-top:2%; width:1000px ">
+<body id="main_body" class="container" >
 
 
     <div id="form_container">
-        <form class="form-signin" method="get" action='/bruno/' >
-				<h2 class="form-signin-heading">Experimento de completar palabras</h2>
-                <p>Estos son los ganadores de los sorteos que llevamos realizados hasta el momento </p>
+        <form class="form-winners" method="get" action='/bruno/' >
+				<h2 class="form-winners-heading">Experimento de completar palabras</h2>
+                <p class="form-winners-heading">Estos son los ganadores de los sorteos que llevamos realizados hasta el momento </p>
 				<br>
 				<h3>Ganadores</h3>
 				<h5><b><u>1º Sorteo</u> (17 de Febrero de 2014)</b></h5>
 				<p><i>Ganador</i>:   jcpovina@(...).com</p>
-				<p><i>Puntos</i>:*  100</p>
   				<br>
   				<h5><b><u>2º Sorteo</u> (Semana del 3 de Marzo de 2014)</b></h5>
 				<br>
-				<p>Todos los puntos ya acumulados siguen vigentes</p>
-				<p>Si ya completaste algún texto, seguí completando y sumá más puntos</p>
+				<p>Recordá que todos los puntos ya acumulados siguen vigentes.</p>
+				<p>Si ya completaste algún texto, seguí completando y sumá más puntos.</p>
 				<p>Y si todavía no empezaste ¿Qué estás esperando?</p>
 				<br>
-                <input class="btn btn-lg btn-primary btn-block" id="input_iniciar_trial" type="submit" value="Ir al experimento" >
+                <input class="btn btn-lg btn-ganadores btn-block" id="input_iniciar_trial" type="submit" value="Ir al experimento" >
 				<h6>*Puntos sumados por el ganador hasta el momento del sorteo </h6>	
 				
         </form>	

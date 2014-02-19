@@ -1,0 +1,32 @@
+body {
+  max-width: 500px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #eee;
+}
+
+.form-winners {
+  max-width: 450px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-winners .form-winners-heading,
+.form-winners .checkbox {
+  margin-bottom: 10px;
+  max-width: 330px;
+}
+
+.form-winners .form-control {
+  position: relative;
+  font-size: 16px;
+  height: auto;
+  padding: 10px;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.form-winners .form-control:focus {
+  z-index: 2;
+}
+

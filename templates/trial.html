@@ -321,15 +321,27 @@ $().ready(trial_default)
 	
         {%if finalizado%} 
 			<br><br><br><br><br><br><br><br><br>
-            <div id="fin" class="container" >
+            <div id="fin" class="container" align= "center">
 				<h3>¡¡Ya no quedan más textos!!</h3>
+				<br>
                 <p>Gracias por completar el experimento. </p>
-                <p>Acbás de sumar 500 puntos para los sorteos por las órdenes de compra.</p>
+                <p>Recardá que por cada texto que <b>completaste</b> sumate 100 punts</p>
+                <p>Y si <b>completaste</b> los 8, sumaste 500 puntos extra</p>
                 <br>
                 <br>
+                <br>
+                <br>
+			<div>
+			 <form action="/bruno/ganadores/" target="_blank" >
+				<input id="input_ganadores" class="btn btn-lg btn-trial btn-block" type="submit"  value="Ver Ganadores">
+			 </form>	
+			</div>
+			<br>	
 				<p>Consultas y comentarios: <a href="mailto:experimentolni@gmail.com">experimentolni@gmail.com</a></p>
 				<p>Sitio Web del <a href="http://neurociencia.df.uba.ar/?q=es">Laboratorio de Neurociencia Integrativa</a></p>
 				<p>O visitanos en <a href="https://www.facebook.com/laboratoriodeneurocienciaintegrativa"> Facebook</a> para enterarte de las novedades</p>	
+					<br>
+
 
             </div>
          
@@ -448,36 +460,24 @@ $().ready(trial_default)
 	</font>
 
 
-<div id="boton_siguiente_trial"  align="center" style="margin-top:10%">
-<table border="0">			
-<tr>			
-<th>
-			 <div>
+<div id="boton_siguiente_trial"  align="center" style="margin-top:5%">
+	<div align="center">
 			 <form method="get" action="" >
-				<input id="siguiente_trial" style="width:150" type="submit" class="btn btn-lg btn-primary btn-block" value="Completar el siguiente Texto">
+				<input id="siguiente_trial" class="btn btn-lg btn-trial btn-block"  type="submit"  value="Completar el siguiente Texto">
 				<input name="initial_trial" value="false" type="hidden">
 				<input name="email" value="{{usuario}}" type="hidden">
+			 </form> 
+	</div>
+	<div align="center" style="margin-top:0.5%">	
+			 <form action="javascript:cerrar()">
+				<input id="input_cerrar" class="btn btn-lg btn-trial btn-block" type="submit"  value="Cerrar la sesión">
 			 </form>
-			 </div>
-</th>
-<th>
-
-			 <div>
-			 <form action="javascript:cerrar()" >
-				<input id="input_cerrar" class="btn btn-lg btn-primary btn-block" type="submit"  value="Cerrar la sesión">
-			 </form>
-			 </div>	
-</th>
-<th>
-
-			 <div>
-			 <form action="/bruno/ganadores/" target="_blank">
-				<input id="input_ganadores" class="btn btn-lg btn-primary btn-block" type="submit"  value="Ver Ganadores">
-			 </form>
-			 </div>	
-</th>
-</tr>
-</table>
+	</div>
+	<div align="center" style="margin-top:0.5%">	
+			 <form action="/bruno/ganadores/" target="_blank" >
+				<input id="input_ganadores" class="btn btn-lg btn-trial btn-block" type="submit"  value="Ver Ganadores">
+			 </form>	
+	</div>
 </div>
 
 {%endif%}
@@ -488,18 +488,27 @@ $().ready(trial_default)
 </div>
     
     
-<div id="cerrar" class="container" >
+<div id="cerrar" align="center" class="container" >
 	<h3>Gracias por participar de nuestro experimento</h3>
+	<br>
 	<p>Ya podés cerrar la ventana.</p>
 	<p>Recordá que podés seguir completando los textos que te quedan.</p>
 	<p>De esta forma sumarás más chances para los sorteos por las órdenes de compra. </p>
-	<p><a href="http://calamaro.exp.dc.uba.ar/bruno/ganadores/" target="_blank"> Click aquí </a> para ver los ganadores hasta el momento. </p>
+	<br><br>
+	<div>
+	 <form action="/bruno/ganadores/" target="_blank" >
+		<input id="input_ganadores" class="btn btn-lg btn-trial btn-block" type="submit"  value="Ver Ganadores">
+	 </form>	
+	</div>
 	<br><br>
 	<p>Consultas y comentarios: <a href="mailto:experimentolni@gmail.com">experimentolni@gmail.com</a></p>
 	<p>Sitio Web del <a href="http://neurociencia.df.uba.ar/?q=es">Laboratorio de Neurociencia Integrativa</a></p>
 	<p>O visitanos en <a href="https://www.facebook.com/laboratoriodeneurocienciaintegrativa"> Facebook</a> para enterarte de las novedades</p>	
+	
+
+
 </div>
-  
+
     <br>
 
     <div id="log-publico" align=left style ="position:relative; margin-top:5%; width:400px ; text-align:justify; text-justify:inter-word; margin:auto"><br><hr>
