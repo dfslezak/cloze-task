@@ -330,9 +330,10 @@ class Subject(models.Model):
 		
 		# Si se quiere cambiar el orden de los textos o eliminar un texto, se cambia desde acá. 
 		# Cada elemento de seq_base1 es un experimento variable pero siempre del mismo texto. 
-		seq_base0 = seq_base1[1:]
+		seq_base0 = seq_base1[2:]
 		seq_base0.append(seq_base1[0]) # Pongo el primer texto al final
-		#~ print seq_base0	
+		seq_base0.append(seq_base1[1]) # Pongo el segundo texto al final
+	
 		
 		return (ts.id,seq_base0)       
 
