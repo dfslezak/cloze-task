@@ -443,7 +443,7 @@ $().ready(trial_default)
 						<br>
 					{% endif %}
 				{% endfor%}
-				<input id="texto{{texto.1}}_input" onkeyup="javascript:texto_input_cambio(event,'{{texto.1}}')" size=7> 
+				<input id="texto{{texto.1}}_input" placeholder="Ingrese aquí la palabra" title="Recuerde que debe ingresar UNA SOLA palabra y que debe ser aquella que le resulte más factible según el contexto" size=23px onkeyup="javascript:texto_input_cambio(event,'{{texto.1}}')" size=7> 
 			</div>	
 			{% endfor%}
 			<div id="texto{{texto_final.1}}">
