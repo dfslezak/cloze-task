@@ -431,7 +431,7 @@ $().ready(trial_default)
 
 	<FONT FACE="Courier New"  >
 	<form name="texto_inputs" >
-		<div id="texto" style ="position:relative; font:Times New Roman ;margin-top:2%; width:720px ; margin:auto; text-align:justify; text-justify:inter-word;">
+		<div class="container" id="texto" style ="position:relative; font:Times New Roman ;margin-top:2%; width:720px ; margin:auto; text-align:justify; text-justify:inter-word;">
 			<div id="texto_acumulado"></div>
 			{% for texto in texto_con_input %}
 			<div id="texto{{texto.1}}" >
@@ -443,7 +443,7 @@ $().ready(trial_default)
 						<br>
 					{% endif %}
 				{% endfor%}
-				<input id="texto{{texto.1}}_input" placeholder="Ingrese aquí la palabra" title="Recuerde que debe ingresar UNA SOLA palabra y que debe ser aquella que le resulte más factible según el contexto" size=23px onkeyup="javascript:texto_input_cambio(event,'{{texto.1}}')" size=7> 
+				<input class="form-palabra" id="texto{{texto.1}}_input" placeholder="Ingrese aquí la palabra" title="Recuerde que debe ingresar UNA SOLA palabra y que debe ser aquella que le resulte más factible según el contexto" size=23px onkeyup="javascript:texto_input_cambio(event,'{{texto.1}}')" size=7> 
 			</div>	
 			{% endfor%}
 			<div id="texto{{texto_final.1}}">
