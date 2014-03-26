@@ -37,6 +37,22 @@
 </script>
 
 <script>
+	
+function ismobile() { 
+		 if( navigator.userAgent.match(/Android/i)
+		 || navigator.userAgent.match(/webOS/i)
+		 || navigator.userAgent.match(/iPhone/i)
+		 || navigator.userAgent.match(/iPad/i)
+		 || navigator.userAgent.match(/iPod/i)
+		 || navigator.userAgent.match(/BlackBerry/i)
+		 || navigator.userAgent.match(/Windows Phone/i)
+		 ){
+			return true;
+		  }
+		 else {
+			return false;
+		  }
+}
 
 function trial_default(){
 
@@ -55,7 +71,11 @@ function trial_default(){
 
 	$("#log").html(  $("#log").html() + "<br> Se llamo: trial_default");
 	$("#cerrar").hide(); 
+	$("#formulario_mobile").hide();
 
+	if (ismobile()===true) {
+		$("#formulario_mobile").show();
+		}
 
 	if ({{initial_trial}}) {
             
@@ -359,6 +379,12 @@ $().ready(trial_default)
         {% else %}
 			<br><br><br><br><br><br><br><br>
 
+			<div id="formulario_mobile" class="container" align= "center">
+				<h3>¡¡Gracias por particpar de nuestro experimento!!</h3>
+				<br>
+				<p>Agradecemos que hayas entrado a realizar nuestro experimento. Sin embargo detectamos que entraste desde un celular. Dado que esto es un experimento necesitamos que lo hagas desde una computadora ya que vas a tener que leer algunos textos literarios</p>
+			</div> 
+
 			<div class="container" align=left>
             <div id="formulario_segundo_inicio">
 				<h3>¡¡Gracias por volver!!</h3>
@@ -366,7 +392,7 @@ $().ready(trial_default)
 			</div>
 			</div>
 			
-		    <div class="container" align=left>
+		    <div class="container" align=left>			
             <div id="formulario_inicio">
                 <h3>Objetivo del experimento</h3>
                 <p>El objetivo de este experimento es estimar la predictibilidad de una palabra dado el contexto en el que se encuadra. Para esto vas a tener que completar palabras faltantes en diferentes textos (ver las instrucciones). <b>Siempre</b> se completa con <b>una sola</b> palabra y esa palabra debe ser aquella que te suene más factible según el contexto (poné la primera que se te venga a la cabeza). Hay palabras muy predecibles (muchas personas responden con estas palabras) y palabras muy poco predecibles (las cuales menos del 10% de las personas responde). Eso nos hace diferentes y enriquece al lenguaje, así que no te preocupes si la palabra que completaste no es igual a la original, es parte de la naturaleza que intentamos describir y explicar con este experimento.  
