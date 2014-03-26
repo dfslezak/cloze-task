@@ -75,6 +75,15 @@ function trial_default(){
 
 	if (ismobile()===true) {
 		$("#formulario_mobile").show();
+		$("#formulario_segundo_inicio").hide();            
+		$("#formulario_inicio").hide();            
+		$("#formulario_preguntas").hide(); 
+		$("#boton_sin_preguntas").hide(); 
+		$("#formulario_inicio").hide();            
+		$("#boton_sin_preguntas").hide(); 
+		$("#formulario_preguntas").hide();
+		$("#formulario_segundo_inicio").hide();  
+		$("#logo").hide();  
 		}
 
 	if ({{initial_trial}}) {
@@ -333,7 +342,7 @@ $().ready(trial_default)
          <p>Textos completados: <b>{{etiqueta_trial}}</b></p></font>
 
         </div>
-       <div align=right style ="margin-top:1.5%; "> <a href="http://neurociencia.df.uba.ar/?q=es"> <img src="{{ STATIC_URL }}logoLNI.jpg" height="120px"> </a></div>
+       <div id="logo" align=right style ="margin-top:1.5%; "> <a href="http://neurociencia.df.uba.ar/?q=es"> <img src="{{ STATIC_URL }}logoLNI.jpg" height="120px"> </a></div>
 
 	</div>
 
@@ -378,12 +387,6 @@ $().ready(trial_default)
 			
         {% else %}
 			<br><br><br><br><br><br><br><br>
-
-			<div id="formulario_mobile" class="container" align= "center">
-				<h3>¡¡Gracias por particpar de nuestro experimento!!</h3>
-				<br>
-				<p>Agradecemos que hayas entrado a realizar nuestro experimento. Sin embargo detectamos que entraste desde un celular. Dado que esto es un experimento necesitamos que lo hagas desde una computadora ya que vas a tener que leer algunos textos literarios</p>
-			</div> 
 
 			<div class="container" align=left>
             <div id="formulario_segundo_inicio">
