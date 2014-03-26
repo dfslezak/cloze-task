@@ -84,28 +84,20 @@ function trial_default(){
 		$("#formulario_preguntas").hide();
 		$("#formulario_segundo_inicio").hide();  
 		$("#logo").hide();  
+	}else {
+		if ({{initial_trial}}) {
+				$("#formulario_segundo_inicio").show();            
+				$("#formulario_inicio").show();            
+				$("#formulario_preguntas").hide(); 
+				$("#boton_sin_preguntas").show(); 
+					{% if primer_trial %} 
+						$("#formulario_inicio").show();            
+						$("#boton_sin_preguntas").hide(); 
+						$("#formulario_preguntas").show();
+						$("#formulario_segundo_inicio").hide();  
+					{% endif %}
+			}else {	trial_inicio(); }
 		}
-
-	if ({{initial_trial}} && ismobile()===false) {
-            
-			$("#formulario_segundo_inicio").show();            
-
-			$("#formulario_inicio").show();            
-			$("#formulario_preguntas").hide(); 
-			$("#boton_sin_preguntas").show(); 
-            
-                {% if primer_trial %} 
-					$("#formulario_inicio").show();            
-                    $("#boton_sin_preguntas").hide(); 
-                    $("#formulario_preguntas").show();
-                    $("#formulario_segundo_inicio").hide();  
-                {% endif %}
-            //~ $("#input_iniciar_trial").focus();
-
-		
-        }else {
-            trial_inicio();
-        }
 }
 
 //Inicio tiempo
