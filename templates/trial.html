@@ -37,22 +37,6 @@
 </script>
 
 <script>
-	
-function ismobile() { 
-		 if( navigator.userAgent.match(/Android/i)
-		 || navigator.userAgent.match(/webOS/i)
-		 || navigator.userAgent.match(/iPhone/i)
-		 || navigator.userAgent.match(/iPad/i)
-		 || navigator.userAgent.match(/iPod/i)
-		 || navigator.userAgent.match(/BlackBerry/i)
-		 || navigator.userAgent.match(/Windows Phone/i)
-		 ){
-			return true;
-		  }
-		 else {
-			return false;
-		  }
-}
 
 function trial_default(){
 
@@ -60,44 +44,39 @@ function trial_default(){
 	{% for indice in cant_textos %}
 		$("#texto{{indice}}").hide();
 	{% endfor %}
-		
+
 	$("#texto").hide();
-	
+
 	//Oculto boton siguiente trial
 	$("#boton_siguiente_trial").hide();
-	
+
 	//Cargo log
     $("#log").hide()
 
 	$("#log").html(  $("#log").html() + "<br> Se llamo: trial_default");
 	$("#cerrar").hide(); 
-	$("#formulario_mobile").hide();
 
-	if (ismobile()===true) {
-		$("#formulario_mobile").show();
-		$("#formulario_segundo_inicio").hide();            
-		$("#formulario_inicio").hide();            
-		$("#formulario_preguntas").hide(); 
-		$("#boton_sin_preguntas").hide(); 
-		$("#formulario_inicio").hide();            
-		$("#boton_sin_preguntas").hide(); 
-		$("#formulario_preguntas").hide();
-		$("#formulario_segundo_inicio").hide();  
-		$("#logo").hide();  
-	}else {
-		if ({{initial_trial}}) {
-				$("#formulario_segundo_inicio").show();            
-				$("#formulario_inicio").show();            
-				$("#formulario_preguntas").hide(); 
-				$("#boton_sin_preguntas").show(); 
-					{% if primer_trial %} 
-						$("#formulario_inicio").show();            
-						$("#boton_sin_preguntas").hide(); 
-						$("#formulario_preguntas").show();
-						$("#formulario_segundo_inicio").hide();  
-					{% endif %}
-			}else {	trial_inicio(); }
-		}
+
+	if ({{initial_trial}}) {
+            
+			$("#formulario_segundo_inicio").show();            
+
+			$("#formulario_inicio").show();            
+			$("#formulario_preguntas").hide(); 
+			$("#boton_sin_preguntas").show(); 
+            
+                {% if primer_trial %} 
+					$("#formulario_inicio").show();            
+                    $("#boton_sin_preguntas").hide(); 
+                    $("#formulario_preguntas").show();
+                    $("#formulario_segundo_inicio").hide();  
+                {% endif %}
+            //~ $("#input_iniciar_trial").focus();
+
+
+        }else {
+            trial_inicio();
+        }
 }
 
 //Inicio tiempo
@@ -105,21 +84,21 @@ function trial_inicio(){
 	//Cargo tiempo inicial
 	var currentDate = new Date();	
 	tiempo_inicial = currentDate.getTime();	
-	
+
 	//Borro boton de inicio
 	$("#formulario_inicio").html("")
 	$("#formulario_preguntas").html("")
 	$("#formulario_segundo_inicio").html("")
         $("#formulario_preguntas").hide(); 
-	
+
 	$("#texto").show()
-	
+
 	//Muestro texto, llevandolo al texto_acumulado
 	$("#texto_acumulado").html(  $("#texto0").html() )
-	
+
 	//Pongo ahi el foco
 	$("#texto0_input").focus()
-	
+
 	//Cargo log
         $("#log").hide()
 	$("#log").html(  $("#log").html() + "<br> Se llamo: trial_inicio")
@@ -127,7 +106,7 @@ function trial_inicio(){
 
 	}
 
-	
+
 function trial_inicio_preguntas(){
     if ( document.forms[0].native_language.value == "" || 
 		 document.forms[0].country.value == "" || 
@@ -162,7 +141,7 @@ function trial_inicio_preguntas(){
 }
 function arreglo_valor_inputs(texto_num){
 	//cargo las palabras posta, hasta donde llego a completar
-	
+
 	{% for indice_palabra in secuencia_posta %}
 		if ({{indice_palabra.0}} <= texto_num) 
 			$("#texto{{indice_palabra.0}}_input").val("{{indice_palabra.1}}");
@@ -174,11 +153,11 @@ function cerrar(){
 	$("#boton_siguiente_trial").hide();
 	$("#log-publico").hide();
 	$("#cerrar").show();
-	
+
 }
 
 function texto_input_cambio(event,texto_num){
-	
+
 	//Cargo letra
 	if (document.all){
 		letra = event.keyCode
@@ -186,19 +165,19 @@ function texto_input_cambio(event,texto_num){
 	else{
 		letra = event.which
 	}
-	
+
 	//Apreto enter
 	if (letra==13){
 
 		palabra = $("#texto"+texto_num+"_input").val();
 		tam_palabra = $.trim(palabra).length;
-		
+
 		//Cargo palabra nueva
 		palabras_valor[texto_num] = palabra;
-		
+
 		//Sigo adentro del texto
 		if ( parseInt(texto_num)<= {{cant_pal}}  && tam_palabra>0){
-			
+
 			//Cargo nuevo tiempo para la palabra nueva
 			var currentDate = new Date();	
 			tiempos[texto_num]= currentDate.getTime();	
@@ -213,32 +192,32 @@ function texto_input_cambio(event,texto_num){
                        
             porcentaje_avance = parseInt(100*(texto_num)/{{cant_pal}})
 			$("#log-publico").html( "<b> Porcentaje Avanzado: </b>" +  porcentaje_avance + "%"  + "<br/>");
-			
+
 			//Deshabilitamos lo que paso
 			$("#texto"+texto_num+"_input").hide();
 			//~ $("#texto"+texto_num+"_input").prop('disabled', true);
-			
+
 			//Muestro texto, llevandolo al texto_acumulado y le doy foco al nuevo input
 			nuevo_indice = parseInt(texto_num)+1;
-						
+
 			//Cargo el contenido a agregar (todo eso lo hago para que los divs no pongan espacios)
 			contenido_a_agregar= $("#texto"+nuevo_indice).html();
-	
+
 			//Borro el texto que acabo de copiar para poner en otro lado
 			$("#texto"+texto_num).html("");
-				
+
 			//Pongo el contenido que estaba en el cuerpo de texto_acumulado
 			$('#texto_acumulado').html(function(index,html){
 				return html.replace("<strong>",'');
 			});
 			$("#texto_acumulado").html($("#texto_acumulado").html() +  '<strong>' +  contenido_a_agregar + "</strong>"  );
-			
+
 			//Le recargo el valor del input
 			$("#texto"+texto_num+"_input").val(palabra);
-						
+
 			//Pongo foco en el nuevo input
 			$("#texto"+nuevo_indice+"_input").focus();
-			
+
 			//Pongo los valores de  los inputs
 			arreglo_valor_inputs( parseInt(texto_num) );
 		}	
@@ -260,7 +239,7 @@ function texto_input_cambio(event,texto_num){
 			//Envio datos a la BD
 			$("#log").html(  $("#log").html() + "<br>Envio datos BD")
 		}
-		
+
 		//Completo ultimo input
 		if (parseInt(texto_num) % 10 == 0  && tam_palabra>0  && parseInt(texto_num)!={{cant_pal}}){
 			//Envio datos a la BD
@@ -275,9 +254,9 @@ function texto_input_cambio(event,texto_num){
 			);	
 					//Envio datos a la BD
 			$("#log").html(  $("#log").html() + "<br>Envio datos BD")
-			
+
 		}
-			
+
 		if (parseInt(texto_num)=={{cant_pal}}  && tam_palabra>0  ){
 			//Envio datos a la BD
 			$.get("subir/", 
@@ -292,10 +271,10 @@ function texto_input_cambio(event,texto_num){
 
 			//Envio datos a la BD
 			$("#log").html(  $("#log").html() + "<br>Envio datos BD")
-			
+
 			//Habilito boton para siguiente trial
 			$("#log").html(  $("#log").html() + "<br>Habilito boton para siguiente trial")
-			
+
 			// Espero 1,5 segundos y muestro los botones
 			setTimeout(function(){
 					$("#boton_siguiente_trial").show()
@@ -324,7 +303,7 @@ $().ready(trial_default)
 </head>
 
 <body id="main_body" >
-	
+
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 	<div class="container">
         <div class="navbar-header">
@@ -334,49 +313,28 @@ $().ready(trial_default)
          <p>Textos completados: <b>{{etiqueta_trial}}</b></p></font>
 
         </div>
-       <div id="logo" align=right style ="margin-top:1.5%; "> <a href="http://neurociencia.df.uba.ar/?q=es"> <img src="{{ STATIC_URL }}logoLNI.jpg" height="120px"> </a></div>
+       <div align=right style ="margin-top:1.5%; "> <a href="http://neurociencia.df.uba.ar/?q=es"> <img src="{{ STATIC_URL }}logoLNI.jpg" height="120px"> </a></div>
 
 	</div>
 
 </div>	
-	
+
         {%if finalizado%} 
 			<br><br><br><br><br><br><br><br><br>
-            <div id="fin" class="container" align= "center">
+            <div id="fin" class="container" >
 				<h3>¡¡Ya no quedan más textos!!</h3>
-				<br>
                 <p>Gracias por completar el experimento. </p>
-                <p>Recordá que por cada texto que <b>completaste</b> sumaste 100 puntos</p>
-                <p>Y si <b>completaste</b> los 8 textos, sumaste 500 puntos extra</p>
+                <p>Acbás de sumar 500 puntos para los sorteos por las órdenes de compra.</p>
                 <br>
-                <h5><b>Los textos que leiste fueron:</b></h5><h6>(No necesariamente en el mismo órden)</h6>
-				<br>
-                <p><b>Axolotl </b>- Julio Cortázar</p>
-				<p><b>Bienvenido, Bob </b>- Juan Carlos Onetti </p>
-				<p><b>Rebeca </b>- Oliver Sacks</p>
-				<p><b>El loco Cansino</b> - Roberto Fontanarrosa</p>
-				<p><b>El Negro de Paris </b>- Osvaldo Soriano</p>
-				<p><b>Prólogo de "El Origen de las especies" </b>- Charles Darwin</p>
-				<p><b>Carta a una señorita en París </b>- Julio Cortázar</p>
-				<p><b>Carta Abierta a la Junta Militar </b>- Rodolfo Walsh</p>
                 <br>
-			<div>
-			 <form action="/bruno/ganadores/" target="_blank" >
-				<input id="input_ganadores" class="btn btn-lg btn-trial btn-block" type="submit"  value="Ver Ganadores">
-			 </form>	
-			 				<br>	
 				<p>Consultas y comentarios: <a href="mailto:experimentolni@gmail.com">experimentolni@gmail.com</a></p>
 				<p>Sitio Web del <a href="http://neurociencia.df.uba.ar/?q=es">Laboratorio de Neurociencia Integrativa</a></p>
 				<p>O visitanos en <a href="https://www.facebook.com/laboratoriodeneurocienciaintegrativa"> Facebook</a> para enterarte de las novedades</p>	
-				<br>
-
-			</div>
-
 
             </div>
          
 
-			
+
         {% else %}
 			<br><br><br><br><br><br><br><br>
 
@@ -386,23 +344,8 @@ $().ready(trial_default)
 				<p>Te estabamos esperando para que sigas completando textos y sumando chances para ganar alguna de las órdenes de compra.</p>
 			</div>
 			</div>
-			
-			<div class="container" align=left>
-            <div id="formulario_mobile">
-				<h3>¡¡Gracias por entrar a nuestro experimento!!</h3>
-				<p>Te agradecemos por entrar. Sin embargo detectamos que estás desde un dispositivo móvil. Este <b>experimento</b> necesita de lectura de textos durante un tiempo de alrededor de 20 minutos. 
-				Por lo tanto necesitamos que los leas cómodamente. Por eso te pedimos que vuelvas a entrar nuevamente desde una computadora.</p>
-				<br>
-				<form action="/bruno/ganadores/" target="_blank" >
-					<input class="btn btn-lg btn-trial btn-block" type="submit"  value="Ver Ganadores">
-				</form>	
-				<p>Consultas y comentarios: <a href="mailto:experimentolni@gmail.com">experimentolni@gmail.com</a></p>
-				<p>Sitio Web del <a href="http://neurociencia.df.uba.ar/?q=es">Laboratorio de Neurociencia Integrativa</a></p>
-				<p>O visitanos en <a href="https://www.facebook.com/laboratoriodeneurocienciaintegrativa"> Facebook</a> para enterarte de las novedades</p>	
-			</div>
-			</div>
-			
-		    <div class="container" align=left>			
+
+		    <div class="container" align=left>
             <div id="formulario_inicio">
                 <h3>Objetivo del experimento</h3>
                 <p>El objetivo de este experimento es estimar la predictibilidad de una palabra dado el contexto en el que se encuadra. Para esto vas a tener que completar palabras faltantes en diferentes textos (ver las instrucciones). <b>Siempre</b> se completa con <b>una sola</b> palabra y esa palabra debe ser aquella que te suene más factible según el contexto (poné la primera que se te venga a la cabeza). Hay palabras muy predecibles (muchas personas responden con estas palabras) y palabras muy poco predecibles (las cuales menos del 10% de las personas responde). Eso nos hace diferentes y enriquece al lenguaje, así que no te preocupes si la palabra que completaste no es igual a la original, es parte de la naturaleza que intentamos describir y explicar con este experimento.  
@@ -449,7 +392,7 @@ $().ready(trial_default)
                     <input id="input_iniciar_trial_preguntas" class="btn btn-lg btn-primary btn-block"  type="submit" value="Click aquí para Empezar Experimento">
                     </form> 
                 </div>	
-					
+
 					<br>
 					<div align=center><p>
 					¡Gracias por tu participación!
@@ -476,7 +419,7 @@ $().ready(trial_default)
 
 	<FONT FACE="Courier New"  >
 	<form name="texto_inputs" >
-		<div class="container" id="texto" style ="position:relative; font:Times New Roman ;margin-top:2%; width:720px ; margin:auto; text-align:justify; text-justify:inter-word;">
+		<div id="texto" style ="position:relative; font:Times New Roman ;margin-top:2%; width:720px ; margin:auto; text-align:justify; text-justify:inter-word;">
 			<div id="texto_acumulado"></div>
 			{% for texto in texto_con_input %}
 			<div id="texto{{texto.1}}" >
@@ -488,7 +431,7 @@ $().ready(trial_default)
 						<br>
 					{% endif %}
 				{% endfor%}
-				<input class="form-palabra" id="texto{{texto.1}}_input" placeholder="Ingrese aquí la palabra" title="Recuerde que debe ingresar UNA SOLA palabra y que debe ser aquella que le resulte más factible según el contexto" size=23px onkeyup="javascript:texto_input_cambio(event,'{{texto.1}}')" size=7> 
+				<input id="texto{{texto.1}}_input" onkeyup="javascript:texto_input_cambio(event,'{{texto.1}}')" size=7> 
 			</div>	
 			{% endfor%}
 			<div id="texto{{texto_final.1}}">
@@ -505,24 +448,36 @@ $().ready(trial_default)
 	</font>
 
 
-<div id="boton_siguiente_trial"  align="center" style="margin-top:5%">
-	<div align="center">
+<div id="boton_siguiente_trial"  align="center" style="margin-top:10%">
+<table border="0">			
+<tr>			
+<th>
+			 <div>
 			 <form method="get" action="" >
-				<input id="siguiente_trial" class="btn btn-lg btn-trial btn-block"  type="submit"  value="Completar el siguiente Texto">
+				<input id="siguiente_trial" style="width:150" type="submit" class="btn btn-lg btn-primary btn-block" value="Completar el siguiente Texto">
 				<input name="initial_trial" value="false" type="hidden">
 				<input name="email" value="{{usuario}}" type="hidden">
-			 </form> 
-	</div>
-	<div align="center" style="margin-top:0.5%">	
-			 <form action="javascript:cerrar()">
-				<input id="input_cerrar" class="btn btn-lg btn-trial btn-block" type="submit"  value="Cerrar la sesión">
 			 </form>
-	</div>
-	<div align="center" style="margin-top:0.5%">	
-			 <form action="/bruno/ganadores/" target="_blank" >
-				<input id="input_ganadores" class="btn btn-lg btn-trial btn-block" type="submit"  value="Ver Ganadores">
-			 </form>	
-	</div>
+			 </div>
+</th>
+<th>
+
+			 <div>
+			 <form action="javascript:cerrar()" >
+				<input id="input_cerrar" class="btn btn-lg btn-primary btn-block" type="submit"  value="Cerrar la sesión">
+			 </form>
+			 </div>	
+</th>
+<th>
+
+			 <div>
+			 <form action="/bruno/ganadores/" target="_blank">
+				<input id="input_ganadores" class="btn btn-lg btn-primary btn-block" type="submit"  value="Ver Ganadores">
+			 </form>
+			 </div>	
+</th>
+</tr>
+</table>
 </div>
 
 {%endif%}
@@ -533,27 +488,18 @@ $().ready(trial_default)
 </div>
     
     
-<div id="cerrar" align="center" class="container" >
+<div id="cerrar" class="container" >
 	<h3>Gracias por participar de nuestro experimento</h3>
-	<br>
 	<p>Ya podés cerrar la ventana.</p>
 	<p>Recordá que podés seguir completando los textos que te quedan.</p>
 	<p>De esta forma sumarás más chances para los sorteos por las órdenes de compra. </p>
-	<br><br>
-	<div>
-	 <form action="/bruno/ganadores/" target="_blank" >
-		<input id="input_ganadores" class="btn btn-lg btn-trial btn-block" type="submit"  value="Ver Ganadores">
-	 </form>	
-	</div>
+	<p><a href="http://calamaro.exp.dc.uba.ar/bruno/ganadores/" target="_blank"> Click aquí </a> para ver los ganadores hasta el momento. </p>
 	<br><br>
 	<p>Consultas y comentarios: <a href="mailto:experimentolni@gmail.com">experimentolni@gmail.com</a></p>
 	<p>Sitio Web del <a href="http://neurociencia.df.uba.ar/?q=es">Laboratorio de Neurociencia Integrativa</a></p>
 	<p>O visitanos en <a href="https://www.facebook.com/laboratoriodeneurocienciaintegrativa"> Facebook</a> para enterarte de las novedades</p>	
-	
-
-
 </div>
-
+  
     <br>
 
     <div id="log-publico" align=left style ="position:relative; margin-top:5%; width:400px ; text-align:justify; text-justify:inter-word; margin:auto"><br><hr>
