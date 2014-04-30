@@ -65,15 +65,29 @@ def trial(request):
 	
 	try:
 		seq = json.loads(sub.experiment_sequence)
+		print seq
 		todos_los_trials= list(Trial.objects.all())
 		trialOpt_sub = []
 		for j in todos_los_trials:
+			#~ print j.trialOpt_id
 			if j.subject == sub:
 				trialOpt_sub.append(j.trialOpt_id)
-
+		
+		# Vamos a hacer que la gente ya loggeada pasa a completar solo los textos que nos faltan
+		
+		#~ max_listas_T0 = 16
+		#~ max_listas_T1 = max_listas_T0 +17
+		#~ max_listas_T2 = max_listas_T1 +17
+		#~ max_listas_T3 = max_listas_T2 +17
+		#~ max_listas_T4 = max_listas_T3 +17
+		#~ max_listas_T5 = max_listas_T4 +17
+		#~ max_listas_T6 = max_listas_T5 +17
+		#~ max_listas_T7 = max_listas_T6 +17
+		
 		indices = []
 		if not trialOpt_sub:
 			next_trial_ind = 0
+			
 		else:
 			trialOpt_sub_unique = set(trialOpt_sub)		
 			for i in trialOpt_sub_unique:
@@ -81,11 +95,30 @@ def trial(request):
 				indices.append(ind)
 			max_ind = max(indices)
 			next_trial_ind = max_ind + 1
-				
 		
-		
+		#~ lo_que_queda = seq[next_trial_ind:]
+		#~ print lo_que_queda
+		#~ 
+		#~ max_texto_Actual = max_listas_T5
+		#~ 
+		#~ 
+		#~ nueva_lista = [-1] * (len(lo_que_queda)-1)
+		#~ for ind in lo_que_queda:
+			#~ indicesVacios = [i for i, x in enumerate(nueva_lista) if x == -1]
+			#~ if ind <= max_texto_Actual:
+				#~ nueva_lista[max(indicesVacios)] = ind
+			#~ else:
+				#~ nueva_lista[min(indicesVacios)] = ind
+			#~ print nueva_lista
+		#~ 
+		#~ print nueva_lista
+		#~ proximo_trial = nueva_lista(0)
+		#~ print proximo_trial
+								
 		next_trial = TrialOption.objects.get(id=seq[next_trial_ind])
+		#~ next_trial = TrialOption.objects.get(proximo_trial)
 		trialOption = TrialOption.objects.filter(id=seq[next_trial_ind]).get()
+		#~ trialOption = TrialOption.objects.filter(proximo_trial).get()
 		body = trialOption.text.body.split()
 		missing_words = json.loads(trialOption.missing_words)
 		text_partition=[]
