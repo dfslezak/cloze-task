@@ -86,8 +86,18 @@ function trial_default() {
 						$("#formulario_inicio").show();            
 						$("#boton_sin_preguntas").hide(); 
 						$("#formulario_preguntas").show();
-						$("#formulario_segundo_inicio").hide();  
+						$("#formulario_segundo_inicio").hide(); 
+						alert("Hola, ¡Gracias por Participar en nuestro experimento!\n\nTe queríamos avisar que próximamente vamos a realizar un sorteo especial entre aquellos que tengan completados al menos 6 textos \n\nEl sorteo se va a realizar el 30 de Mayo y tenés tiempo hasta ese día para seguir completando textos");
+					{% else %}
+						{% if Sorteo_especial%}
+							alert("Hola, ¡Gracias por Volver!\n\nTe queríamos avisar que estás participando por un sorteo especial por ser una de las personas con más textos completados \n\nEl sorteo se va a realizar el 30 de Mayo entre todos los que tengan al menos 6 textos completados");
+						{% else %}
+							alert("Hola, ¡Gracias por Volver!\n\nTe queríamos avisar que próximamente vamos a realizar un sorteo especial entre aquellos que completen al menos 6 textos \n\nEl sorteo se va a realizar el 30 de Mayo y tenés tiempo hasta ese día para seguir completando textos");
+						{% endif %}
 					{% endif %}
+
+
+					
 		} else {	
 				trial_inicio();
 				}
@@ -303,6 +313,8 @@ function botones(){
 	//Muestror boton siguiente trial y terminar
 
 }
+
+
 
 //Inicio
 tiempo_inicial = -1;
