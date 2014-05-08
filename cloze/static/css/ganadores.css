@@ -1,19 +1,19 @@
 body {
   max-width: 500px;
-  padding-top: 40px;
+  padding-top: 20px;
   padding-bottom: 40px;
   background-color: #eee;
 }
 
 .form-winners {
-  max-width: 450px;
+  max-width: 480px;
   padding: 15px;
   margin: 0 auto;
 }
 .form-winners .form-winners-heading,
 .form-winners .checkbox {
   margin-bottom: 10px;
-  max-width: 330px;
+  max-width: 480px;
 }
 
 .form-winners .form-control {

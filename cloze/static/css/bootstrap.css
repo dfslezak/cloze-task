@@ -2354,7 +2354,7 @@ fieldset[disabled] .btn-default.active {
   color: #ffffff;
   background-color: #428bca;
   border-color: #357ebd;
-  max-width: 330px;
+  max-width: 480px;
 }
 
 .btn-trial {

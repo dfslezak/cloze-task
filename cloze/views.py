@@ -223,8 +223,8 @@ def ganadores(request):
 	c=RequestContext(request)
 	return HttpResponse(t.render(c))	
 
-def cheating(request):
-	t = loader.get_template('cheating.html')
+def FAQ(request):
+	t = loader.get_template('FAQ.html')
 	c=RequestContext(request)
 	return HttpResponse(t.render(c))	
 
