@@ -66,12 +66,16 @@ def trial(request):
 	
 	try:
 		seq = json.loads(sub.experiment_sequence)
-		todos_los_trials= list(Trial.objects.all())
+		#~ todos_los_trials= list(Trial.objects.all())
 		trialOpt_sub = []
-		for j in todos_los_trials:
+		#~ for j in todos_los_trials:
 			#~ print j.trialOpt_id
-			if j.subject == sub:
-				trialOpt_sub.append(j.trialOpt_id)
+			#~ if j.subject == sub:
+				#~ trialOpt_sub.append(j.trialOpt_id)
+		#~ 
+ 
+		trialOpt_sub= list( [ tr.trialOpt_id for tr in  (Trial.objects.filter(subject=sub))]  )
+		print trialOpt_sub
 		
 		indices = []
 		if not trialOpt_sub:
@@ -83,60 +87,6 @@ def trial(request):
 				indices.append(ind)
 			max_ind = max(indices)
 			next_trial_ind = max_ind + 1
-
-# ----------------------------------------------------------------------
-# Vamos a hacer que la gente ya loggeada pasa a completar solo los textos que nos faltan
-# Para hacer funcional esto hay que comentar trialOption y next_trial mas abajo
-
-		#~ max_listas_T0 = 16
-		#~ max_listas_T1 = max_listas_T0 +17
-		#~ max_listas_T2 = max_listas_T1 +17
-		#~ max_listas_T3 = max_listas_T2 +17
-		#~ max_listas_T4 = max_listas_T3 +17
-		#~ max_listas_T5 = max_listas_T4 +17
-		#~ max_listas_T6 = max_listas_T5 +17
-		#~ max_listas_T7 = max_listas_T6 +17
-#~ 
-		#~ min_texto_Actual = max_listas_T5
-		#~ max_texto_Actual = max_listas_T6
-		#~ 
-		#~ print "Mínimo", min_texto_Actual, ";", "Máximo", max_texto_Actual
-		#~ 
-		#~ lo_que_queda = seq[next_trial_ind:]
-		#~ indices_menores = [i for i, x in enumerate(lo_que_queda) if x <= min_texto_Actual]
-		#~ indices_mayores = [i for i, x in enumerate(lo_que_queda) if x >  min_texto_Actual]
-		#~ 
-		#~ if seq[next_trial_ind] > min_texto_Actual & seq[next_trial_ind] > max_texto_Actual | len(indices_mayores)==0:
-			#~ print "No hay que remodelar la lista"
-			#~ trialOption = TrialOption.objects.filter(id=seq[next_trial_ind]).get() 
-			#~ next_trial = TrialOption.objects.get(id=seq[next_trial_ind]) 
-		#~ else:
-			#~ print "Hay que remodelar la lista"
-			#~ nueva_lista = []
-			#~ for ind in indices_mayores:
-				#~ nueva_lista.append(lo_que_queda[ind])
-			#~ for ind in indices_menores:
-				#~ nueva_lista.append(lo_que_queda[ind])
-			#~ 
-			#~ lista_completa = trialOpt_sub + nueva_lista	
-			#~ lista_completa = list(set(lista_completa))
-			#~ print "Lista Original", seq 
-			#~ print "Lista Nueva", lista_completa
-			#~ indice_prox_trial = nueva_lista[0]						
-			#~ next_trial = TrialOption.objects.get(id=indice_prox_trial)
-			#~ trialOption = TrialOption.objects.filter(id=indice_prox_trial).get()
-			#~ 
-			#~ ed = request.GET.get('edad',-1)
-			#~ gen = request.GET.get('gender','')
-			#~ ip = request.META.get('REMOTE_ADDR','0.0.0.0')
-			#~ 
-			#~ sub.experiment_sequence=lista_completa
-			#~ 
-			#~ sub = Subject(email=email,age=ed,gender=gen,original_ip=ip,experiment_sequence=lista_completa,sequence_number=seq_num)
-			#~ sub.save()
-
-		#~ OJOOOO Esto no sirve porque el los que descargamos asigna mal el idtexto!!!!!!!!!!!!! 
-# ----------------------------------------------------------------------
 	
 		trialOption = TrialOption.objects.filter(id=seq[next_trial_ind]).get() 
 		next_trial = TrialOption.objects.get(id=seq[next_trial_ind]) 
