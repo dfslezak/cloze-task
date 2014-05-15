@@ -89,7 +89,7 @@ function trial_default() {
 						$("#formulario_segundo_inicio").hide(); 
 						alert("Hola, ¡Gracias por Participar en nuestro experimento!\n\nTe queríamos avisar que próximamente vamos a realizar un sorteo especial entre aquellos que tengan completados al menos 5 textos. Apurate, todavía tenés tiempo hasta para seguir completando textos");
 					{% else %}
-						{% if Sorteo_especial%}
+						{% if Sorteo_especial or finalizado %}
 							alert("Hola, ¡Gracias por Volver!\n\nTe queríamos avisar que estás participando por un sorteo especial por ser una de las personas con más textos completados \n\nEl sorteo se va a realizar próximamente entre todos los que tengan al menos 5 textos completados");
 						{% else %}
 							alert("Hola, ¡Gracias por Volver!\n\nTe queríamos avisar que próximamente vamos a realizar un sorteo especial entre aquellos que completen al menos 5 textos. Apurate, todavía tenés tiempo hasta para seguir completando textos");
