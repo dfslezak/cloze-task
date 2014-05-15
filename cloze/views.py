@@ -26,8 +26,7 @@ def trial(request):
 	
 	if ( email_get==''):
 		t = loader.get_template('404.html')
-		c=RequestContext(request,{
-		'form': form_subject})
+		c=RequestContext(request)
 		return HttpResponse(t,render(c))
 		
 		#Seteo cookie
