@@ -25,7 +25,10 @@ def trial(request):
 	#print 'email_get:',email_get
 	
 	if ( email_get==''):
-		return HttpResponse("Error por mail no valido")
+		t = loader.get_template('404.html')
+		c=RequestContext(request,{
+		'form': form_subject})
+		return HttpResponse(t,render)
 		
 		#Seteo cookie
 		#~ max_age = days_expire * 24 * 60 * 60 
