@@ -40,16 +40,23 @@
 </div>	
 			<br><br><br><br><br><br><br><br><br>
 	<div class="container" align=center>
-	<p>Si estás viendo esto es porque entraste a un link equivocado</p>
+	<img src="{{ STATIC_URL }}Imagen_error.png">
+	<h4>Ups! pasó algo raro y caiste donde no deberías haber caido</h4>
+	<p>Igual no te preocupes, podés volver a entrar y seguir desde el texto que te corresponde</p>
 	<br>
 	<br>
 	<br>
-				<div>
+			<div>
 			 <form action="/bruno/ganadores/" target="_blank" >
 				<input id="input_ganadores" class="btn btn-lg btn-trial btn-block" type="submit"  value="Ver Ganadores">
 			 </form>	
+			<form class="form-winners" method="get" action='/bruno/' >
+				<input class="btn btn-lg btn-ganadores btn-block" id="input_iniciar_trial" type="submit" value="Ir al experimento" >
+			</form>	
+
 			</div>
-				<br>	
+			
+					<br>	
 				<p>Consultas y comentarios: <a href="mailto:experimentolni@gmail.com">experimentolni@gmail.com</a></p>
 				<p>Sitio Web del <a href="http://neurociencia.df.uba.ar/?q=es">Laboratorio de Neurociencia Integrativa</a></p>
 				<p>O visitanos en <a href="https://www.facebook.com/laboratoriodeneurocienciaintegrativa"> Facebook</a> para enterarte de las novedades</p>	
