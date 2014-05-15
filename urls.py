@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib import admin
 
 admin.autodiscover()
+handler500 = "mysite.views.server_error"
 
 urlpatterns = patterns('',
 	# Examples:
@@ -16,7 +17,6 @@ urlpatterns = patterns('',
 	url(r'^bajar_sujetos/$', 'cloze.views.bajar_sujetos'),
 	url(r'^$', 'cloze.views.home', name='home'),
 	# url(r'^prueba/', include('prueba.foo.urls')),
-	handler500 = "mysite.views.server_error"
 
 	# Uncomment the admin/doc line below to enable admin documentation:
 	# url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
