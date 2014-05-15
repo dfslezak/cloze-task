@@ -4,7 +4,6 @@ from django.conf import settings
 from django.contrib import admin
 
 admin.autodiscover()
-handler500 = "mysite.views.server_error"
 
 urlpatterns = patterns('',
 	# Examples:
