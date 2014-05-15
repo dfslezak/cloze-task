@@ -28,7 +28,7 @@ def trial(request):
 		t = loader.get_template('404.html')
 		c=RequestContext(request,{
 		'form': form_subject})
-		return HttpResponse(t,render)
+		return HttpResponse(t,render(c))
 		
 		#Seteo cookie
 		#~ max_age = days_expire * 24 * 60 * 60 
