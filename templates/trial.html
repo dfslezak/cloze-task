@@ -87,13 +87,13 @@ function trial_default() {
 						$("#boton_sin_preguntas").hide(); 
 						$("#formulario_preguntas").show();
 						$("#formulario_segundo_inicio").hide(); 
-						alert("Hola, ¡Gracias por Participar en nuestro experimento!\n\nTe queríamos avisar que próximamente vamos a realizar un sorteo especial entre aquellos que tengan completados al menos 5 textos. Apurate, todavía tenés tiempo hasta para seguir completando textos");
-					{% else %}
-						{% if Sorteo_especial or finalizado %}
-							alert("Hola, ¡Gracias por Volver!\n\nTe queríamos avisar que estás participando por un sorteo especial por ser una de las personas con más textos completados \n\nEl sorteo se va a realizar próximamente entre todos los que tengan al menos 5 textos completados");
-						{% else %}
-							alert("Hola, ¡Gracias por Volver!\n\nTe queríamos avisar que próximamente vamos a realizar un sorteo especial entre aquellos que completen al menos 5 textos. Apurate, todavía tenés tiempo hasta para seguir completando textos");
-						{% endif %}
+						//~ alert("Hola, ¡Gracias por Participar en nuestro experimento!\n\nTe queríamos avisar que próximamente vamos a realizar un sorteo especial entre aquellos que tengan completados al menos 5 textos. Apurate, todavía tenés tiempo hasta para seguir completando textos");
+					//~ {% else %}
+						//~ {% if Sorteo_especial or finalizado %}
+							//~ alert("Hola, ¡Gracias por Volver!\n\nTe queríamos avisar que estás participando por un sorteo especial por ser una de las personas con más textos completados \n\nEl sorteo se va a realizar próximamente entre todos los que tengan al menos 5 textos completados");
+						//~ {% else %}
+							//~ alert("Hola, ¡Gracias por Volver!\n\nTe queríamos avisar que próximamente vamos a realizar un sorteo especial entre aquellos que completen al menos 5 textos. Apurate, todavía tenés tiempo hasta para seguir completando textos");
+						//~ {% endif %}
 					{% endif %}
 
 
@@ -332,18 +332,36 @@ $().ready(trial_default)
 <body id="main_body" >
 	
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-	<div class="container">
-        <div class="navbar-header">
+<table style="width:100%">
+<div class="container">
 
-		 <a class="navbar-brand" href="#"><h3>Experimento de completar palabras</h3></a> <br>
-		 <font color="blanco" ><p>Usuario logueado: <b>{{usuario}}</b></p>
-         <p>Textos completados: <b>{{etiqueta_trial}}</b></p></font>
-
-        </div>
-       <div id="logo" align=right style ="margin-top:1.5%; "> <a href="http://neurociencia.df.uba.ar/?q=es"> <img src="{{ STATIC_URL }}logoLNI.jpg" height="120px"> </a></div>
-
-	</div>
-
+	<td style="width:600px">
+		<div class="navbar-header" align=left style="margin-left:100px">
+		 <a class="navbar-brand" href="#">
+			 <h3>Experimento de completar palabras</h3></a>
+		 <font color="blanco">
+			Usuario logueado: <b>{{usuario}}</b><br>
+			Textos completados: <b>{{etiqueta_trial}}</b></font>
+		</div>
+	</td>
+	
+	<td style="width:400px">
+		<div id="Sorteo_especial" align=left>
+			{% if Sorteo_especial or finalizado %}
+				<div style="border: ridge #428bca 3px"><font color="white"><p> Hola, te queríamos avisar que estás participando en un sorteo especial por ser una de las personas con más textos completados. <p>El sorteo se va a realizar el 30 de Mayo entre todos los que tengan al menos 5 textos completados</p></font></div>
+			{% elif primer_trial %}
+				<div style="border: ridge #428bca 3px"><font color="white"><p> Hola, ¡Gracias por Participar en nuestro experimento! </p> <p>Te queríamos avisar que próximamente vamos a realizar un sorteo especial entre aquellos que tengan completados al menos 5 textos. Apurate, todavía tenés tiempo hasta el 30 de Mayo para seguir completando textos</p></font></div>
+			{% else %}
+				<div style="border: ridge #428bca 3px"><font color="white"><p> Hola, ¡Gracias por Volver!</p><p>Te queríamos avisar que próximamente vamos a realizar un sorteo especial entre aquellos que completen al menos 5 textos. Apurate, tenés tiempo hasta el 30 de Mayo para seguir completando textos</p></font></div>
+			{% endif %}
+		</div>
+	</td>
+	
+	<td>	
+       <div id="logo" align=rigth style="margin-left: 50px"> <a href="http://neurociencia.df.uba.ar/?q=es"> <img src="{{ STATIC_URL }}logoLNI.jpg" height="120px"> </a></div>
+	</td>
+</div>
+</table>
 </div>	
 	
         {%if finalizado%} 
