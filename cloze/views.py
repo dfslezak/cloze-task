@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from django.http import HttpResponse
+from django.core.servers.basehttp import FileWrapper
 from cloze.models import *
 from django.template import RequestContext,Context, loader
 from django.utils import simplejson
@@ -267,10 +268,19 @@ def bajar_todo(request):
         if (print_number % 100 == 0):
             print print_number
     
-    # generate the file
-    response = HttpResponse(csv, content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename=log.csv'
+    filename = '/tmp/log.csv'
+    f = open(filename,'w')
+    f.write(csv)
+    f.close()
+    
+    wrapper = FileWrapper(file(filename))
+    response = HttpResponse(wrapper, content_type='text/plain')
+    response['Content-Length'] = os.path.getsize(filename)
     return response
+    # generate the file
+    #response = HttpResponse(csv, content_type='text/csv')
+    #response['Content-Disposition'] = 'attachment; filename=log.csv'
+    #return response
 
 def bajar_sujetos(request):
     
