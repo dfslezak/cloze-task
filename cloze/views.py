@@ -231,6 +231,7 @@ def subirInformation(request):
 def bajar_todo(request):
     
     csv = ''
+    print_number = 0
     for t in Trial.objects.all().order_by('subject','id'):
         s = t.subject
         to = t.trialOpt
@@ -253,12 +254,18 @@ def bajar_todo(request):
         
         pals = json.loads(t.words)
         c = 0
+        line_prefix = "'" + str(t.id) + "','" + str(s.id) + "','" + str(s.email) + "','" + str(seq_num) + "','" + str(to.id) + "','" + str(te.textClass) + "','" + str(te.textNumber) + "','" + str(ep) + "','"
+        line_suffix = "','" + str(s.age) + "'" 
         for p,pt in pals:
             p_limpia = p.replace(',','').replace('.','').replace(';','').replace(':','').replace("'","")
             pal_original = te.body.split()[mw[c]].replace(',','').replace('.','').replace(';','').replace(':','').replace("'","")
-            line = "'" + str(t.id) + "','" + str(s.id) + "','" + str(s.email) + "','" + str(seq_num) + "','" + str(to.id) + "','" + str(te.textClass) + "','" + str(te.textNumber) + "','" + str(ep) + "','" + p_limpia + "','" + pal_original + "','" + pt + "','" + str(c) + "','" + str(s.age) + "'" 
+            line = line_prefix + p_limpia + "','" + pal_original + "','" + pt + "','" + str(c) + line_suffix
             csv = csv + (line.encode('iso-8859-1')+'\n')
             c = c + 1
+            
+        print_number = print_number + 1
+        if (print_number % 100 == 0):
+            print print_number
     
     # generate the file
     response = HttpResponse(csv, content_type='text/csv')
