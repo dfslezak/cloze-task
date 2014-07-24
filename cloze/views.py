@@ -246,6 +246,7 @@ def bajar_todo(request):
         
         te = to.text
         mw = json.loads(to.missing_words)
+        tebs = te.body.split()
                
         epoch = timezone.make_aware(datetime.datetime.utcfromtimestamp(0), timezone.get_default_timezone())
         #print t.initial_time
@@ -257,16 +258,15 @@ def bajar_todo(request):
         c = 0
         line_prefix = "'" + str(t.id) + "','" + str(s.id) + "','" + str(s.email) + "','" + str(seq_num) + "','" + str(to.id) + "','" + str(te.textClass) + "','" + str(te.textNumber) + "','" + str(ep) + "','"
         line_suffix = "','" + str(s.age) + "'" 
-        #for p,pt in pals:
-        #    p_limpia = re.sub("[,.;:']", '', p)
-        #    #p_limpia = p.replace(',','').replace('.','').replace(';','').replace(':','').replace("'","")
-        #    #pal_original = te.body.split()[mw[c]].replace(',','').replace('.','').replace(';','').replace(':','').replace("'","")
-        #    pal_original = re.sub("[,.;:']", '', te.body.split()[mw[c]])
-        #    line = line_prefix + p_limpia + "','" + pal_original + "','" + pt + "','" + str(c) + line_suffix
-        #    csv = csv + (line.encode('iso-8859-1')+'\n')
-        #    c = c + 1
-        lines = [line_prefix + re.sub("[,.;:']", '', p) + "','" + re.sub("[,.;:']", '', te.body.split()[mw[c]]) + "','" + pt + "','" + line_suffix for p,pt in pals]
-        csv = csv + '\n'.join(lines)
+        for p,pt in pals:
+            p_limpia = re.sub("[,.;:']", '', p)
+            #p_limpia = p.replace(',','').replace('.','').replace(';','').replace(':','').replace("'","")
+            #pal_original = te.body.split()[mw[c]].replace(',','').replace('.','').replace(';','').replace(':','').replace("'","")
+            pal_original = re.sub("[,.;:']", '', tebs[mw[c]])
+            line = line_prefix + p_limpia + "','" + pal_original + "','" + pt + "','" + str(c) + line_suffix
+            #csv = csv + (line.encode('iso-8859-1')+'\n')
+            csv = csv + line + '\n'
+            c = c + 1
             
         print_number = print_number + 1
         if (print_number % 100 == 0):
@@ -274,7 +274,7 @@ def bajar_todo(request):
     
     filename = '/tmp/log.csv'
     f = open(filename,'w')
-    f.write(csv)
+    f.write(csv.encode('iso-8859-1'))
     f.close()
     
     wrapper = FileWrapper(file(filename))
