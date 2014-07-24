@@ -246,8 +246,8 @@ def bajar_todo(request):
         mw = json.loads(to.missing_words)
                
         epoch = timezone.make_aware(datetime.datetime.utcfromtimestamp(0), timezone.get_default_timezone())
-        print t.initial_time
-        print epoch
+        #print t.initial_time
+        #print epoch
         delta = t.initial_time - epoch 
         ep = long(delta.total_seconds()*1000) + 3600 * 1000 * 3 # GMT-3 correction
         
