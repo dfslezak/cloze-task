@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
 from django.http import HttpResponse
-from django.core.servers.basehttp import FileWrapper
 from cloze.models import *
 from django.template import RequestContext,Context, loader
 from django.utils import simplejson
@@ -232,8 +231,7 @@ def subirInformation(request):
 def bajar_todo(request):
     
     csv = ''
-    print_number = 0
-    for t in Trial.objects.all().order_by('subject','id'):
+    for t in Trial.objects.all().order_by('subject','id')[int(request.GET.get('desde',0)):int(request.GET.get('hasta',100))]:
         s = t.subject
         to = t.trialOpt
         
@@ -246,45 +244,26 @@ def bajar_todo(request):
         
         te = to.text
         mw = json.loads(to.missing_words)
-        tebs = te.body.split()
                
         epoch = timezone.make_aware(datetime.datetime.utcfromtimestamp(0), timezone.get_default_timezone())
-        print t.initial_time
-        print epoch
+        #print t.initial_time
+        #print epoch
         delta = t.initial_time - epoch 
         ep = long(delta.total_seconds()*1000) + 3600 * 1000 * 3 # GMT-3 correction
         
         pals = json.loads(t.words)
         c = 0
-        line_prefix = "'" + str(t.id) + "','" + str(s.id) + "','" + str(s.email) + "','" + str(seq_num) + "','" + str(to.id) + "','" + str(te.textClass) + "','" + str(te.textNumber) + "','" + str(ep) + "','"
-        line_suffix = "','" + str(s.age) + "'" 
         for p,pt in pals:
-            p_limpia = re.sub("[,.;:']", '', p)
-            #p_limpia = p.replace(',','').replace('.','').replace(';','').replace(':','').replace("'","")
-            #pal_original = te.body.split()[mw[c]].replace(',','').replace('.','').replace(';','').replace(':','').replace("'","")
-            pal_original = re.sub("[,.;:']", '', tebs[mw[c]])
-            line = line_prefix + p_limpia + "','" + pal_original + "','" + pt + "','" + str(c) + line_suffix
-            #csv = csv + (line.encode('iso-8859-1')+'\n')
-            csv = csv + line + '\n'
+            p_limpia = p.replace(',','').replace('.','').replace(';','').replace(':','').replace("'","")
+            pal_original = te.body.split()[mw[c]].replace(',','').replace('.','').replace(';','').replace(':','').replace("'","")
+            line = "'" + str(t.id) + "','" + str(s.id) + "','" + str(s.email) + "','" + str(seq_num) + "','" + str(to.id) + "','" + str(te.textClass) + "','" + str(te.textNumber) + "','" + str(ep) + "','" + p_limpia + "','" + pal_original + "','" + pt + "','" + str(c) + "','" + str(s.age) + "'" 
+            csv = csv + (line.encode('iso-8859-1')+'\n')
             c = c + 1
-            
-        print_number = print_number + 1
-        if (print_number % 100 == 0):
-            print print_number
     
-    filename = '/tmp/log.csv'
-    f = open(filename,'w')
-    f.write(csv.encode('iso-8859-1'))
-    f.close()
-    
-    wrapper = FileWrapper(file(filename))
-    response = HttpResponse(wrapper, content_type='text/plain')
-    response['Content-Length'] = os.path.getsize(filename)
-    return response
     # generate the file
-    #response = HttpResponse(csv, content_type='text/csv')
-    #response['Content-Disposition'] = 'attachment; filename=log.csv'
-    #return response
+    response = HttpResponse(csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=log.csv'
+    return response
 
 def bajar_sujetos(request):
     
@@ -306,4 +285,5 @@ def bajar_sujetos(request):
     response = HttpResponse(csv, content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=subject_log.csv'
     return response
+
 
