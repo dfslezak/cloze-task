@@ -5,6 +5,8 @@
     <!-- Bootstrap core CSS -->
 <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
 <link href="{{ STATIC_URL }}css/ganadores.css" rel="stylesheet">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+
 
 <title>Experimento de completar palabras</title>
 
@@ -22,11 +24,15 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 
+(function () {
+$('#tabs li:eq(1) a').tab('show');
+});
 </script>
 </head>
 
 
 <body id="main_body" class="container" >
+
 
 
     <div id="form_container">
@@ -36,6 +42,7 @@
                 <p class="form-winners-heading">Cada uno de ellos se ganó AR$ 200 en órdenes de compra o en efectivo. </p>
 				
 				<h3>Ganadores</h3> <br>
+<!--
 				<b><u>1º Sorteo</u> (17 de Febrero de 2014)</b>:   jcpovina@(...).com
   				<br><br>
   				<b><u>2º Sorteo</u> (05 de Marzo de 2014)</b>:  cscorticati@(...).com
@@ -64,7 +71,95 @@
 				<br><br>				
 				<b><u>13º Sorteo</u> (15 de Agosto de 2014)</b>: valeriakelly@(...).com
 				<br><br>				
-				
+-->
+
+
+ <div class="container" style="width:100%">
+ 
+<!-------->
+<div id="content">
+    <ul id="tabs1" class="nav nav-tabs" data-tabs="tabs">
+        <li class="active"><a href="#Febrero" data-toggle="tab"><h4>Febrero</h4></a></li>
+        <li><a href="#Marzo" data-toggle="tab"><h4>Marzo</h4></a></li>
+        <li><a href="#Abril" data-toggle="tab"><h4>Abril &nbsp &nbsp </h4></a></li>
+        <li><a href="#Mayo" data-toggle="tab"><h4>  Mayo</h4></a></li>
+    </ul>
+
+  <br>  
+    <div id="my-tab-content" class="tab-content">
+        <div class="tab-pane fade" id="Febrero">
+           <b><u>1º Sorteo</u> (17 de Febrero de 2014)</b>:   jcpovina@(...).com 
+        </div>
+        
+        <div class="tab-pane fade" id="Marzo">
+  				<b><u>2º Sorteo</u> (05 de Marzo de 2014)</b>:  cscorticati@(...).com
+  				<br><br>
+  				<b><u>3º Sorteo</u> (18 de Marzo de 2014)</b>:   daniela15_ve@(...).com
+  				<br><br>
+  				<b><u>4º Sorteo</u> (28 de Marzo de 2014)</b>:   mechiparra@(...).com
+        </div>
+        
+        <div class="tab-pane fade" id="Abril">
+  				<b><u>5º Sorteo</u> (11 de Abril de 2014)</b>:   gisela_sa_yo@(...).com
+				<br><br>
+  				<b><u>6º Sorteo</u> (25 de Abril de 2014)</b>:   ernesto.gulich@(...).com
+        </div>
+        
+        <div class="tab-pane fade" id="Mayo">
+  				<b><u>7º Sorteo</u> (08 de Mayo de 2014)</b>: soy@(...).com
+				<br><br>
+  				<b><u>8º Sorteo</u> (23 de Mayo de 2014)</b>: robertorossetti14@(...).com.ar
+  								<br><br>
+  				<b><u>Sorteo Especial</u> (30 de Mayo de 2014)</b>: valeriaccolombo@(...).com
+        </div>
+        
+
+
+    <ul id="tabs2" class="nav nav-tabs" data-tabs="tabs">
+		<li><a href="#Junio" data-toggle="tab"><h4>Junio &nbsp &nbsp </h4></a></li> 
+        <li><a href="#Julio" data-toggle="tab"><h4>Julio &nbsp </h4></a></li>
+        <li><a href="#Agosto" data-toggle="tab"><h4>Agosto</h4></a></li>
+        <li><a href="#Septiembre" data-toggle="tab"><h4>Septiembre</h4></a></li>
+    </ul>
+          <br>  
+        <div class="tab-pane fade" id="Junio">
+  				<b><u>9º Sorteo</u> (06 de Junio de 2014)</b>: anadellarciprete@(...).com.ar
+				<br><br>
+				<b><u>10º Sorteo</u> (20 de Junio de 2014)</b>: mndiguilmi@(...).com
+        </div>
+        
+        <div class="tab-pane fade" id="Julio">
+				<b><u>11º Sorteo</u> (04 de Julio de 2014)</b>: solesartori@(...).com
+				<br><br>
+				<b><u>12º Sorteo</u> (30 de Julio de 2014)</b>: cyn.fraysse@(...).com
+        </div>
+        
+        <div class="tab-pane fade" id="Agosto">
+				<b><u>13º Sorteo</u> (15 de Agosto de 2014)</b>: valeriakelly@(...).com
+
+        </div>
+
+
+        
+    </div>
+
+
+</div>
+ 
+ 
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+        $('#tabs').tab();
+    });
+</script>    
+</div> <!-- container -->
+
+<br> <br>
+ 
+
+
+
+
 <!--
 				<p style="border: ridge #428bca 2px">  <b>ATENCIÓN: El 30 de Mayo vamos a realizar un sorteo exclusivo por AR$400 para los usuarios que (al momento del sorteo) tengan 5 o más textos completados</b></p>
 -->
@@ -89,5 +184,9 @@
 
 <div id="log" align=center style="display:none; margin:auto"><br><hr>
 Log debuggin :</div>
+	
+	
+<script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.js"></script>
+
 	
 </body></html>
