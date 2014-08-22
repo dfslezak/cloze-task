@@ -9,6 +9,8 @@
 
 	<script src="{{ STATIC_URL }}jquery.js" type="text/javascript"></script>
 	<script src="{{ STATIC_URL }}jquery.cookie.js" type="text/javascript"></script>
+	<link href="{{ STATIC_URL }}css/bootstrap-social.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/font-awesome.css" rel="stylesheet">
 
     <meta name="description" content="">
     <meta name="author" content="">
@@ -349,11 +351,11 @@ $().ready(trial_default)
 <!--
 		<div id="Sorteo_especial" align=left>
 			{% if Sorteo_especial or finalizado %}
-				<div style="border: ridge #428bca 3px"><font color="white"><p> Hola, te queríamos avisar que estás participando en un sorteo especial por ser una de las personas con más textos completados. <p>El sorteo se va a realizar el 30 de Mayo entre todos los que tengan al menos 5 textos completados</p></font></div>
+				<div style="border: ridge #428bca 3px; border-radius: 8px"><font color="white"><p> Hola, te queríamos avisar que estás participando en un sorteo especial por ser una de las personas con más textos completados. <p>El sorteo se va a realizar el 30 de Mayo entre todos los que tengan al menos 5 textos completados</p></font></div>
 			{% elif primer_trial %}
-				<div style="border: ridge #428bca 3px"><font color="white"><p> Hola, ¡Gracias por Participar en nuestro experimento! </p> <p>Te queríamos avisar que próximamente vamos a realizar un sorteo especial entre aquellos que tengan completados al menos 5 textos. Apurate, todavía tenés tiempo hasta el 30 de Mayo para seguir completando textos</p></font></div>
+				<div style="border: ridge #428bca 3px; border-radius: 8px"><font color="white"><p> Hola, ¡Gracias por Participar en nuestro experimento! </p> <p>Te queríamos avisar que próximamente vamos a realizar un sorteo especial entre aquellos que tengan completados al menos 5 textos. Apurate, todavía tenés tiempo hasta el 30 de Mayo para seguir completando textos</p></font></div>
 			{% else %}
-				<div style="border: ridge #428bca 3px"><font color="white"><p> Hola, ¡Gracias por Volver!</p><p>Te queríamos avisar que próximamente vamos a realizar un sorteo especial entre aquellos que completen al menos 5 textos. Apurate, tenés tiempo hasta el 30 de Mayo para seguir completando textos</p></font></div>
+				<div style="border: ridge #428bca 3px; border-radius: 8px"><font color="white"><p> Hola, ¡Gracias por Volver!</p><p>Te queríamos avisar que próximamente vamos a realizar un sorteo especial entre aquellos que completen al menos 5 textos. Apurate, tenés tiempo hasta el 30 de Mayo para seguir completando textos</p></font></div>
 			{% endif %}
 		</div>
 -->
@@ -558,11 +560,19 @@ $().ready(trial_default)
 	 </form>	
 	</div>
 	<br><br>
-	<p>Consultas y comentarios: <a href="mailto:experimentolni@gmail.com">experimentolni@gmail.com</a></p>
-	<p>Sitio Web del <a href="http://neuro.org.ar/?q=es">Laboratorio de Neurociencia Integrativa</a></p>
-	<p>O visitanos en <a href="https://www.facebook.com/laboratoriodeneurocienciaintegrativa"> Facebook</a> para enterarte de las novedades</p>	
-	
+<div id="botones_nuevos" style="width:480px">
+	<a class="btn btn-block btn-social btn-lg btn-facebook"  href='https://www.facebook.com/laboratoriodeneurocienciaintegrativa?ref=ts&fref=ts' target="_blank" style="align:center; margin-top:8px"> 
+		<i class="fa fa-facebook"></i> Me Gusta NeuroIntegrativa en Facebook 
+	</a>
 
+	<a class="btn btn-block btn-social btn-lg btn-google-plus"  href="mailto:experimentolni@gmail.com" style="align:center; margin-top:3px"> 
+		<i class="fa fa-envelope-o"></i> Consultas y comentarios a nuestro e-mail 
+	</a>
+
+	<a class="btn btn-block btn-social btn-lg btn-reddit"  href='http://neuro.org.ar/' target="_blank" style="align:center;  margin-top:3px"> 
+		<i class="fa fa-cube"></i> Visitá nuestra web 
+	</a>
+</div>
 
 </div>
 

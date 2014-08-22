@@ -4,7 +4,9 @@
 
     <!-- Bootstrap core CSS -->
 <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
-<link href="{{ STATIC_URL }}css/ganadores.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/bootstrap-social.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/font-awesome.css" rel="stylesheet">
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
 
 
@@ -31,18 +33,17 @@ $('#tabs li:eq(1) a').tab('show');
 </head>
 
 
-<body id="main_body" class="container" >
-
-
+<body id="main_body" class="container" style="width:480px">
 
     <div id="form_container">
         <form class="form-winners" method="get" action='/bruno/' >
 				<h2 class="form-winners-heading">Experimento de completar palabras</h2>
                 <p class="form-winners-heading">Estos son los ganadores de los sorteos que llevamos realizados hasta el momento </p>
                 <p class="form-winners-heading">Cada uno de ellos se ganó AR$ 200 en órdenes de compra o en efectivo. </p>
+				<p>Recordá que todos los puntos ya acumulados siguen vigentes.</p>
+				<h3>Ganadores:</h3> <br>
 				
-				<h3>Ganadores</h3> <br>
-<!--
+<!-- Lista vieja de ganadores
 				<b><u>1º Sorteo</u> (17 de Febrero de 2014)</b>:   jcpovina@(...).com
   				<br><br>
   				<b><u>2º Sorteo</u> (05 de Marzo de 2014)</b>:  cscorticati@(...).com
@@ -74,19 +75,18 @@ $('#tabs li:eq(1) a').tab('show');
 
 -->
 
- <div class="container" style="width:100%">
- 
-<!-------->
-<div id="content">
+<!-- Pestañas Ganadores -->
+<div> 
+<div id="content" style="width:100%">
+	
     <ul id="tabs1" class="nav nav-tabs" data-tabs="tabs">
         <li class="active"><a href="#Febrero" data-toggle="tab"><h4>Febrero</h4></a></li>
         <li><a href="#Marzo" data-toggle="tab"><h4>Marzo</h4></a></li>
         <li><a href="#Abril" data-toggle="tab"><h4>Abril &nbsp &nbsp </h4></a></li>
         <li><a href="#Mayo" data-toggle="tab"><h4>  Mayo</h4></a></li>
     </ul>
-
-  <br>  
-    <div id="my-tab-content" class="tab-content">
+    <br>  
+    <div id="my-tab-content1" class="tab-content">
         <div class="tab-pane fade" id="Febrero">
            <b><u>1º Sorteo</u> (17 de Febrero de 2014)</b>:   jcpovina@(...).com 
         </div>
@@ -112,16 +112,16 @@ $('#tabs li:eq(1) a').tab('show');
   								<br><br>
   				<b><u>Sorteo Especial</u> (30 de Mayo de 2014)</b>: valeriaccolombo@(...).com
         </div>
-        
-
-
+        </div>
+  
     <ul id="tabs2" class="nav nav-tabs" data-tabs="tabs">
 		<li><a href="#Junio" data-toggle="tab"><h4>Junio &nbsp &nbsp </h4></a></li> 
         <li><a href="#Julio" data-toggle="tab"><h4>Julio &nbsp </h4></a></li>
         <li><a href="#Agosto" data-toggle="tab"><h4>Agosto</h4></a></li>
         <li><a href="#Septiembre" data-toggle="tab"><h4>Septiembre</h4></a></li>
     </ul>
-          <br>  
+    <br>  
+    <div id="my-tab-content2" class="tab-content">
         <div class="tab-pane fade" id="Junio">
   				<b><u>9º Sorteo</u> (06 de Junio de 2014)</b>: anadellarciprete@(...).com.ar
 				<br><br>
@@ -142,12 +142,9 @@ $('#tabs li:eq(1) a').tab('show');
         <div class="tab-pane fade" id="Septiembre">
 			
         </div>
-
-
+        </div>
         
-    </div>
-
-
+</div>
 </div>
  
  
@@ -156,41 +153,40 @@ $('#tabs li:eq(1) a').tab('show');
         $('#tabs').tab();
     });
 </script>    
-</div> <!-- container -->
+</div>  
+				<br> <br>
 
-<br> <br>
- 
-
-
-
-
-<!--
-				<p style="border: ridge #428bca 2px">  <b>ATENCIÓN: El 30 de Mayo vamos a realizar un sorteo exclusivo por AR$400 para los usuarios que (al momento del sorteo) tengan 5 o más textos completados</b></p>
--->
-				<p>Recordá que todos los puntos ya acumulados siguen vigentes.</p>
-				<br>
+<!--            <p style="border: ridge #428bca 2px; align: center; width:480px">  <b>ATENCIÓN: El 30 de Mayo vamos a realizar un sorteo exclusivo por AR$400 para los usuarios que (al momento del sorteo) tengan 5 o más textos completados</b></p> -->
                 <input class="btn btn-lg btn-ganadores btn-block" id="input_iniciar_trial" type="submit" value="Ir al experimento" >
+
+<!-- Botones Nuevos	-->
+				<a class="btn btn-block btn-social btn-lg btn-facebook"  href='https://www.facebook.com/laboratoriodeneurocienciaintegrativa?ref=ts&fref=ts' target="_blank" style="align:center; margin-top:8px"> 
+					<i class="fa fa-facebook"></i> Me Gusta NeuroIntegrativa en Facebook 
+				</a>
 				
-<!--
-				<p>Si ya completaste algún texto, seguí completando y sumando más puntos.</p>
-				<p>Y si todavía no empezaste ¿Qué estás esperando?</p>
--->
-				<br>
+				<a class="btn btn-block btn-social btn-lg btn-google-plus"  href="mailto:experimentolni@gmail.com" style="align:center; margin-top:3px"> 
+					<i class="fa fa-envelope-o"></i> Consultas y comentarios a nuestro e-mail 
+				</a>
+				
+				<a class="btn btn-block btn-social btn-lg btn-reddit"  href='http://neuro.org.ar/' target="_blank" style="align:center;  margin-top:3px"> 
+					<i class="fa fa-cube"></i> Visitá nuestra web 
+				</a>
+
+<!-- Links viejos
 				<p>Consultas y comentarios: <a href="mailto:experimentolni@gmail.com">experimentolni@gmail.com</a></p>
 				<p>Sitio Web del <a href="http://neuro.org.ar/?q=es">Laboratorio de Neurociencia Integrativa</a></p>
 				<p>O visitanos en <a href="https://www.facebook.com/laboratoriodeneurocienciaintegrativa"> Facebook</a> para enterarte de las novedades</p>	
-				<br>
-
+-->
+<br>
         </form>	
-
-
     </div>	
 
-<div id="log" align=center style="display:none; margin:auto"><br><hr>
-Log debuggin :</div>
+
+<div id="log" align=center style="display:none; margin:auto"><br><hr> Log debuggin :</div>
 	
-	
+<!-- Esto es necesario para que funcionen las pestañas-->
 <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.js"></script>
 
 	
-</body></html>
+</body>
+</html>
