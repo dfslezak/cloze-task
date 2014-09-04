@@ -330,15 +330,22 @@ class Subject(models.Model):
 		
 		# Si se quiere cambiar el orden de los textos o eliminar un texto, se cambia desde acá. 
 		# Cada elemento de seq_base1 es un experimento variable pero siempre del mismo texto. 
-		seq_base0 = []
-		seq_base0.append(seq_base1[7])       # Pongo el 8º tengo primero
-		seq_base0.append(seq_base1[5]) # Pongo el 6º texto segundo, para terminar de completarlo
-		seq_base0.append(seq_base1[0]) # Pongo el 1º texto al final
-		seq_base0.append(seq_base1[1]) # Pongo el 2º texto al final
-		seq_base0.append(seq_base1[2]) # Pongo el 3º texto al final
-		seq_base0.append(seq_base1[3]) # Pongo el 4º texto al final
-		seq_base0.append(seq_base1[4]) # Pongo el 5º texto al final
-		seq_base0.append(seq_base1[6]) # Pongo el 7º texto al final
+		seq_base0 = seq_base1[0:7]
+		#~ seq_base0.append(seq_base1[7])       # Pongo el 8º tengo primero
+		#~ seq_base0.append(seq_base1[5]) # Pongo el 6º texto segundo, para terminar de completarlo
+		#~ seq_base0.append(seq_base1[0]) # Pongo el 1º texto al final
+		#~ seq_base0.append(seq_base1[1]) # Pongo el 2º texto al final
+		#~ seq_base0.append(seq_base1[2]) # Pongo el 3º texto al final
+		#~ seq_base0.append(seq_base1[3]) # Pongo el 4º texto al final
+		#~ seq_base0.append(seq_base1[4]) # Pongo el 5º texto al final
+		#~ seq_base0.append(seq_base1[6]) # Pongo el 7º texto al final
+
+		#~ ------------------------------------------------------------- 
+		#~ Armo listas a mano para completar el experimento 
+		listas=[[120, 85,   68, 0,  17,  56, 109], [122, 89,   69, 13, 30, 64, 117], [123, 90,   72, 13, 17, 56, 109], [124, 95,   82, 0,   17, 56, 117], [126, 98,   84, 13,  30, 64,109], [127, 100, 68, 13,  17, 56, 117], [129, 101, 69, 0,    17, 56, 109], [132, 85,   72, 13,  30, 64, 117], [133, 101, 82, 13,  17, 56, 109], [134, 89,  84,  0,    17, 64, 117], [135, 98,  68,  13,  30, 56, 109]]
+		
+		ts_num = ( Subject.objects.count() % len(listas) )
+		seq_base0 = listas[ts_num]
 		
 		return (ts.id,seq_base0)       
 
