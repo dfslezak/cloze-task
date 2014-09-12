@@ -330,7 +330,7 @@ class Subject(models.Model):
 		
 		# Si se quiere cambiar el orden de los textos o eliminar un texto, se cambia desde acá. 
 		# Cada elemento de seq_base1 es un experimento variable pero siempre del mismo texto. 
-		seq_base0 = seq_base1[0:7]
+		#~ seq_base0 = seq_base1[0:7]
 		#~ seq_base0.append(seq_base1[7])       # Pongo el 8º tengo primero
 		#~ seq_base0.append(seq_base1[5]) # Pongo el 6º texto segundo, para terminar de completarlo
 		#~ seq_base0.append(seq_base1[0]) # Pongo el 1º texto al final
@@ -353,7 +353,7 @@ class Subject(models.Model):
 		#~ ts_num = ( Subject.objects.count() % len(listas) )
 		#~ seq_base0 = listas[ts_num]
 		
-		return (ts.id,seq_base0)       
+		return (ts.id,seq_base1)       
 
 class SubjectForm(ModelForm):
     class Meta:
