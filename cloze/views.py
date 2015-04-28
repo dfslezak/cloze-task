@@ -257,7 +257,7 @@ def bajar_todo(request):
             p_limpia = p.replace(',','').replace('.','').replace(';','').replace(':','').replace("'","")
             pal_original = te.body.split()[mw[c]].replace(',','').replace('.','').replace(';','').replace(':','').replace("'","")
             line = "'" + str(t.id) + "','" + str(s.id) + "','" + str(s.email) + "','" + str(seq_num) + "','" + str(to.id) + "','" + str(te.textClass) + "','" + str(te.textNumber) + "','" + str(ep) + "','" + p_limpia + "','" + pal_original + "','" + pt + "','" + str(c) + "','" + str(s.age) + "'" 
-            csv = csv + (line.encode('iso-8859-1')+'\n')
+            csv = csv + (line.encode('iso-8859-1','ignore')+'\n')
             c = c + 1
     
     # generate the file
@@ -275,7 +275,7 @@ def bajar_sujetos(request):
         
         try:
             line = "'" + str(s.email) + "';'" + str(s.age) + "';'" + str(s.gender) + "';'" + str(s.original_ip) + "';'" + str(s.sequence_number) + "';'" + str(s.experiment_sequence) + "';'" + str(s.information.native_language) + "';'" +    str(s.information.reading_language) + "';'" + str(s.information.work_reading_language) + "';'" + str(s.information.country) + "';'" +            str(s.information.schooling) + "';'" + str(s.information.books) + "';'" + str(s.information.work_reading) + "';'" +            str(s.information.computer_reading) + "';'" + str(s.information.dexterity) + "';'" + str(s.information.source) + "';'" + str(s.information.other_experiments) + "'" 
-            csv = csv + (line.encode('iso-8859-1')+'\n')
+            csv = csv + (line.encode('iso-8859-1','ignore')+'\n')
         except ObjectDoesNotExist:
             print 'User incomplete: ' + str(s.email)
         #c = c + 1

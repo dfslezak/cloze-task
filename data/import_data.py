@@ -1,21 +1,21 @@
-import sqlite3
-# import psycopg2
+#mport sqlite3
+import psycopg2
 
 f = open('textos.csv','r')
 
 # ------------------------------------------
-conn = sqlite3.connect('cloze.sqlite3')
+#conn = sqlite3.connect('cloze.sqlite3')
 
 
 
 # ------------------------------------------
-#database='cloze_task'
-#host='calamaro.exp.dc.uba.ar'
-#user='dfslezak'
-#password='????'
-#connectStr="dbname='"+database+"' user='"+user+"' host='"+host+"' password='"+password+"'"
+database='cloze_bruno'
+host='calamaro.exp.dc.uba.ar'
+user='dfslezak'
+password='23571113'
+connectStr="dbname='"+database+"' user='"+user+"' host='"+host+"' password='"+password+"'"
 
-#conn = psycopg2.connect(connectStr)
+conn = psycopg2.connect(connectStr)
 # ------------------------------------------
 
 
@@ -36,8 +36,8 @@ for l in f.readlines():
 
 for i in db_text:
     print i[0]
-cur.executemany('INSERT INTO cloze_text VALUES (?,?,?,?)',db_text)
-#cur.executemany('INSERT INTO cloze_text VALUES (%s,%s,%s,%s)',db_text)
+#cur.executemany('INSERT INTO cloze_text VALUES (?,?,?,?)',db_text)
+cur.executemany('INSERT INTO cloze_text VALUES (%s,%s,%s,%s)',db_text)
 conn.commit()
 
 
@@ -56,8 +56,8 @@ for l in f.readlines():
     
     db_exp.append((id,text_id,missing))
     
-cur.executemany('INSERT INTO cloze_trialoption VALUES (?,?,?)',db_exp)
-#cur.executemany('INSERT INTO cloze_trialoption VALUES (%s,%s,%s)',db_exp)
+#cur.executemany('INSERT INTO cloze_trialoption VALUES (?,?,?)',db_exp)
+cur.executemany('INSERT INTO cloze_trialoption VALUES (%s,%s,%s)',db_exp)
 conn.commit()
 
 f.close()
@@ -72,7 +72,7 @@ for l in f.readlines():
 
 print db_seq
 
-cur.executemany('INSERT INTO cloze_trialsequence (seq) VALUES (?)',db_seq)
-#cur.executemany('INSERT INTO cloze_trialsequence (seq) VALUES (%s)',db_seq)
+#cur.executemany('INSERT INTO cloze_trialsequence (seq) VALUES (?)',db_seq)
+cur.executemany('INSERT INTO cloze_trialsequence (seq) VALUES (%s)',db_seq)
 conn.commit()
 
