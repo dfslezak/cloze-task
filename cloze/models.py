@@ -321,13 +321,18 @@ class Subject(models.Model):
 		#max_text_class = int(Text.objects.all().aggregate(Max('textClass'))['textClass__max'])
 		#seq = [ random.choice(TrialOption.objects.filter(text__textNumber=x).filter(text__textClass=random.randint(0, max_text_class))).id for x in range(0,max_text_number)]
 		
-		ts_num = ( Subject.objects.count() % TrialSequence.objects.count() )
+		# Originalmente se buscaba la cantidad total de combinaciones de listas y se dividía entre los sujetos
+		#~ ts_num = (Subject.objects.count() % TrialSequence.objects.count() ) 
+		
+		# (30/04/2015) Como ahora agrego a las listas existentes nuevas listas y quiero repartir solo esas, hago lo siguiente
+		ts_num = (17 + Subject.objects.count() % 20) #TrialSequence.objects.count() )
+		# Lo divido en 20 porque son 20 nuevas combinaciones y le sumo 17 porque son las listas preexistentes que quedaros arriba.
+		
 		ts = TrialSequence.objects.all().order_by('id')[ts_num]
 		seq_base1 = json.loads(ts.seq)
-		#seq_base0 = map(lambda x: x-1,seq_base1)
-		# Disable randomize chosen sequence.
-		#random.shuffle(seq_base0)
+		seq_base0 = seq_base1
 		
+		#~ ------------------------------------------------------------- 
 		# Si se quiere cambiar el orden de los textos o eliminar un texto, se cambia desde acá. 
 		# Cada elemento de seq_base1 es un experimento variable pero siempre del mismo texto. 
 		#~ seq_base0 = seq_base1[0:7]
@@ -339,27 +344,22 @@ class Subject(models.Model):
 		#~ seq_base0.append(seq_base1[3]) # Pongo el 4º texto al final
 		#~ seq_base0.append(seq_base1[4]) # Pongo el 5º texto al final
 		#~ seq_base0.append(seq_base1[6]) # Pongo el 7º texto al final
-		
 		#~ ------------------------------------------------------------- 
 		#~ Armo listas a mano para completar el experimento 
 		#~ listas=[[120, 85,   68, 0,  17,  56, 109, 39], [122, 89,   69, 13, 30, 64, 117, 40], [123, 90,   72, 13, 17, 56, 109, 41], [124, 95,   82, 0,   17, 56, 117,43], [126, 98,   84, 13,  30, 64,109,44], [127, 100, 68, 13,  17, 56, 117,49], [129, 101, 69, 0,    17, 56, 109,50], [132, 85,   72, 13,  30, 64, 117, 37], [133, 101, 82, 13,  17, 56, 109,38], [134, 89,  84,  0,    17, 64, 117, 35], [135, 98,  68,  13,  30, 56, 109, 34]]
-		
-
 		#~ Update de listas 10/09
 		#~ listas= [[68,123,85,109,17,56,39,0], [69,126,86,109,17,56,50,5], [81,132,95,109,17,64,39,0], [82,135,98,117,17,56,50,5], [84,135,100,117,17,56,39,0], [72,135,101,102,30,64,50,5], [85,123,68,109,17,56,39,0], [86,126,69,109,17,56,50,5], [95,132,81,109,17,64,39,0], [98,135,82,117,17,56,50,5], [100,135,84,117,17,56,39,0], [101,135,72,102,30,64,50,5], [123,85,123,109,17,56,39,0], [126,86,126,109,17,56,50,5], [132,95,132,109,17,64,39,0], [135,98,135,117,17,56,50,5], [135,100,135,117,17,56,39,0], [135,101,135,102,30,64,50,5], [68,123,85,109,17,56,39,0], [69,126,86,109,17,56,50,5], [81,132,95,109,17,64,39,0], [82,135,98,117,17,56,50,5], [84,135,100,117,17,56,39,0], [72,135,101,102,30,64,50,5]]
-		
-
 		#~ Update de listas 11/09 (hice cagadas con estas)
 		#~ listas= [[85,126, 68,109, 17, 56, 39,0], [86,132, 69,109, 17, 56, 50,5], [86,126, 81,109, 17, 64, 39,0], [98,126, 82,117, 17, 56, 50,5], [98,132, 84,117, 17, 56, 39,0], [101,126, 72,102, 30, 64, 50,5], [126, 85,126,109, 17, 56, 39,0], [132, 86,132,109, 17, 56, 50,5], [126, 86,126,109, 17, 64, 39,0], [126, 98,126,117, 17, 56, 50,5], [132, 98,132,117, 17, 56, 39,0], [126,101,126,102, 30, 64, 50,5], [68,126, 85,109, 17, 56, 39,0], [69,132, 86,109, 17, 56, 50,5], [81,126, 86,109, 17, 64, 39,0], [82,126, 98,117, 17, 56, 50,5], [84,132, 98,117, 17, 56, 39,0], [72,126,101,102, 30, 64, 50,5]]	
 		#~ Update de listas 11/09
-		listas = [[85, 109, 56, 13, 17, 50, 68, 119], [86, 109, 56,  5, 17, 50, 76, 120], [98, 117, 56, 13, 17, 50, 78, 123], [101, 117, 56,  5, 17, 50, 82, 126]]
-
+		#~ listas = [[85, 109, 56, 13, 17, 50, 68, 119], [86, 109, 56,  5, 17, 50, 76, 120], [98, 117, 56, 13, 17, 50, 78, 123], [101, 117, 56,  5, 17, 50, 82, 126]]
 		#~ Update de listas 23/09
-		listas = [[120, 85, 68,52,112,13,33,39],[121, 86, 69,52,112,13,33,50],[123, 88, 76,52,112,13,33,39],[125, 92, 81,52,112,13,33,39],[128, 98, 68,67,118,16,33,39],[132, 99, 76,67,118,16,33,50],[133, 100,81,67,118,16,33,50],[134, 100,69,67,118,16,33,50]]
-		ts_num = ( Subject.objects.count() % len(listas) )
-		seq_base0 = listas[ts_num]
-		
-		return (ts.id,seq_base1)       
+		#~ listas = [[120, 85, 68,52,112,13,33,39],[121, 86, 69,52,112,13,33,50],[123, 88, 76,52,112,13,33,39],[125, 92, 81,52,112,13,33,39],[128, 98, 68,67,118,16,33,39],[132, 99, 76,67,118,16,33,50],[133, 100,81,67,118,16,33,50],[134, 100,69,67,118,16,33,50]]
+		#~ ts_num = ( Subject.objects.count() % len(listas) )
+		#~ seq_base0 = listas[ts_num]
+		#~ ------------------------------------------------------------- 
+
+		return (ts.id,seq_base0)       
 
 class SubjectForm(ModelForm):
     class Meta:
