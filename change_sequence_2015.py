@@ -2,6 +2,7 @@ import psycopg2
 import sys
 import json
 from collections import deque
+from random import randint
 
 # Connect to Chess Database
 database='cloze_bruno'
@@ -70,14 +71,18 @@ for r in res:
         print 'Sobran: ', los_que_sobran
         
         indice = los_que_sobran.index(sorted(filter(lambda x: max_listas_T7<x,los_que_sobran))[0])
-        # Hasta acá llegue... basicamente busco los indices no leidos que esten entre las listas viejas
-        
-        
+        # busco los indices no leidos que esten entre las listas viejas??
         
         #print 'Indice: ', indice , ' ----> ' , los_que_sobran[indice]
         #~ dd = deque(los_que_sobran)
         #~ dd.rotate(-indice)
         #print 'Sobran rotado: ', str(dd)
+        
+        dd = []
+        ind = 0
+        for i in los_que_sobran[indice,-1]: #Itero sobre los no leidos
+			dd[ind] = CambioNumero(i) #Armo una lista con los nuevos numeros
+			ind += 1
 
         seq_final = json.dumps(seq_original[0:len(ss)] + list(dd))
         print seq_final
@@ -87,3 +92,42 @@ for r in res:
         
         cur.execute(update_statement,(seq_final,id_subject))
         conn.commit()
+
+def CambioNumero(n):
+	max_listas_T0 = 16
+    max_listas_T1 = max_listas_T0 +17
+    max_listas_T2 = max_listas_T1 +17
+    max_listas_T3 = max_listas_T2 +17
+    max_listas_T4 = max_listas_T3 +17
+    max_listas_T5 = max_listas_T4 +17
+    max_listas_T6 = max_listas_T5 +17
+    max_listas_T7 = max_listas_T6 +17
+
+    min_listas_T0_2015 = 1000
+    max_listas_T0_2015 = min_listas_T0_2015 +20
+    max_listas_T1_2015 = max_listas_T0_2015 +20
+    max_listas_T2_2015 = max_listas_T1_2015 +20
+    max_listas_T3_2015 = max_listas_T2_2015 +20
+    max_listas_T4_2015 = max_listas_T3_2015 +20
+    max_listas_T5_2015 = max_listas_T4_2015 +20
+    max_listas_T6_2015 = max_listas_T5_2015 +20
+    max_listas_T7_2015 = max_listas_T6_2015 +20
+    
+    if n <= max_listas_T0: #Texto 0
+		nuevo_n = randint(min_listas_T0_2015, max_listas_T0_2015)
+    elif n <= max_listas_T1: #Texto 1
+		nuevo_n = randint(max_listas_T0_2015+1, max_listas_T1_2015)
+    elif n <= max_listas_T2: #Texto 2
+		nuevo_n = randint(max_listas_T1_2015+1, max_listas_T2_2015)
+    elif n <= max_listas_T3: #Texto 3
+		nuevo_n = randint(max_listas_T2_2015+1, max_listas_T3_2015)
+    elif n <= max_listas_T4: #Texto 4
+		nuevo_n = randint(max_listas_T3_2015+1, max_listas_T4_2015)
+    elif n <= max_listas_T5: #Texto 5
+		nuevo_n = randint(max_listas_T4_2015+1, max_listas_T5_2015)
+    elif n <= max_listas_T6: #Texto 6
+		nuevo_n = randint(max_listas_T5_2015+1, max_listas_T6_2015)
+    elif n <= max_listas_T7: #Texto 7
+		nuevo_n = randint(max_listas_T6_2015+1, max_listas_T7_2015)
+
+	return nuevo_n
